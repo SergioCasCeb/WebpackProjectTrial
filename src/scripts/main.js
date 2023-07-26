@@ -7,9 +7,10 @@
 
 import '../styles/styles.scss'
 import './editor.js'
-import * as util from "./util.js"
-import * as jVis from "./jsonld-vis.js"
-import * as vVis from "./vega-vis.js"
+
+// import * as util from "./util.js"
+// import * as jVis from "./jsonld-vis.js"
+// import * as vVis from "./vega-vis.js"
 
 /***********************************************************/
 /*                          Loader                         */
@@ -18,17 +19,17 @@ import * as vVis from "./vega-vis.js"
 const loader = document.querySelector(".loader-container")
 let stateCheck = setInterval(() => {
   if (document.readyState === 'complete') {
-    clearInterval(stateCheck);
+    clearInterval(stateCheck)
     loader.classList.add("hidden")
   }
-}, 100);
+}, 100)
 
 /***********************************************************/
 /*                Resizing functionality                   */
 /***********************************************************/
-const textIcon = document.querySelectorAll(".text-icon");
-const resizerY = document.querySelector(".horizontal-divider");
-const resizerX = document.querySelector(".vertical-divider");
+const textIcon = document.querySelectorAll(".text-icon")
+const resizerY = document.querySelector(".horizontal-divider")
+const resizerX = document.querySelector(".vertical-divider")
 
 /*** Horizontal sizing section ***/
 
@@ -38,9 +39,9 @@ const resizerX = document.querySelector(".vertical-divider");
  * @param {event} e - the mousedown event
  */
 resizerX.addEventListener("mousedown", (e) => {
-  e.preventDefault();
-  document.addEventListener("mousemove", onmousemoveX);
-  document.addEventListener("mouseup", onmouseupX);
+  e.preventDefault()
+  document.addEventListener("mousemove", onmousemoveX)
+  document.addEventListener("mouseup", onmouseupX)
 })
 
 /**
@@ -49,41 +50,41 @@ resizerX.addEventListener("mousedown", (e) => {
  * @param {event} e - the mousemove event
  */
 function onmousemoveX(e) {
-  e.preventDefault();
-  let clientX = e.clientX;
-  const deltaX = clientX - (resizerX.clientX || clientX);
-  const l = resizerX.previousElementSibling;
-  const r = resizerX.nextElementSibling;
+  e.preventDefault()
+  let clientX = e.clientX
+  const deltaX = clientX - (resizerX.clientX || clientX)
+  const l = resizerX.previousElementSibling
+  const r = resizerX.nextElementSibling
 
   if (clientX > screen.width) {
-    resizerX.clientX = screen.width;
+    resizerX.clientX = screen.width
   }
   else if (clientX < 0) {
-    resizerX.clientX = 0;
+    resizerX.clientX = 0
   }
   else {
-    resizerX.clientX = clientX;
+    resizerX.clientX = clientX
 
     // LEFT
     if (deltaX < 0) {
-      const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX);
-      l.style.flex = `0 ${w < 45 ? 30 : w}px`;
-      r.style.flex = "1 0";
+      const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX)
+      l.style.flex = `0 ${w < 45 ? 30 : w}px`
+      r.style.flex = "1 0"
       if (w < 65) {
         textIcon.forEach(text => {
-          text.classList.add("hiddenH");
+          text.classList.add("hiddenH")
         })
       }
     }
 
     // RIGHT
     if (deltaX > 0) {
-      const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX);
-      l.style.flex = `0 ${w > 65 ? 80 : w}px`;
-      r.style.flex = "1 0";
+      const w = Math.round(parseInt(getComputedStyle(l).width) + deltaX)
+      l.style.flex = `0 ${w > 65 ? 80 : w}px`
+      r.style.flex = "1 0"
       if (w > 65) {
         textIcon.forEach(text => {
-          text.classList.remove("hiddenH");
+          text.classList.remove("hiddenH")
         })
       }
     }
@@ -96,10 +97,10 @@ function onmousemoveX(e) {
  * @param {event} e - the mouseup event
  */
 function onmouseupX(e) {
-  e.preventDefault();
-  document.removeEventListener("mousemove", onmousemoveX);
-  document.removeEventListener("mouseup", onmouseupX);
-  delete e.clientX;
+  e.preventDefault()
+  document.removeEventListener("mousemove", onmousemoveX)
+  document.removeEventListener("mouseup", onmouseupX)
+  delete e.clientX
 }
 
 
@@ -111,9 +112,9 @@ function onmouseupX(e) {
  * @param {event} e - the mousedown event
  */
 resizerY.addEventListener("mousedown", (e) => {
-  e.preventDefault();
-  document.addEventListener("mousemove", onmousemoveY);
-  document.addEventListener("mouseup", onmouseupY);
+  e.preventDefault()
+  document.addEventListener("mousemove", onmousemoveY)
+  document.addEventListener("mouseup", onmouseupY)
 })
 
 /**
@@ -122,39 +123,39 @@ resizerY.addEventListener("mousedown", (e) => {
  * @param {event} e - the mousemove event
  */
 function onmousemoveY(e) {
-  e.preventDefault();
-  const clientY = e.clientY;
-  const deltaY = clientY - (resizerY.clientY || clientY);
-  const t = resizerY.previousElementSibling;
-  const b = resizerY.nextElementSibling;
+  e.preventDefault()
+  const clientY = e.clientY
+  const deltaY = clientY - (resizerY.clientY || clientY)
+  const t = resizerY.previousElementSibling
+  const b = resizerY.nextElementSibling
 
   if (clientY > screen.height) {
-    resizerY.clientY = screen.height;
+    resizerY.clientY = screen.height
   }
   else if (clientY < 0) {
-    resizerY.clientY = 0;
+    resizerY.clientY = 0
   }
   else {
-    resizerY.clientY = clientY;
+    resizerY.clientY = clientY
     // DOWN
     if (deltaY > 0) {
-      const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY);
-      b.style.flex = `0 ${h < 55 ? 50 : h}px`;
-      t.style.flex = "1 0";
+      const h = Math.round(parseInt(getComputedStyle(b).height) - deltaY)
+      b.style.flex = `0 ${h < 55 ? 50 : h}px`
+      t.style.flex = "1 0"
       if (Math.round(parseInt(getComputedStyle(t).height) + deltaY) > 290) {
         textIcon.forEach(text => {
-          text.classList.remove("hiddenV");
+          text.classList.remove("hiddenV")
         })
       }
     }
     // UP
     if (deltaY < 0) {
-      const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY);
-      t.style.flex = `0 ${h < 205 ? 195 : h}px`;
-      b.style.flex = "1 0";
+      const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY)
+      t.style.flex = `0 ${h < 205 ? 195 : h}px`
+      b.style.flex = "1 0"
       if (h < 290) {
         textIcon.forEach(text => {
-          text.classList.add("hiddenV");
+          text.classList.add("hiddenV")
         })
       }
     }
@@ -167,8 +168,8 @@ function onmousemoveY(e) {
  * @param {event} e - the mouseup event
  */
 function onmouseupY(e) {
-  e.preventDefault();
-  document.removeEventListener("mousemove", onmousemoveY);
-  document.removeEventListener("mouseup", onmouseupY);
-  delete e.clientY;
+  e.preventDefault()
+  document.removeEventListener("mousemove", onmousemoveY)
+  document.removeEventListener("mouseup", onmouseupY)
+  delete e.clientY
 }

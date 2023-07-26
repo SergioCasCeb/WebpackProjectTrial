@@ -20,6 +20,15 @@
  * and offers a few utility functions.
  */
 
+import Papa from 'papaparse'
+// // import { Validators } from '@thing-description-playground/core/dist/web-bundle.min.js'
+import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
+import '@thing-description-playground/assertions/dist/web-bundle.min.js'
+import '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
+import '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
+import '@thing-description-playground/defaults/dist/web-bundle.min.js'
+import '@thing-description-playground/json-spell-checker/dist/web-bundle.min.js'
+
 /**
  * Fetch the TD from the given address and return the JSON object
  * @param {string} urlAddr url of the TD to fetch
@@ -50,34 +59,6 @@ function getTextUrl(urlAddr){
         }, err => {alert("Text could not be fetched from: " + urlAddr + "\n Error: " + err)})
     })
 }
-
-
-//TODO Delete this function
-/**
- * Generate html output from the example information
- * @param {*} urlAddrObject Name, address and type of every example TD
- */
-// export function populateExamples(urlAddrObject){
-
-//     const loadExample = document.getElementById("load_example");
-//     loadExample.innerHTML = '<option class="btn-info" value="select_none">Select None</option>';
-//     let examplesHtml = "";
-
-//     Object.keys(urlAddrObject).forEach( name => {
-//         const data = urlAddrObject[name]
-//         if (data.type === "valid") {
-//             examplesHtml+='<option class="btn-success" value=' + name + '>' + name + ' &check;</option>';
-//         }
-// 		if (data.type === "warning") {
-//             examplesHtml+='<option class="btn-warning" value=' + name + '>' + name + ' !</option>';
-//         }
-// 		if (data.type === "invalid"){
-// 			examplesHtml+='<option class="btn-danger" value=' +name + '>' + name + ' &cross;</option>';
-//         }
-//     })
-
-//     loadExample.innerHTML += examplesHtml;
-// }
 
 /**
  * Executes an assertion test and
@@ -302,83 +283,6 @@ function hideValidationStatusTable() {
     }, true)
     document.getElementById("table_head_arrow").setAttribute("class", "or-down")
 }
-
-//TODO Delete this function
-/**
- * Name, Address and type ("valid", "warning", "invalid") of all example TDs
- * @param {string} docType "td" or "tm"
- */
-// export function getExamplesList(docType){
-//     return (docType === 'td')
-//         ? {
-//             "SimpleTDWithDefaults": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/valid/simpleWithDefaults.json",
-//                 "type": "valid"
-//             },
-//             "MultipleOpWithDefaults": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/valid/formOpArrayWithDefaults.json",
-//                 "type": "valid"
-//             },
-//             "SimpleTD": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/valid/simple.json",
-//                 "type": "warning"
-//             },
-//             "MultipleOp": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/valid/formOpArray.json",
-//                 "type": "warning"
-//             },
-//             "EnumConstContradiction": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/warning/enumConst.json",
-//                 "type": "warning"
-//             },
-//             "ArrayWithNoItems": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/warning/arrayNoItems.json",
-//                 "type": "warning"
-//             },
-//             "InvalidOperation": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/invalid/invalidOp.json",
-//                 "type": "invalid"
-//             },
-//             "EmptySecurityDefs": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tds/invalid/emptySecDef.json",
-//                 "type": "invalid"
-//             }
-//         }
-//         : {
-//             "Placeholder": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tms/valid/placeholder.json",
-//                 "type": "valid"
-//             },
-//             "Reference": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tms/valid/ref.json",
-//                 "type": "valid"
-//             },
-//             "Extend": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tms/valid/extend.json",
-//                 "type": "valid"
-//             },
-//             "Affordances": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tms/valid/affordances.json",
-//                 "type": "valid"
-//             },
-//             "AbsentContext": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tms/invalid/absent_context.json",
-//                 "type": "invalid"
-//             },
-//             "AbsentTM": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tms/invalid/absent_tm.json",
-//                 "type": "invalid"
-//             },
-//             "NoCurlyBracket": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tms/invalid/no_curly_bracket.json",
-//                 "type": "invalid"
-//             },
-//             "SingleCurlyBracket": {
-//                 "addr": "./node_modules/@thing-description-playground/core/examples/tms/invalid/single_curly_bracket.json",
-//                 "type": "invalid"
-//             }
-//         }
-// }
 
 /**
  * Clear the editor, or paste TD -> according to user selection

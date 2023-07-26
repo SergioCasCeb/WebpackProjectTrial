@@ -69,9 +69,6 @@ module.exports = {
                 {
                   from: './src/assets/favicon',
                   to: 'favicon',
-                  globOptions: {
-                    ignore: ['**/site.webmanifest'],
-                  },
                 },
             ],
         }),
