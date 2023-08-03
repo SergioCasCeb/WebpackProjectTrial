@@ -19,6 +19,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.3",
+    "json-loader": "^0.5.7",
     "monaco-editor-webpack-plugin": "^7.1.0",
     "nodemon": "^3.0.1",
     "sass": "^1.64.0",

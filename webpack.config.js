@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
-    mode: 'production',
+    mode: 'development',
     entry: {
         bundle: path.resolve(__dirname, 'src/scripts/main.js'),
     },
@@ -54,6 +54,11 @@ module.exports = {
 				test: /\.ttf$/,
 				type: 'asset/resource'
 			},
+            {
+                test: /\.json$/,
+                use: 'json-loader',
+                type: 'javascript/auto', // Necessary for Webpack 5
+            },
         ]
     },
     plugins: [

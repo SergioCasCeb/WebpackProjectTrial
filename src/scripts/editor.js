@@ -1,6 +1,19 @@
+/**
+ * @file The `editor.js` contains the main functionality
+ * for of the generated monaco editors and the surrounding elements
+ * such as the tab functionality. It utilizes mutiple other files and dependncies
+ * such as the monaco-editor dependencie, the monochrome-theme file to add the custom 
+ * theme, some util functions, the td and tm schemas from the core @thing-description-playground
+ * as well as the "Validators and the JsonSpellChecker from the json-spell-checker dependency"
+ */
+
 import * as monaco from 'monaco-editor'
 import themeData from './monochrome-theme'
-import * as util from "./util.js"
+import { getEditorValue } from "./util.js"
+import tdSchema from '../../node_modules/@thing-description-playground/core/td-schema.json'
+import tmSchema from '../../node_modules/@thing-description-playground/core/tm-schema.json'
+import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
+import * as JsonSpellChecker from '@thing-description-playground/json-spell-checker/dist/web-bundle.min.js'
 
 
 /***********************************************************/
@@ -17,8 +30,14 @@ const addTab = document.querySelector(".ide__tabs__add")
 const tabsLeftContainer = document.querySelector(".ide__tabs__left")
 const ideContainer = document.querySelector(".ide__container")
 let tabsLeft = document.querySelectorAll(".ide__tabs__left li:not(:last-child)")
+//yaml and json btns from the DOM
+const yamlBtn = document.querySelector("#file-type-yaml")
+const jsonBtn = document.querySelector("#file-type-json")
+//console containers
+const visualizationContainers = document.querySelectorAll(".console-view")
+const visualizationOptions = document.querySelectorAll(".visualization__option")
 //Editor list array where all the generated editor will be added and referenced from
-let editorList = []
+export let editorList = []
 let i = 1
 
 //Initiate by generating the first editor and the respective tab
@@ -89,8 +108,9 @@ function createTab(tabNumber, exampleName, thingType) {
  * @param {Object} exampleValue - the td or tm as a json object
  */
 function createIde(ideNumber, exampleValue){
-  const url = util.getEditorValue(window.location.hash.substring(1))
-  // console.log(url);
+  clearConsole()
+  const url = getEditorValue(window.location.hash.substring(1))
+  // console.log("url:" + url);
   // console.log(window.location.hash.substring(1));
   let defaultValue = {}
   let editorLanguage = "json"
@@ -115,7 +135,6 @@ function createIde(ideNumber, exampleValue){
       }
     }
     else{
-      // clearConsole()
       delete exampleValue["$title"]
       delete exampleValue["$description"]
       defaultValue = exampleValue
@@ -177,36 +196,106 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
       formatOnPaste: true
   })
 
+  //todo--------------------------------------------------------------------
+  editor.getModel().onDidChangeContent(_ => {
+    clearConsole()
+
+    try{
+      const editorValues = checkThingType(editor)
+      changeThingIcon(editorValues[1])
+
+      //Only use the spell checker if file is json
+      if(jsonBtn.checked === true){
+        //Get if thing type and set the respective schema
+        if(editorValues[0]["@type"] === "tm:ThingModel"){
+          // Configure JSON language support with schemas and schema associations
+          monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+            validate: true,
+            schemas: [
+              {
+                fileMatch: [editor.getModel().uri.toString()],
+                schema: tmSchema,
+                uri: 'file:///tm-schema.json'
+              }
+            ]
+          });
+        }
+        else{
+          monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+            validate: true,
+            schemas: [
+              {
+                fileMatch: [editor.getModel().uri.toString()],
+                schema: tdSchema,
+                uri: 'file:///td-schema.json'
+              }
+            ]
+          });
+        }
+
+        markTypos(editor.getModel());
+        //TODO add auto validate functionality
+        // // util.validate('auto', autoValidate, docType);
+      }
+    }catch(err){
+      console.error("Not a proper JSON object");
+    }
+
+  });
+
   editorList.push(editor)
 }
 
-//Todo add typo functionality
-// /**
-//  * Marks the possible typos on the editor
-//  * @param {object} model - The model that represents the loaded Monaco editor
-//  */
-// function markTypos(model) {
-// 	const markers = []
+/**
+ * Marks the possible typos on the editor
+ * @param {object} model - The model that represents the loaded Monaco editor
+ */
+function markTypos(model) {
+	const markers = []
 
-// 	JsonSpellChecker.configure()
-// 	const typos = JsonSpellChecker.checkTypos(model.getValue())
+	JsonSpellChecker.configure()
+	const typos = JsonSpellChecker.checkTypos(model.getValue())
 
-// 	typos.forEach(typo => {
-// 		markers.push({
-// 			message: typo.message,
-// 			severity: monaco.MarkerSeverity.Warning,
-// 			startLineNumber: typo.startLineNumber,
-// 			startColumn: typo.startColumn,
-// 			endLineNumber: typo.endLineNumber,
-// 			endColumn: typo.endColumn
-// 		})
-// 	})
+	typos.forEach(typo => {
+		markers.push({
+			message: typo.message,
+			severity: monaco.MarkerSeverity.Warning,
+			startLineNumber: typo.startLineNumber,
+			startColumn: typo.startColumn,
+			endLineNumber: typo.endLineNumber,
+			endColumn: typo.endColumn
+		})
+	})
 
-// 	monaco.editor.setModelMarkers(model, 'typo', markers)
-// }
+	monaco.editor.setModelMarkers(model, 'typo', markers)
+}
 
 /**
- * Findst the current active tab and modifies the icon accordingly
+ * Check for the content of the editor either json or yaml and return content and thing type
+ * @param { monaco object } editor 
+ * @returns [editorContent, thingType]
+ */
+function checkThingType(editor){
+  let editorContent = ""
+  let thingType = ""
+
+  if(jsonBtn.checked === true){
+    editorContent = JSON.parse(editor.getValue())
+  }else{
+    editorContent = JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
+  }
+
+  if(editorContent["@type"] === "tm:ThingModel"){
+    thingType = "TM"
+  }else{
+    thingType = "TD"
+  }
+
+  return [editorContent, thingType]
+}
+
+/**
+ * Finds the current active tab and modifies the icon accordingly
  * @param { string } thingType - TM or TD to modify the tab icon
  */
 function changeThingIcon(thingType){
@@ -224,7 +313,7 @@ function changeThingIcon(thingType){
  */
 addTab.addEventListener("click", () => {
   createIde(++i)
-  // jsonBtn.checked = true
+  jsonBtn.checked = true
 })
 
 /**
@@ -234,9 +323,7 @@ addTab.addEventListener("click", () => {
 tabsLeftContainer.addEventListener("click", (e) => {
   //getting the initial target
   const selectedElement = e.target
-
-  //todo add later
-  // clearConsole()
+  clearConsole()
 
   //Add the active styling when tab is clicked
   if (selectedElement.id == "tab" || selectedElement.parentElement.id == "tab") {
@@ -275,9 +362,6 @@ tabsLeftContainer.addEventListener("click", (e) => {
         }
       })
     }
-
-    //todo add later
-    // findFileType()
   }
 
   //Closing tabs only when the click event happens on the close icon of the tab
@@ -298,8 +382,7 @@ tabsLeftContainer.addEventListener("click", (e) => {
       selectedElement.parentElement.remove()
       //create new tab
       createIde(++i)
-      //todo add later
-      // jsonBtn.checked = true
+      jsonBtn.checked = true
     }
     else {
       editorList.forEach(ide => {
@@ -316,35 +399,64 @@ tabsLeftContainer.addEventListener("click", (e) => {
     }
   }
 
-  //todo add later
-  // findFileType()
+  findFileType()
 })
 
 /**
- * Event listener to allow the user to change the name of the name by double clicking
- * @param {event} e - dblclick event
+ * Find if active editor is json or yaml and change the json/yaml btns repectively
  */
-tabsLeftContainer.addEventListener("dblclick", (e) => {
-  const selectedElement = e.target
-
-  //If target has the calss of content-tab set the attribute contenteditable to true and focus the element
-  if (selectedElement.className == "content-tab") {
-    selectedElement.setAttribute("contenteditable", "true")
-    selectedElement.focus()
-
-    //Once user presses enter disable the contenteditable attribute and stop focus
-    selectedElement.addEventListener("keypress", (e) => {
-      //If element is left empty add a default text
-      //else remove the content editable attribute and stop focus
-      if(e.key === "Enter"){
-        if(selectedElement.innerText === "\n"){
-          selectedElement.innerText = "My Thing"
-        }
-        else{
-          selectedElement.setAttribute("contenteditable", "false")
-          selectedElement.blur()
-        }
+function findFileType(){
+  editorList.forEach(editor => {
+    if(editor["_domElement"].classList.contains("active")){
+      if(editor["_domElement"].dataset.modeId === "json"){
+        jsonBtn.checked = true
       }
-    })
-  }
-})
+      else{
+        yamlBtn.checked = true
+      }
+    }
+  })
+}
+
+/**
+ * Unchecks all visualizatin btns and hiddes all visualization containers
+ */
+function clearConsole(){
+  visualizationContainers.forEach(container => {
+    container.classList.add("hidden")
+  })
+  visualizationOptions.forEach(option => {
+    option.checked = false
+  })
+}
+
+
+//TODO improve the change name functionality
+// /**
+//  * Event listener to allow the user to change the name of the name by double clicking
+//  * @param {event} e - dblclick event
+//  */
+// tabsLeftContainer.addEventListener("dblclick", (e) => {
+//   const selectedElement = e.target
+
+//   //If target has the calss of content-tab set the attribute contenteditable to true and focus the element
+//   if (selectedElement.className == "content-tab") {
+//     selectedElement.setAttribute("contenteditable", "true")
+//     selectedElement.focus()
+
+//     //Once user presses enter disable the contenteditable attribute and stop focus
+//     selectedElement.addEventListener("keypress", (e) => {
+//       //If element is left empty add a default text
+//       //else remove the content editable attribute and stop focus
+//       if(e.key === "Enter"){
+//         if(selectedElement.innerText === "\n"){
+//           selectedElement.innerText = "My Thing"
+//         }
+//         else{
+//           selectedElement.setAttribute("contenteditable", "false")
+//           selectedElement.blur()
+//         }
+//       }
+//     })
+//   }
+// })

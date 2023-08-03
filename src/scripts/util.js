@@ -20,12 +20,11 @@
  * and offers a few utility functions.
  */
 
-// import { Validators } from '@thing-description-playground/core/dist/web-bundle.min.js'
+import * as monaco from 'monaco-editor'
 import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
 import '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
 import '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
 import '@thing-description-playground/defaults/dist/web-bundle.min.js'
-import '@thing-description-playground/json-spell-checker/dist/web-bundle.min.js'
 
 /**
  * Fetch the TD from the given address and return the JSON object
