@@ -21,9 +21,9 @@
  */
 
 import Papa from 'papaparse'
-// // import { Validators } from '@thing-description-playground/core/dist/web-bundle.min.js'
+// import { Validators } from '@thing-description-playground/core/dist/web-bundle.min.js'
 import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
-import '@thing-description-playground/assertions/dist/web-bundle.min.js'
+import '@thing-description-playground/assertions/dist/web-bundle.min.js'//TODO remove this import
 import '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
 import '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
 import '@thing-description-playground/defaults/dist/web-bundle.min.js'
