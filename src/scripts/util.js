@@ -20,10 +20,8 @@
  * and offers a few utility functions.
  */
 
-import Papa from 'papaparse'
 // import { Validators } from '@thing-description-playground/core/dist/web-bundle.min.js'
 import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
-import '@thing-description-playground/assertions/dist/web-bundle.min.js'//TODO remove this import
 import '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
 import '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
 import '@thing-description-playground/defaults/dist/web-bundle.min.js'
@@ -58,57 +56,6 @@ function getTextUrl(urlAddr){
             resolve(data)
         }, err => {alert("Text could not be fetched from: " + urlAddr + "\n Error: " + err)})
     })
-}
-
-/**
- * Executes an assertion test and
- * passes the result to the user
- * as download
- * @param {object} manualAssertions The manual assertions input of the user
- * @param {string} docType "td" or "tm"
- */
-export function performAssertionTest(manualAssertions, docType){
-
-    document.getElementById("curtain").style.display = "block"
-    document.getElementById("curtain-text").innerHTML = "Assertion test ongoing..."
-    const assertionSchemas=[]
-    const manualAssertionsJSON=[]
-    const docToValidate=window.editor.getValue()
-
-    if (docToValidate === "") {
-        alert(`No ${docType.toUpperCase()} given`)
-        document.getElementById("curtain").style.display = "none"
-        return
-    }
-
-    const logging = input => {
-        document.getElementById("curtain-text").innerHTML = input
-    }
-
-    const assertions = (docType === "td") ? Assertions.tdAssertions : Assertions.tmAssertions
-
-    assertions([docToValidate], getTextUrl, logging, manualAssertions)
-    .then( result => {
-        // remove commas to avoid errors
-        const cleanResults = []
-        result.forEach( el => {
-            cleanResults.push({
-                ID: el.ID.replace(/,/g, ''),
-                Status: el.Status.replace(/,/g, ''),
-                Comment: el.Comment ? el.Comment.replace(/,/g, '') : "no Comment"
-            })
-        })
-
-        const csv = Papa.unparse(cleanResults)
-
-        offerFileDownload("assertionTest.csv", csv, "text/csv;charset=utf-8;")
-        document.getElementById("curtain").style.display = "none"
-
-    }, err => {
-        alert("Assertion Error: " + err)
-        document.getElementById("curtain").style.display = "none"
-    })
-
 }
 
 
