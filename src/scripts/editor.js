@@ -1,25 +1,20 @@
 /**
  * @file The `editor.js` contains the main functionality
- * for of the generated monaco editors and the surrounding elements
+ * for the generated monaco editors and the surrounding elements
  * such as the tab functionality. It utilizes mutiple other files and dependncies
  * such as the monaco-editor dependencie, the monochrome-theme file to add the custom 
  * theme, some util functions, the td and tm schemas from the core @thing-description-playground
- * as well as the "Validators and the JsonSpellChecker from the json-spell-checker dependency"
+ * as well as the "Validators" and the JsonSpellChecker from the json-spell-checker dependency
  */
 
 import * as monaco from 'monaco-editor'
-import themeData from './monochrome-theme'
-import { getEditorValue } from "./util.js"
+import { getEditorValue } from "./util"
+import { setFontSize, editorForm, fontSizeSlider } from './settings'
+import { jsonBtn, yamlBtn } from './json-yaml'
 import tdSchema from '../../node_modules/@thing-description-playground/core/td-schema.json'
 import tmSchema from '../../node_modules/@thing-description-playground/core/tm-schema.json'
 import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
 import * as JsonSpellChecker from '@thing-description-playground/json-spell-checker/dist/web-bundle.min.js'
-
-
-/***********************************************************/
-/*              Set New Theme Monaco editor                */
-/***********************************************************/
-monaco.editor.defineTheme('monochrome', themeData)
 
 /***********************************************************/
 /*                    Editor and tabs                      */
@@ -30,12 +25,11 @@ const addTab = document.querySelector(".ide__tabs__add")
 const tabsLeftContainer = document.querySelector(".ide__tabs__left")
 const ideContainer = document.querySelector(".ide__container")
 let tabsLeft = document.querySelectorAll(".ide__tabs__left li:not(:last-child)")
-//yaml and json btns from the DOM
-const yamlBtn = document.querySelector("#file-type-yaml")
-const jsonBtn = document.querySelector("#file-type-json")
+// todo import the container/console values from console file
 //console containers
 const visualizationContainers = document.querySelectorAll(".console-view")
 const visualizationOptions = document.querySelectorAll(".visualization__option")
+
 //Editor list array where all the generated editor will be added and referenced from
 export let editorList = []
 let i = 1
@@ -196,7 +190,17 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
       formatOnPaste: true
   })
 
-  //todo--------------------------------------------------------------------
+  //Bind the font size slider from the settings to the editor(s) and assign the specified font size
+  document.onload = setFontSize(editor)
+  fontSizeSlider.addEventListener("input", () => {
+    setFontSize(editor)
+  })
+
+  //Bind the reset button form the settings to the editor and assign the specied font size
+  editorForm.addEventListener("reset", () => {
+    setFontSize(editor)
+  })
+
   editor.getModel().onDidChangeContent(_ => {
     clearConsole()
 

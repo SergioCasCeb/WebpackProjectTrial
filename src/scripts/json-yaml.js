@@ -10,8 +10,8 @@ import { generateTD } from './util.js'
 /*                   Yaml functionality                    */
 /***********************************************************/
 
-const yamlBtn = document.querySelector("#file-type-yaml")
-const jsonBtn = document.querySelector("#file-type-json")
+export const yamlBtn = document.querySelector("#file-type-yaml")
+export const jsonBtn = document.querySelector("#file-type-json")
 const yamlWarning = document.querySelector('.json-yaml-warning')
 const yamlConfirmBtn = document.querySelector("#yaml-confirm-btn")
 const yamlCancelBtn = document.querySelector("#yaml-cancel-btn")

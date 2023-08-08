@@ -8,6 +8,7 @@
 import '../styles/styles.scss'
 import './editor.js'
 import './json-yaml'
+import './settings'
 
 // import * as util from "./util.js"
 // import * as jVis from "./jsonld-vis.js"
