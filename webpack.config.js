@@ -72,8 +72,12 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 {
-                  from: './src/assets/favicon',
-                  to: 'favicon',
+                    from: './src/assets/favicon',
+                    to: 'favicon',
+                },
+                {
+                    from: './src/examples',
+                    to: 'examples',
                 },
             ],
         }),

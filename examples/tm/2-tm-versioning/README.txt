@@ -1,0 +1,1 @@
+This category contains examples of how to handle versioning on Thing Models.

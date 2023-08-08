@@ -7,7 +7,8 @@
     "build": "webpack && node server/server.js",
     "dev": "webpack serve",
     "server": "node server/server.js",
-    "serverdev": "nodemon server/server.js"
+    "serverdev": "nodemon server/server.js",
+    "examples": "node external-scripts/examples.js"
   },
   "keywords": [],
   "author": "",

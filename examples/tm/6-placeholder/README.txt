@@ -1,0 +1,1 @@
+This category contains examples of how to utilize placeholder labeling for Thing Models where the terms are known in advance but not the values.
