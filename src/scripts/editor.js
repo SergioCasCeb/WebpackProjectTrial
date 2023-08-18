@@ -200,6 +200,7 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
     try{
       const editorValues = getEditorData(editor)
       changeThingIcon(editorValues[1])
+      updateTabName(editorValues[2]["title"])
 
       //Only use the spell checker if file is json
       if(jsonBtn.checked === true){
@@ -416,12 +417,24 @@ function clearConsole(){
   })
 }
 
+/**
+ * Update the tab name depending on the title of the document
+ * @param { String } docTitle - title of the TD/TM document
+ */
+function updateTabName(docTitle){
+  tabsLeft.forEach(tab => {
+    if(tab.classList.contains("active")){
+      tab.children[1].textContent = docTitle
+    }
+  })
+}
 
-//TODO improve the change name functionality
-// /**
-//  * Event listener to allow the user to change the name of the name by double clicking
-//  * @param {event} e - dblclick event
-//  */
+
+//TODO: To be changed in the future
+/**
+ * Event listener to allow the user to change the name of the name by double clicking
+ * @param {event} e - dblclick event
+ */
 // tabsLeftContainer.addEventListener("dblclick", (e) => {
 //   const selectedElement = e.target
 
