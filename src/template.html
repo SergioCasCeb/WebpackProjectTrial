@@ -144,7 +144,6 @@
                     <div class="console-view validation-view-cotainer hidden" id="validation-view">
                         <div class="json-validation-section" id="spot-json">
                             <div class="section-header">
-                                <!-- <i class="title-icon fa-solid fa-circle-check"></i> -->
                                 <i class="fa-solid fa-spinner"></i>
                                 <p class="title">JSON Validation</p>
                                 <i class="show-icon fa-solid fa-caret-down"></i>
@@ -154,7 +153,6 @@
 
                         <div class="json-schema-validation-section" id="spot-schema">
                             <div class="section-header">
-                                <!-- <i class="title-icon fa-solid fa-circle-exclamation"></i> -->
                                 <i class="fa-solid fa-spinner"></i>
                                 <p>JSON Schema Validation</p>
                                 <i class="show-icon fa-solid fa-caret-down"></i>
@@ -164,7 +162,6 @@
 
                         <div class="json-schema-defaults-section" id="spot-defaults">
                             <div class="section-header">
-                                <!-- <i class="title-icon fa-solid fa-circle-exclamation"></i> -->
                                 <i class="fa-solid fa-spinner"></i>
                                 <p>(With Defaults) JSON Schema Validation</p>
                                 <i class="show-icon fa-solid fa-caret-down"></i>
@@ -174,7 +171,6 @@
 
                         <div class="jsonls-validation-section" id="spot-jsonld">
                             <div class="section-header">
-                                <!-- <i class="title-icon fa-solid fa-circle-check"></i> -->
                                 <i class="fa-solid fa-spinner"></i>
                                 <p>JSON-LD Validation</p>
                                 <i class="show-icon fa-solid fa-caret-down"></i>
@@ -184,7 +180,6 @@
 
                         <div class="additional-checks-section" id="spot-additional">
                             <div class="section-header">
-                                <!-- <i class="title-icon fa-solid fa-triangle-exclamation"></i> -->
                                 <i class="fa-solid fa-spinner"></i>
                                 <p>Additional Checks</p>
                                 <i class="show-icon fa-solid fa-caret-down"></i>
@@ -368,17 +363,21 @@
                 </div>
 
                 <div class="save-menu-title">
-                    <p>Share this TD by creating a link or donwload it to your device!</p>
+                    <p>Share this <span id="thing-type-text">TD</span> by creating a link or donwload it to your device!</p>
                 </div>
 
                 <div class="share-td">
-                    <input type="text" id="share-url-input" class="share-td__url" placeholder="Click on share to get your link">
-                    <button class="share-td__btn" id="share-url-btn"><i class="fa-solid fa-link"></i>Share</button>
+                    <div class="share-td__input">
+                        <input type="text" id="share-url-input" class="share-url-input" placeholder="Click on share to get your link">
+                        <button type="button" title="Open the url in a new playground tab" class="open-url-tab" id="open-url-tab"><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                    </div>
+                    <button type="button" title="Generate a link to share your TD/TM" class="share-td__btn share-url" id="share-url-btn"><i class="fa-solid fa-link"></i>Share</button>
+                    <button type="button" title="Export your TD/TM to ediTDor" class="share-td__btn open-editdor" id="open-editdor-btn">Open in ediTDor</button>
                 </div>
 
                 <div class="save-td">
-                    <button class="save-td__download" id="download-btn"><i class="fa-solid fa-file-arrow-down"></i>Download</button>
-                    <button class="save-td__save-as" id="save-as-btn"><i class="fa-solid fa-folder-open"></i>Save as</button>
+                    <button type="button" title="Download youur current TD/TM" class="save-td__download" id="download-btn"><i class="fa-solid fa-file-arrow-down"></i>Download</button>
+                    <button type="button" title="Save your current TD/TM in your file system with your name and location of preference" class="save-td__save-as" id="save-as-btn"><i class="fa-solid fa-folder-open"></i>Save as</button>
                 </div>
 
                 <div class="save-warning">

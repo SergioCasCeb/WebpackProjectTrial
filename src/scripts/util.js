@@ -410,20 +410,35 @@ export function clearLog() {
  * @param {string} docType "td" or "tm"
  * @param {string} format "json" or "yaml"
  */
-export async function save(docType, format, editor) {
-    const value = editor.getValue()
+export async function save(formatType, thingType, editorContent) {
 
+    const value = JSON.stringify(editorContent)
     if (!value) {
-        alert(`No ${docType.toUpperCase()} provided`);
+        alert(`No ${thingType.toUpperCase()} provided`);
         return;
     }
 
-    const data = docType + format + value;
+    const data = thingType + formatType + value
     const compressed = Validators.compress(data);
-    window.location.hash = compressed;
-    await navigator.clipboard.writeText(window.location.href);
-    alert('The sharable URL is copied to your clipboard, if not - simply copy the address bar.');
-    return window.location.href
+    return `${window.location.href}#${compressed}`;
+}
+
+/**
+ * Save current TD/TM as a compressed string in URL fragment to be opened with ediTDor.
+ * @param {string} docType "td" or "tm"
+ * @param {string} format "json" or "yaml"
+ */
+export async function openEditdor(formatType, thingType, editor) {
+
+    const value = formatType === "yaml" ? Validators.convertTDYamlToJson(editor.getValue()) : editor.getValue()
+    if (!value) {
+        alert(`No ${thingType.toUpperCase()} provided`);
+        return;
+    }
+    const data = thingType + formatType + value;
+    const compressed = Validators.compress(data);
+    const URL = `https://eclipse.github.io/editdor/?td=${compressed}`
+    window.open(URL, '_blank');
 }
 
 /**

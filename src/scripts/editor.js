@@ -9,7 +9,7 @@
 
 import * as monaco from 'monaco-editor'
 import { getEditorValue } from "./util"
-import { setFontSize, editorForm, fontSizeSlider } from './settings'
+import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
 import { jsonBtn, yamlBtn } from './json-yaml'
 import tdSchema from '../../node_modules/@thing-description-playground/core/td-schema.json'
 import tmSchema from '../../node_modules/@thing-description-playground/core/tm-schema.json'
@@ -104,8 +104,6 @@ function createTab(tabNumber, exampleName, thingType) {
 function createIde(ideNumber, exampleValue){
   clearConsole()
   const url = getEditorValue(window.location.hash.substring(1))
-  // console.log("url:" + url);
-  // console.log(window.location.hash.substring(1));
   let defaultValue = {}
   let editorLanguage = "json"
 
@@ -135,16 +133,10 @@ function createIde(ideNumber, exampleValue){
     }
   }
   else{
-    if(url.substring(2,6) === "json"){
-      const urlValue = JSON.parse(url.substring(6))
-      defaultValue = urlValue
-    }
-    else{
-      defaultValue = url.substring(6)
-    }
     editorLanguage = url.substring(2,6)
+    defaultValue = JSON.parse(url.substring(6))
     //remove the hash from the url to allow new editor to be created
-    window.history.replaceState("", "", window.location.origin);
+    history.replaceState(null, null, window.location.origin + window.location.pathname);
   }
 
   //Create the container for the new editor and add all necessary attributes for styling and identifiers
@@ -172,6 +164,8 @@ function createIde(ideNumber, exampleValue){
   else{
     createTab(ideNumber,defaultValue["title"],"TD")
   }
+
+  findFileType()
 }
 
 /**
@@ -181,9 +175,8 @@ function createIde(ideNumber, exampleValue){
  * @param {String} editorLanguage 
  */
 async function initEditor(ideNumber, editorValue, editorLanguage) {
-  editorValue = JSON.stringify(editorValue, null, 2)
-
-  var editor = monaco.editor.create(document.getElementById(`editor${ideNumber}`), {
+  editorValue = editorLanguage === "json" ? JSON.stringify(editorValue, null, 2) : Validators.convertTDJsonToYaml(JSON.stringify(editorValue))
+  let editor = monaco.editor.create(document.getElementById(`editor${ideNumber}`), {
       value: editorValue, 
       language: editorLanguage,
       automaticLayout: true,
@@ -205,13 +198,13 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
     clearConsole()
 
     try{
-      const editorValues = checkThingType(editor)
+      const editorValues = getEditorData(editor)
       changeThingIcon(editorValues[1])
 
       //Only use the spell checker if file is json
       if(jsonBtn.checked === true){
         //Get if thing type and set the respective schema
-        if(editorValues[0]["@type"] === "tm:ThingModel"){
+        if(editorValues[2]["@type"] === "tm:ThingModel"){
           // Configure JSON language support with schemas and schema associations
           monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
             validate: true,
@@ -275,27 +268,16 @@ function markTypos(model) {
 }
 
 /**
- * Check for the content of the editor either json or yaml and return content and thing type
+ * Check for the content of the editor and return the format (json, yaml), the content and the thing type (TD, TM)
  * @param { monaco object } editor 
- * @returns [editorContent, thingType]
+ * @returns {String, String, JSON Object} , [formatType, thingType, editorContent]
  */
-function checkThingType(editor){
-  let editorContent = ""
-  let thingType = ""
+export function getEditorData(editor){
+  const formatType = editor["_domElement"].dataset.modeId
+  const editorContent = formatType === "json" ? JSON.parse(editor.getValue()) : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
+  const thingType = editorContent["@type"] === "tm:ThingModel" ? "tm" : "td"
 
-  if(jsonBtn.checked === true){
-    editorContent = JSON.parse(editor.getValue())
-  }else{
-    editorContent = JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
-  }
-
-  if(editorContent["@type"] === "tm:ThingModel"){
-    thingType = "TM"
-  }else{
-    thingType = "TD"
-  }
-
-  return [editorContent, thingType]
+  return [formatType, thingType, editorContent]
 }
 
 /**
@@ -305,7 +287,7 @@ function checkThingType(editor){
 function changeThingIcon(thingType){
   tabsLeft.forEach(tab => {
     if(tab.classList.contains("active")){
-      tab.children[0].innerText = thingType
+      tab.children[0].innerText = thingType.toUpperCase()
     }
   })
 }

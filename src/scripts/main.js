@@ -6,9 +6,10 @@
  */
 
 import '../styles/styles.scss'
-import './editor.js'
+import './editor'
 import './json-yaml'
-import './settings'
+import './settings-menu'
+import './save-menu'
 
 // import * as util from "./util.js"
 // import * as jVis from "./jsonld-vis.js"
