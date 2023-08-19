@@ -10,6 +10,7 @@ import './editor'
 import './json-yaml'
 import './settings-menu'
 import './save-menu'
+import './examples-menu'
 
 // import * as util from "./util.js"
 // import * as jVis from "./jsonld-vis.js"

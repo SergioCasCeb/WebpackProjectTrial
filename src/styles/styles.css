@@ -432,6 +432,7 @@ main .console {
 }
 .ide__tabs__left li:not(:last-child) .close-tab i {
   pointer-events: none;
+  font-size: var(--fs-p);
 }
 .ide__tabs__left li:last-child {
   min-width: 3.5rem;
@@ -1079,7 +1080,7 @@ main .console {
 .examples-menu .examples-menu-container__filter .form-field select, .examples-menu .examples-menu-container__filter .form-field .search-bar {
   border: 2px solid var(--clr-neutral-300);
 }
-.examples-menu .examples-menu-container__filter .form-field select, .examples-menu .examples-menu-container__filter .form-field .search-input {
+.examples-menu .examples-menu-container__filter .form-field select {
   padding: 0.8rem 6rem 0.8rem 2rem;
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -1102,11 +1103,19 @@ main .console {
   border-right: none;
 }
 .examples-menu .examples-menu-container__filter .form-field .search-bar i {
+  width: -moz-fit-content;
+  width: fit-content;
   padding: 0 1rem;
   font-size: inherit;
 }
 .examples-menu .examples-menu-container__filter .form-field .search-bar .search-input {
   border: none;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  cursor: text;
 }
 .examples-menu .examples-menu-container__filter .form-field .search-bar .search-input:focus {
   outline: none;
@@ -1165,7 +1174,7 @@ main .console {
   text-transform: capitalize;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__description {
-  padding: 2rem 4rem;
+  padding: 2rem 4rem 0 4rem;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__description p, .examples-menu .examples-menu-container .examples-container__tm .examples-category__description p {
   font-size: var(--fs-p);

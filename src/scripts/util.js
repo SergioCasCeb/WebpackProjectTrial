@@ -419,8 +419,8 @@ export async function save(formatType, thingType, editorContent) {
     }
 
     const data = thingType + formatType + value
-    const compressed = Validators.compress(data);
-    return `${window.location.href}#${compressed}`;
+    const compressed = Validators.compress(data)
+    return `${window.location.href}#${compressed}`
 }
 
 /**
@@ -432,20 +432,20 @@ export async function openEditdor(formatType, thingType, editor) {
 
     const value = formatType === "yaml" ? Validators.convertTDYamlToJson(editor.getValue()) : editor.getValue()
     if (!value) {
-        alert(`No ${thingType.toUpperCase()} provided`);
+        alert(`No ${thingType.toUpperCase()} provided`)
         return;
     }
-    const data = thingType + formatType + value;
-    const compressed = Validators.compress(data);
+    const data = thingType + formatType + value
+    const compressed = Validators.compress(data)
     const URL = `https://eclipse.github.io/editdor/?td=${compressed}`
-    window.open(URL, '_blank');
+    window.open(URL, '_blank')
 }
 
 /**
  * Given a URL fragment construct current value of an editor.
  */
 export function getEditorValue(fragment) {
-    const data = Validators.decompress(fragment);
+    const data = Validators.decompress(fragment)
     return data || '';
 }
 

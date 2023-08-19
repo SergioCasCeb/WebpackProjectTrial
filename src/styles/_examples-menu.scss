@@ -93,7 +93,7 @@
                     border: 2px solid var(--clr-neutral-300);
                 }
 
-                select, .search-input{
+                select{
                     padding: .8rem 6rem .8rem 2rem;
                     appearance: none;
                     cursor: pointer;
@@ -120,13 +120,17 @@
                     border-right: none;
 
                     i{
+                        width: fit-content;
                         padding: 0 1rem;
                         font-size: inherit;
                     }
 
                     .search-input{
                         border: none;
-
+                        width: 100%;
+                        padding: .8rem 1rem;
+                        appearance: none;
+                        cursor: text;
                         &:focus{
                             outline: none;
                         }
@@ -194,7 +198,7 @@
                     }
 
                     &__description{
-                        padding: 2rem 4rem;
+                        padding: 2rem 4rem 0 4rem;
                         p{
                             font-size: var(--fs-p);
                         }

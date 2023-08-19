@@ -199,3 +199,15 @@ async function saveAsFile(){
     }
   }
 }
+
+//TODO IMPORT FROM FILES
+/** Experimental file manager fucntion*/
+// const visualizeView = document.querySelector("#visualize-view p")
+// async function getFile() {
+//   // Open file picker and destructure the result the first handle
+//   [fileHandle] = await window.showOpenFilePicker()
+//   let fileData = await fileHandle.getFile()
+//   let text = await fileData.text()
+//   visualizeView.innerText = text
+//   console.log(JSON.parse(text));
+// }

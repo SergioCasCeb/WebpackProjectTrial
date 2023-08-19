@@ -32,10 +32,13 @@ const visualizationOptions = document.querySelectorAll(".visualization__option")
 
 //Editor list array where all the generated editor will be added and referenced from
 export let editorList = []
-let i = 1
+export const ideCount = {
+  ideNumber: 1
+}
+// export let ideNumber = 1
 
 //Initiate by generating the first editor and the respective tab
-createIde(i)
+createIde(ideCount.ideNumber)
 
 /**
  * Funtion which creates a tab for the respective editor
@@ -54,19 +57,19 @@ function createTab(tabNumber, exampleName, thingType) {
   //Add thing type icon to the tab
   const tabIcon = document.createElement("p")
   tabIcon.classList.add("tab-icon")
-  if(thingType === "TM"){
+  if (thingType === "TM") {
     tabIcon.innerText = "TM"
-  }else{
+  } else {
     tabIcon.innerText = "TD"
   }
 
   const tabContent = document.createElement("p")
   //If there is not specified example name give the default Thing Description + tabNumber
   //Else, if the the user uses TD/TM example use the example name as the tab name
-  if(exampleName === undefined || exampleName === ""){
+  if (exampleName === undefined || exampleName === "") {
     tabContent.innerText = `Thing Description ${tabNumber}`
   }
-  else{
+  else {
     tabContent.innerText = exampleName
   }
   tabContent.classList.add("content-tab")
@@ -101,16 +104,16 @@ function createTab(tabNumber, exampleName, thingType) {
  * @param {Number} ideNumber - the id which is assign to the editor in order to connect to the respective tab
  * @param {Object} exampleValue - the td or tm as a json object
  */
-function createIde(ideNumber, exampleValue){
+export function createIde(ideNumber, exampleValue) {
   clearConsole()
   const url = getEditorValue(window.location.hash.substring(1))
   let defaultValue = {}
   let editorLanguage = "json"
 
-  if(url === ""){
+  if (url === "") {
     // If example value is empty utilize a preset of the most basic form of a td
     // else utilize the td/tm from the exampleValue
-    if(exampleValue === undefined){
+    if (exampleValue === undefined) {
       defaultValue = {
         "@context": "https://www.w3.org/2022/wot/td/v1.1",
         "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
@@ -118,7 +121,7 @@ function createIde(ideNumber, exampleValue){
         "title": `My thing ${ideNumber}`,
         "description": "Thing Description for a Lamp thing",
         "securityDefinitions": {
-            "basic_sc": {"scheme": "basic", "in": "header"}
+          "basic_sc": { "scheme": "basic", "in": "header" }
         },
         "security": "basic_sc",
         "properties": {},
@@ -126,14 +129,14 @@ function createIde(ideNumber, exampleValue){
         "events": {}
       }
     }
-    else{
+    else {
       delete exampleValue["$title"]
       delete exampleValue["$description"]
       defaultValue = exampleValue
     }
   }
-  else{
-    editorLanguage = url.substring(2,6)
+  else {
+    editorLanguage = url.substring(2, 6)
     defaultValue = JSON.parse(url.substring(6))
     //remove the hash from the url to allow new editor to be created
     history.replaceState(null, null, window.location.origin + window.location.pathname);
@@ -158,11 +161,11 @@ function createIde(ideNumber, exampleValue){
   newIde.classList.add("active")
 
   //Create the new tab depending if its a TM or TD
-  if(defaultValue["@type"] === "tm:ThingModel"){
-    createTab(ideNumber,defaultValue["title"],"TM")
+  if (defaultValue["@type"] === "tm:ThingModel") {
+    createTab(ideNumber, defaultValue["title"], "TM")
   }
-  else{
-    createTab(ideNumber,defaultValue["title"],"TD")
+  else {
+    createTab(ideNumber, defaultValue["title"], "TD")
   }
 
   findFileType()
@@ -177,10 +180,10 @@ function createIde(ideNumber, exampleValue){
 async function initEditor(ideNumber, editorValue, editorLanguage) {
   editorValue = editorLanguage === "json" ? JSON.stringify(editorValue, null, 2) : Validators.convertTDJsonToYaml(JSON.stringify(editorValue))
   let editor = monaco.editor.create(document.getElementById(`editor${ideNumber}`), {
-      value: editorValue, 
-      language: editorLanguage,
-      automaticLayout: true,
-      formatOnPaste: true
+    value: editorValue,
+    language: editorLanguage,
+    automaticLayout: true,
+    formatOnPaste: true
   })
 
   //Bind the font size slider from the settings to the editor(s) and assign the specified font size
@@ -197,15 +200,15 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
   editor.getModel().onDidChangeContent(_ => {
     clearConsole()
 
-    try{
+    try {
       const editorValues = getEditorData(editor)
       changeThingIcon(editorValues[1])
       updateTabName(editorValues[2]["title"])
 
       //Only use the spell checker if file is json
-      if(jsonBtn.checked === true){
+      if (jsonBtn.checked === true) {
         //Get if thing type and set the respective schema
-        if(editorValues[2]["@type"] === "tm:ThingModel"){
+        if (editorValues[2]["@type"] === "tm:ThingModel") {
           // Configure JSON language support with schemas and schema associations
           monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
             validate: true,
@@ -218,7 +221,7 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
             ]
           });
         }
-        else{
+        else {
           monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
             validate: true,
             schemas: [
@@ -235,7 +238,7 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
         //TODO add auto validate functionality
         // // util.validate('auto', autoValidate, docType);
       }
-    }catch(err){
+    } catch (err) {
       console.error("Not a proper JSON object");
     }
 
@@ -249,23 +252,23 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
  * @param {object} model - The model that represents the loaded Monaco editor
  */
 function markTypos(model) {
-	const markers = []
+  const markers = []
 
-	JsonSpellChecker.configure()
-	const typos = JsonSpellChecker.checkTypos(model.getValue())
+  JsonSpellChecker.configure()
+  const typos = JsonSpellChecker.checkTypos(model.getValue())
 
-	typos.forEach(typo => {
-		markers.push({
-			message: typo.message,
-			severity: monaco.MarkerSeverity.Warning,
-			startLineNumber: typo.startLineNumber,
-			startColumn: typo.startColumn,
-			endLineNumber: typo.endLineNumber,
-			endColumn: typo.endColumn
-		})
-	})
+  typos.forEach(typo => {
+    markers.push({
+      message: typo.message,
+      severity: monaco.MarkerSeverity.Warning,
+      startLineNumber: typo.startLineNumber,
+      startColumn: typo.startColumn,
+      endLineNumber: typo.endLineNumber,
+      endColumn: typo.endColumn
+    })
+  })
 
-	monaco.editor.setModelMarkers(model, 'typo', markers)
+  monaco.editor.setModelMarkers(model, 'typo', markers)
 }
 
 /**
@@ -273,7 +276,7 @@ function markTypos(model) {
  * @param { monaco object } editor 
  * @returns {String, String, JSON Object} , [formatType, thingType, editorContent]
  */
-export function getEditorData(editor){
+export function getEditorData(editor) {
   const formatType = editor["_domElement"].dataset.modeId
   const editorContent = formatType === "json" ? JSON.parse(editor.getValue()) : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
   const thingType = editorContent["@type"] === "tm:ThingModel" ? "tm" : "td"
@@ -285,9 +288,9 @@ export function getEditorData(editor){
  * Finds the current active tab and modifies the icon accordingly
  * @param { string } thingType - TM or TD to modify the tab icon
  */
-function changeThingIcon(thingType){
+function changeThingIcon(thingType) {
   tabsLeft.forEach(tab => {
-    if(tab.classList.contains("active")){
+    if (tab.classList.contains("active")) {
       tab.children[0].innerText = thingType.toUpperCase()
     }
   })
@@ -299,7 +302,7 @@ function changeThingIcon(thingType){
  * Set the json btn to true
  */
 addTab.addEventListener("click", () => {
-  createIde(++i)
+  createIde(++ideCount.ideNumber)
   jsonBtn.checked = true
 })
 
@@ -335,16 +338,16 @@ tabsLeftContainer.addEventListener("click", (e) => {
     }
 
     //Get the id of the element and setting the active style to the respective editor
-    if(selectedElement.dataset.tabId){
+    if (selectedElement.dataset.tabId) {
       editorList.forEach(ide => {
-        if(selectedElement.dataset.tabId === ide["_domElement"].dataset.ideId){
+        if (selectedElement.dataset.tabId === ide["_domElement"].dataset.ideId) {
           ide["_domElement"].classList.add("active")
         }
       })
     }
-    else{
+    else {
       editorList.forEach(ide => {
-        if(selectedElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId){
+        if (selectedElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId) {
           ide["_domElement"].classList.add("active")
         }
       })
@@ -356,9 +359,9 @@ tabsLeftContainer.addEventListener("click", (e) => {
     //If there is only one tab and its closed create a completely editor and tab and restart the counter
     //If not the last one adjust the styling accordingly and update the amount of tabs
     if (tabsLeft.length == 1) {
-      i = 0
+      ideCount.ideNumber = 0
       editorList.forEach(ide => {
-        if(selectedElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId){
+        if (selectedElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId) {
           //remove the editor from the editor list array and from the DOM
           const index = editorList.indexOf(ide)
           editorList.splice(index, 1)
@@ -368,12 +371,12 @@ tabsLeftContainer.addEventListener("click", (e) => {
       //remove tab
       selectedElement.parentElement.remove()
       //create new tab
-      createIde(++i)
+      createIde(++ideCount.ideNumber)
       jsonBtn.checked = true
     }
     else {
       editorList.forEach(ide => {
-        if(selectedElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId){
+        if (selectedElement.parentElement.dataset.tabId === ide["_domElement"].dataset.ideId) {
           const index = editorList.indexOf(ide)
           editorList.splice(index, 1)
           ide["_domElement"].remove()
@@ -392,13 +395,13 @@ tabsLeftContainer.addEventListener("click", (e) => {
 /**
  * Find if active editor is json or yaml and change the json/yaml btns repectively
  */
-function findFileType(){
+function findFileType() {
   editorList.forEach(editor => {
-    if(editor["_domElement"].classList.contains("active")){
-      if(editor["_domElement"].dataset.modeId === "json"){
+    if (editor["_domElement"].classList.contains("active")) {
+      if (editor["_domElement"].dataset.modeId === "json") {
         jsonBtn.checked = true
       }
-      else{
+      else {
         yamlBtn.checked = true
       }
     }
@@ -408,7 +411,7 @@ function findFileType(){
 /**
  * Unchecks all visualizatin btns and hiddes all visualization containers
  */
-function clearConsole(){
+function clearConsole() {
   visualizationContainers.forEach(container => {
     container.classList.add("hidden")
   })
@@ -421,9 +424,9 @@ function clearConsole(){
  * Update the tab name depending on the title of the document
  * @param { String } docTitle - title of the TD/TM document
  */
-function updateTabName(docTitle){
+function updateTabName(docTitle) {
   tabsLeft.forEach(tab => {
-    if(tab.classList.contains("active")){
+    if (tab.classList.contains("active")) {
       tab.children[1].textContent = docTitle
     }
   })
