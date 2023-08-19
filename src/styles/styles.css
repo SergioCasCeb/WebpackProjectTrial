@@ -432,7 +432,8 @@ main .console {
 }
 .ide__tabs__left li:not(:last-child) .close-tab i {
   pointer-events: none;
-  font-size: var(--fs-p);
+  font-size: 1.4rem;
+  height: 1.3rem;
 }
 .ide__tabs__left li:last-child {
   min-width: 3.5rem;

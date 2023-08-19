@@ -30,13 +30,14 @@ const tmSearchResults = tmExamplesContainer.querySelector("#filtered-results")
 closeExamples.addEventListener("click", () => {
     examplesMenu.classList.add("closed")
 
+    //clean all categories
     while (tdExamplesContainer.children.length > 1) {
         tdExamplesContainer.lastElementChild.remove()
     }
 
     while (tmExamplesContainer.children.length > 1) {
         tmExamplesContainer.lastElementChild.remove()
-    }
+    } 
 })
 
 /**
