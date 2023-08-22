@@ -12,9 +12,8 @@ import './settings-menu'
 import './save-menu'
 import './examples-menu'
 import './console'
-import './openapi'
+import './open-api'
 
-// import * as util from "./util.js"
 // import * as jVis from "./jsonld-vis.js"
 // import * as vVis from "./vega-vis.js"
 

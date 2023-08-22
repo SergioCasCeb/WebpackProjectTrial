@@ -10,6 +10,10 @@ import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
 import { generateTD, offerFileDownload } from './util'
 import { getEditorData } from './editor'
 
+/******************************************************************/
+/*                    OpenAPI functionality                       */
+/******************************************************************/
+
 //OpenAPI Elements
 export const openApiTab = document.querySelector(".api-view-btn")
 export const openApiJsonBtn = document.querySelector("#open-api-json")

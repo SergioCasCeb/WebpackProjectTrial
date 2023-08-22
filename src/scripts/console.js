@@ -1,10 +1,11 @@
-import { openApiTab, openApiJsonBtn, openApiYamlBtn } from './openapi'
+import { openApiTab, openApiJsonBtn, openApiYamlBtn } from './open-api'
+import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn } from './async-api'
 import { convertTDYamlToJson, detectProtocolSchemes } from '@thing-description-playground/core/dist/web-bundle.min.js'
 import { generateOAP, generateAAP } from './util'
 import { editorList } from './editor'
 
 /******************************************************************/
-/*     Console, OpenAPI, AsyncAPI and Defaults functionality      */
+/*                    Console functionality                       */
 /******************************************************************/
 
 //Main console elements
@@ -13,12 +14,6 @@ const errorTxt = document.querySelector(".console-error__txt")
 const eraseConsole = document.querySelector(".console__tabs .trash")
 export const visualizationOptions = document.querySelectorAll(".visualization__option")
 export const visualizationContainers = document.querySelectorAll(".console-view")
-
-//AsyncAPI Elements
-const asyncApiTab = document.querySelector(".async-view-btn")
-const asyncApiJsonBtn = document.querySelector("#async-api-json")
-const asyncApiYamlBtn = document.querySelector("#async-api-yaml")
-const asyncApiDownload = document.querySelector("#async-api-download")
 
 //Default Elements
 const defaultTab = document.querySelector(".defaults-view-btn")
