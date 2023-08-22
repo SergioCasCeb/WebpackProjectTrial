@@ -22,8 +22,8 @@
 
 import * as monaco from 'monaco-editor'
 import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
-import '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
-import '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
+import tdToOpenAPI from '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
+import tdToAsyncAPI from '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
 import '@thing-description-playground/defaults/dist/web-bundle.min.js'
 
 /**

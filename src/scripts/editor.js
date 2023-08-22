@@ -4,7 +4,7 @@
  * such as the tab functionality. It utilizes mutiple other files and dependncies
  * such as the monaco-editor dependencie, the monochrome-theme file to add the custom 
  * theme, some util functions, the td and tm schemas from the core @thing-description-playground
- * as well as the "Validators" and the JsonSpellChecker from the json-spell-checker dependency
+ * as well as the "Validators" and the "JsonSpellChecker" from the json-spell-checker dependency
  */
 
 import * as monaco from 'monaco-editor'
@@ -13,8 +13,9 @@ import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
 import { jsonBtn, yamlBtn } from './json-yaml'
 import tdSchema from '../../node_modules/@thing-description-playground/core/td-schema.json'
 import tmSchema from '../../node_modules/@thing-description-playground/core/tm-schema.json'
-import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
-import * as JsonSpellChecker from '@thing-description-playground/json-spell-checker/dist/web-bundle.min.js'
+import { convertTDJsonToYaml, convertTDYamlToJson } from '@thing-description-playground/core/dist/web-bundle.min.js'
+import { configure, checkTypos } from '@thing-description-playground/json-spell-checker/dist/web-bundle.min.js'
+import { visualizationContainers, visualizationOptions, clearConsole } from './console'
 
 /***********************************************************/
 /*                    Editor and tabs                      */
@@ -25,10 +26,6 @@ const addTab = document.querySelector(".ide__tabs__add")
 const tabsLeftContainer = document.querySelector(".ide__tabs__left")
 const ideContainer = document.querySelector(".ide__container")
 let tabsLeft = document.querySelectorAll(".ide__tabs__left li:not(:last-child)")
-// todo import the container/console values from console file
-//console containers
-const visualizationContainers = document.querySelectorAll(".console-view")
-const visualizationOptions = document.querySelectorAll(".visualization__option")
 
 //Editor list array where all the generated editor will be added and referenced from
 export let editorList = []
@@ -178,7 +175,7 @@ export function createIde(ideNumber, exampleValue) {
  * @param {String} editorLanguage 
  */
 async function initEditor(ideNumber, editorValue, editorLanguage) {
-  editorValue = editorLanguage === "json" ? JSON.stringify(editorValue, null, 2) : Validators.convertTDJsonToYaml(JSON.stringify(editorValue))
+  editorValue = editorLanguage === "json" ? JSON.stringify(editorValue, null, 2) : convertTDJsonToYaml(JSON.stringify(editorValue))
   let editor = monaco.editor.create(document.getElementById(`editor${ideNumber}`), {
     value: editorValue,
     language: editorLanguage,
@@ -254,8 +251,8 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
 function markTypos(model) {
   const markers = []
 
-  JsonSpellChecker.configure()
-  const typos = JsonSpellChecker.checkTypos(model.getValue())
+  configure()
+  const typos = checkTypos(model.getValue())
 
   typos.forEach(typo => {
     markers.push({
@@ -278,7 +275,7 @@ function markTypos(model) {
  */
 export function getEditorData(editor) {
   const formatType = editor["_domElement"].dataset.modeId
-  const editorContent = formatType === "json" ? JSON.parse(editor.getValue()) : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
+  const editorContent = formatType === "json" ? JSON.parse(editor.getValue()) : JSON.parse(convertTDYamlToJson(editor.getValue()))
   const thingType = editorContent["@type"] === "tm:ThingModel" ? "tm" : "td"
 
   return [formatType, thingType, editorContent]
@@ -405,18 +402,6 @@ function findFileType() {
         yamlBtn.checked = true
       }
     }
-  })
-}
-
-/**
- * Unchecks all visualizatin btns and hiddes all visualization containers
- */
-function clearConsole() {
-  visualizationContainers.forEach(container => {
-    container.classList.add("hidden")
-  })
-  visualizationOptions.forEach(option => {
-    option.checked = false
   })
 }
 

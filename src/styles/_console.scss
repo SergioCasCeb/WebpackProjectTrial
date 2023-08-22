@@ -109,10 +109,9 @@
     }
     &__content{
         width: 100%;
-        position: relative;
         height: 100%;
+        position: relative;
         overflow: hidden;
-        padding: 1rem;
 
         .console-error{
             position: absolute;
@@ -125,7 +124,7 @@
             background-color: var(--clr-neutral-50);
             opacity: 1;
             pointer-events: all;
-            transition: opacity 250ms var(--trans-bouncy);
+            transition: opacity 0s ease-in-out;
 
             p{
                 font-weight: var(--fw-bold);
@@ -137,29 +136,34 @@
             &.hidden{
                 opacity: 0;
                 pointer-events: none;
+                transition: opacity 250ms ease-in-out;
             }
         }
 
         .console-view{
             width: 100%;
             height: 100%;
+            max-width: 100%;
+            max-height: 100%;
             opacity: 1;
             pointer-events: all;
-            overflow: hidden;
-            transform: scale(1);
-            transition: width 0s ease-in-out 0s, height 0s ease-in-out 0s, opacity 150ms ease-in-out 0s, transform 250ms ease-in-out 150ms;
+            position: absolute;
+            top: 0;
+            right: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 2rem;
+            transition: opacity 250ms ease-in-out;
 
             &.hidden{
                 width: 0;
                 height: 0;
                 opacity: 0;
-                transform: scale(0);
                 pointer-events: none;
-                transition: transform 250ms ease-in-out 0s, opacity 150ms ease-in-out 250ms, width 0s ease-in-out 400ms, height 0s ease-in-out 400ms;
+                transition: opacity 0s ease-in-out;
             }
 
             &.validation-view-cotainer{
-                padding: 1rem;
                 overflow: auto;
 
                 .section-header{
@@ -200,6 +204,7 @@
             align-items: flex-start;
             justify-content: flex-start;
             gap: 1rem;
+            padding: 2rem 1rem 1rem 0;
 
             .open-api-container, .async-api-container, .defaults-container{
                 height: 100%;
@@ -247,7 +252,6 @@
         
 
         .defaults-view{
-
             .defaults-inputs{
                 
                 button{
