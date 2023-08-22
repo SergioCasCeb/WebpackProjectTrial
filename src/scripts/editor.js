@@ -15,7 +15,7 @@ import tdSchema from '../../node_modules/@thing-description-playground/core/td-s
 import tmSchema from '../../node_modules/@thing-description-playground/core/tm-schema.json'
 import { convertTDJsonToYaml, convertTDYamlToJson } from '@thing-description-playground/core/dist/web-bundle.min.js'
 import { configure, checkTypos } from '@thing-description-playground/json-spell-checker/dist/web-bundle.min.js'
-import { visualizationContainers, visualizationOptions, clearConsole } from './console'
+import { clearConsole } from './console'
 
 /***********************************************************/
 /*                    Editor and tabs                      */
