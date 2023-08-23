@@ -700,29 +700,29 @@ main .console {
   pointer-events: none;
   transition: opacity 0s ease-in-out;
 }
-.console__content .console-view.validation-view-cotainer {
+.console__content .console-view.validation-view {
   overflow: auto;
 }
-.console__content .console-view.validation-view-cotainer .section-header {
+.console__content .console-view.validation-view .section-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
 }
-.console__content .console-view.validation-view-cotainer .section-header .fa-circle-check {
+.console__content .console-view.validation-view .section-header .fa-circle-check {
   color: var(--clr-success-500);
 }
-.console__content .console-view.validation-view-cotainer .section-header .fa-circle-exclamation {
+.console__content .console-view.validation-view .section-header .fa-circle-exclamation {
   color: var(--clr-warning-500);
 }
-.console__content .console-view.validation-view-cotainer .section-header .fa-triangle-exclamation {
+.console__content .console-view.validation-view .section-header .fa-triangle-exclamation {
   color: var(--clr-error-500);
 }
-.console__content .console-view.validation-view-cotainer .section-header .fa-spinner {
+.console__content .console-view.validation-view .section-header .fa-spinner {
   color: var(--clr-neutral-300);
   animation: rotate 2s infinite ease-in-out;
 }
-.console__content .console-view.validation-view-cotainer .section-header .show-icon {
+.console__content .console-view.validation-view .section-header .show-icon {
   cursor: pointer;
 }
 .console__content .open-api-view, .console__content .async-api-view, .console__content .defaults-view {

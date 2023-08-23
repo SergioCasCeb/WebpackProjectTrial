@@ -1,5 +1,5 @@
 /**
- * @file The `openapi.js` takes care of the main functionality for the 
+ * @file The `open-api.js` takes care of the main functionality for the 
  * OpenAPI feature within the console. This include initializing the editor,
  * connecting it to the local storage, as well as the main buttons within the OpenAPI
  * feature such as json, yaml conversion and the download option.
@@ -15,9 +15,10 @@ import { getEditorData } from './editor'
 /******************************************************************/
 
 //OpenAPI Elements
-export const openApiTab = document.querySelector(".api-view-btn")
+export const openApiTab = document.querySelector(".api-tab-btn")
 export const openApiJsonBtn = document.querySelector("#open-api-json")
 export const openApiYamlBtn = document.querySelector("#open-api-yaml")
+export const openApiView = document.querySelector("#open-api-view")
 const openApiDownload = document.querySelector("#open-api-download")
 
 /**

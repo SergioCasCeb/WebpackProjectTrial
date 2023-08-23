@@ -13,6 +13,7 @@ import './save-menu'
 import './examples-menu'
 import './console'
 import './open-api'
+import './async-api'
 
 // import * as jVis from "./jsonld-vis.js"
 // import * as vVis from "./vega-vis.js"
@@ -156,7 +157,7 @@ function onmousemoveY(e) {
     // UP
     if (deltaY < 0) {
       const h = Math.round(parseInt(getComputedStyle(t).height) + deltaY)
-      t.style.flex = `0 ${h < 205 ? 195 : h}px`
+      t.style.flex = `0 ${h < 210 ? 200 : h}px`
       b.style.flex = "1 0"
       if (h < 290) {
         textIcon.forEach(text => {
