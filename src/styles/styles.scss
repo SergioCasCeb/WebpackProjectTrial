@@ -358,6 +358,7 @@ main {
     place-items: center;
     opacity: 1;
     transition: opacity 500ms ease-in-out;
+    z-index: 100;
 
     .loader{
         width: 20rem;
