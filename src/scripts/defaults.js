@@ -7,7 +7,7 @@
 
 import * as monaco from 'monaco-editor'
 import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
-import { generateTD, offerFileDownload } from './util'
+import { generateTD, offerFileDownload, addDefaults, removeDefaults } from './util'
 import { getEditorData } from './editor'
 
 /******************************************************************/
@@ -15,11 +15,73 @@ import { getEditorData } from './editor'
 /******************************************************************/
 
 //Default Elements
-const defaultTab = document.querySelector(".defaults-tab-btn")
-const defaultsJsonBtn = document.querySelector("#defaults-json")
-const defaultsYamlBtn = document.querySelector("#defaults-yaml")
+export const defaultsJsonBtn = document.querySelector("#defaults-json")
+export const defaultsYamlBtn = document.querySelector("#defaults-yaml")
 const defaultsAddBtn = document.querySelector("#defaults-add")
 const defaultsRemoveBtn = document.querySelector("#defaults-remove")
 const defaultsDownload = document.querySelector("#defaults-download")
 export const defaultsView = document.querySelector("#defaults-view")
 
+/**
+ * Initialize the monaco editor for the Defaults feature, sets it to an empty value,
+ * a default language of json and as a read only document. Also it connects the editor
+ * to the local storage to change the fontsize correspondingly
+ */
+async function initDefaultsEditor() {
+    window.defaultsEditor = monaco.editor.create(document.getElementById('defaults-container'), {
+        value: "",
+        language: "json",
+        automaticLayout: true,
+        readOnly: true,
+        formatOnPaste: true
+    })
+
+    document.onload = setFontSize(window.defaultsEditor)
+    fontSizeSlider.addEventListener("input", () => {
+        setFontSize(window.defaultsEditor)
+    })
+
+    //Bind the reset button form the settings to the editor and assign the specied font size
+    editorForm.addEventListener("reset", () => {
+        setFontSize(window.defaultsEditor)
+    })
+}
+
+initDefaultsEditor()
+
+//Json conversion btn
+defaultsJsonBtn.addEventListener("click", () => {
+    generateTD("json", window.defaultsEditor)
+    defaultsJsonBtn.disabled = true
+    defaultsYamlBtn.disabled = false
+})
+
+//Yaml conversion btn
+defaultsYamlBtn.addEventListener("click", () => {
+    generateTD("yaml", window.defaultsEditor)
+    defaultsJsonBtn.disabled = false
+    defaultsYamlBtn.disabled = true
+})
+
+//Add defaults btn
+defaultsAddBtn.addEventListener("click", () => {
+    addDefaults(window.defaultsEditor)
+})
+
+//Remove defaults btn
+defaultsRemoveBtn.addEventListener("click", () => {
+    removeDefaults(window.defaultsEditor)
+})
+
+//Donwload btn
+defaultsDownload.addEventListener("click", () => {
+    const editorData = getEditorData(window.defaultsEditor)
+    const contentType = `application/${editorData[0]};charset=utf-8;`
+    const visualizationName = editorData[2]["title"].replace(/\s/g, "-")
+
+    offerFileDownload(
+        `${visualizationName}-Defaults.${editorData[0]}`,
+        window.defaultsEditor.getModel().getValue(),
+        contentType
+    )
+})

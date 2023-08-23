@@ -23,7 +23,7 @@ const asyncApiDownload = document.querySelector("#async-api-download")
 
 /**
  * Initialize the monaco editor for the AsyncAPI feature, sets it to an empty value,
- * a default language of json and as a read only document. Also it connect the editor
+ * a default language of json and as a read only document. Also it connects the editor
  * to the local storage to change the fontsize correspondingly
  */
 async function initAsyncApiEditor() {

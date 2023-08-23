@@ -14,6 +14,7 @@ import './examples-menu'
 import './console'
 import './open-api'
 import './async-api'
+import './defaults'
 
 // import * as jVis from "./jsonld-vis.js"
 // import * as vVis from "./vega-vis.js"

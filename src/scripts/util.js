@@ -24,7 +24,7 @@ import * as monaco from 'monaco-editor'
 import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
 import tdToOpenAPI from '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
 import tdToAsyncAPI from '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
-import '@thing-description-playground/defaults/dist/web-bundle.min.js'
+import * as tdDefaults from '@thing-description-playground/defaults/dist/web-bundle.min.js'
 
 /**
  * Fetch the TD from the given address and return the JSON object
@@ -176,13 +176,13 @@ export function generateAAP(fileType, editor){
  * to the TD in the editor
  */
 export function addDefaults(editor) {
-    const tdToExtend = editor.db.dataset.modeId === "json"
+    const tdToExtend = editor["_domElement"].dataset.modeId === "json"
              ? JSON.parse(editor.getValue())
              : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
     tdDefaults.addDefaults(tdToExtend)
     window.defaultsEditor.getModel().setValue(JSON.stringify(tdToExtend, undefined, 4))
-    monaco.editor.setModelLanguage(window.defaultsEditor.getModel(), editor.db.dataset.modeId)
-    if(editor.db.dataset.modeId === "yaml"){
+    monaco.editor.setModelLanguage(window.defaultsEditor.getModel(), editor["_domElement"].dataset.modeId)
+    if(editor["_domElement"].dataset.modeId === "yaml"){
         generateTD("yaml", window.defaultsEditor)
     }
 }
@@ -193,13 +193,13 @@ export function addDefaults(editor) {
  * in the editor
  */
 export function removeDefaults(editor) {
-    const tdToReduce = editor.db.dataset.modeId === "json"
+    const tdToReduce = editor["_domElement"].dataset.modeId === "json"
              ? JSON.parse(editor.getValue())
              : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
     tdDefaults.removeDefaults(tdToReduce)
     window.defaultsEditor.getModel().setValue(JSON.stringify(tdToReduce, undefined, 4))
-    monaco.editor.setModelLanguage(window.defaultsEditor.getModel(), editor.db.dataset.modeId)
-    if(editor.db.dataset.modeId === "yaml"){
+    monaco.editor.setModelLanguage(window.defaultsEditor.getModel(), editor["_domElement"].dataset.modeId)
+    if(editor["_domElement"].dataset.modeId === "yaml"){
         generateTD("yaml", window.defaultsEditor)
     } 
 }

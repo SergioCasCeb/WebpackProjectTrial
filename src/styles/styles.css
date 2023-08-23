@@ -665,18 +665,22 @@ main .console {
   background-color: var(--clr-neutral-50);
   opacity: 1;
   pointer-events: all;
-  transition: opacity 0s ease-in-out;
 }
 .console__content .console-error p {
   font-weight: var(--fw-bold);
   color: var(--clr-error-900);
   text-align: center;
   font-size: var(--fs-sub-header);
+  transform: scale(1);
+  transition: transform 250ms var(--trans-bouncy);
 }
 .console__content .console-error.hidden {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 250ms ease-in-out;
+  transition: opacity 150ms ease-in-out;
+}
+.console__content .console-error.hidden p {
+  transform: scale(0);
 }
 .console__content .console-view {
   width: 100%;
