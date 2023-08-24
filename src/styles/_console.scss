@@ -202,7 +202,7 @@
         }
 
 
-        .open-api-view, .async-api-view, .defaults-view{
+        .open-api-view, .async-api-view, .defaults-view, .visualize-view{
             display: flex;
             flex-direction: row;
             align-items: flex-start;
@@ -210,12 +210,12 @@
             gap: 1rem;
             padding: 2rem 1rem 1rem 0;
 
-            .open-api-container, .async-api-container, .defaults-container{
+            .open-api-container, .async-api-container, .defaults-container, .visualize-container{
                 height: 100%;
                 width: calc(100% - 15rem);  
             }
 
-            .open-api-inputs, .async-api-inputs, .defaults-inputs{
+            .open-api-inputs, .async-api-inputs, .defaults-inputs, .visualize-inputs{
                 width: 15rem;
                 padding: 0 1rem;
                 display: flex;
@@ -253,8 +253,6 @@
             }
         }
 
-        
-
         .defaults-view{
             .defaults-inputs{
                 
@@ -267,6 +265,16 @@
                     i{
                         font-size: var(--fs-p);
                     }
+                }
+            }
+        }
+
+        .visualize-view{
+            padding-left: 1rem;
+            .visualize-container{
+                .visualized{
+                    width: 100%;
+                    height: 100%;
                 }
             }
         }

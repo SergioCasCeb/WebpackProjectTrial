@@ -6,18 +6,7 @@
  */
 
 import '../styles/styles.scss'
-import './editor'
-import './json-yaml'
-import './settings-menu'
-import './save-menu'
-import './examples-menu'
-import './console'
-import './open-api'
-import './async-api'
-import './defaults'
 
-// import * as jVis from "./jsonld-vis.js"
-// import * as vVis from "./vega-vis.js"
 
 /***********************************************************/
 /*                          Loader                         */
@@ -180,3 +169,14 @@ function onmouseupY(e) {
   document.removeEventListener("mouseup", onmouseupY)
   delete e.clientY
 }
+
+import './editor'
+import './json-yaml'
+import './settings-menu'
+import './save-menu'
+import './examples-menu'
+import './console'
+import './open-api'
+import './async-api'
+import './defaults'
+import './visualize'

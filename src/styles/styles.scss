@@ -11,6 +11,7 @@
 :root {
     /*Fonts styles*/
     --ff-primary: 'Roboto', sans-serif;
+    --ff-secundary: 'Open Sans', sans-serif;
 
     /*Font weights*/
     --fw-light: 300;
@@ -397,3 +398,6 @@ main {
 @import "examples-menu";
 @import "save-menu";
 @import "json-yaml-warning";
+
+/** Visualizations **/
+@import "jsonld-vis"

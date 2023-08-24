@@ -1,6 +1,7 @@
 import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-api'
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn } from './defaults'
+import { visualizeView, visualize } from './visualize'
 import { convertTDYamlToJson, detectProtocolSchemes } from '@thing-description-playground/core/dist/web-bundle.min.js'
 import { generateOAP, generateAAP, addDefaults } from './util'
 import { editorList } from './editor'
@@ -17,7 +18,7 @@ export const visualizationOptions = document.querySelectorAll(".visualization__o
 export const visualizationContainers = document.querySelectorAll(".console-view")
 
 // const validatorView = document.querySelector("#validation-view")
-// const visualizeView = document.querySelector("#visualize-view")
+
 
 visualizationOptions.forEach(option => {
     option.checked = false
@@ -128,6 +129,21 @@ visualizationOptions.forEach(option => {
                 }
             })
         }
+
+        //Visualize console behaviour
+        if (option.id === "visualize-tab") {
+            editorList.forEach(editor => {
+                if (editor["_domElement"].classList.contains("active")) {
+                    const editorValue = editor["_domElement"].dataset.modeId === "yaml" ? convertTDYamlToJson(editor.getValue()) : editor.getValue()
+                    
+                    if(editorValue){
+                        visualizeView.classList.remove("hidden")
+                        visualize(editorValue)
+                    }
+                }
+            })
+        }
+
     })
 })
 

@@ -10,6 +10,7 @@
 :root {
   /*Fonts styles*/
   --ff-primary: "Roboto", sans-serif;
+  --ff-secundary: "Open Sans", sans-serif;
   /*Font weights*/
   --fw-light: 300;
   --fw-regular: 400;
@@ -730,7 +731,7 @@ main .console {
 .console__content .console-view.validation-view .section-header .show-icon {
   cursor: pointer;
 }
-.console__content .open-api-view, .console__content .async-api-view, .console__content .defaults-view {
+.console__content .open-api-view, .console__content .async-api-view, .console__content .defaults-view, .console__content .visualize-view {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -738,11 +739,11 @@ main .console {
   gap: 1rem;
   padding: 2rem 1rem 1rem 0;
 }
-.console__content .open-api-view .open-api-container, .console__content .open-api-view .async-api-container, .console__content .open-api-view .defaults-container, .console__content .async-api-view .open-api-container, .console__content .async-api-view .async-api-container, .console__content .async-api-view .defaults-container, .console__content .defaults-view .open-api-container, .console__content .defaults-view .async-api-container, .console__content .defaults-view .defaults-container {
+.console__content .open-api-view .open-api-container, .console__content .open-api-view .async-api-container, .console__content .open-api-view .defaults-container, .console__content .open-api-view .visualize-container, .console__content .async-api-view .open-api-container, .console__content .async-api-view .async-api-container, .console__content .async-api-view .defaults-container, .console__content .async-api-view .visualize-container, .console__content .defaults-view .open-api-container, .console__content .defaults-view .async-api-container, .console__content .defaults-view .defaults-container, .console__content .defaults-view .visualize-container, .console__content .visualize-view .open-api-container, .console__content .visualize-view .async-api-container, .console__content .visualize-view .defaults-container, .console__content .visualize-view .visualize-container {
   height: 100%;
   width: calc(100% - 15rem);
 }
-.console__content .open-api-view .open-api-inputs, .console__content .open-api-view .async-api-inputs, .console__content .open-api-view .defaults-inputs, .console__content .async-api-view .open-api-inputs, .console__content .async-api-view .async-api-inputs, .console__content .async-api-view .defaults-inputs, .console__content .defaults-view .open-api-inputs, .console__content .defaults-view .async-api-inputs, .console__content .defaults-view .defaults-inputs {
+.console__content .open-api-view .open-api-inputs, .console__content .open-api-view .async-api-inputs, .console__content .open-api-view .defaults-inputs, .console__content .open-api-view .visualize-inputs, .console__content .async-api-view .open-api-inputs, .console__content .async-api-view .async-api-inputs, .console__content .async-api-view .defaults-inputs, .console__content .async-api-view .visualize-inputs, .console__content .defaults-view .open-api-inputs, .console__content .defaults-view .async-api-inputs, .console__content .defaults-view .defaults-inputs, .console__content .defaults-view .visualize-inputs, .console__content .visualize-view .open-api-inputs, .console__content .visualize-view .async-api-inputs, .console__content .visualize-view .defaults-inputs, .console__content .visualize-view .visualize-inputs {
   width: 15rem;
   padding: 0 1rem;
   display: flex;
@@ -751,7 +752,7 @@ main .console {
   justify-content: center;
   gap: 1rem;
 }
-.console__content .open-api-view .open-api-inputs button, .console__content .open-api-view .async-api-inputs button, .console__content .open-api-view .defaults-inputs button, .console__content .async-api-view .open-api-inputs button, .console__content .async-api-view .async-api-inputs button, .console__content .async-api-view .defaults-inputs button, .console__content .defaults-view .open-api-inputs button, .console__content .defaults-view .async-api-inputs button, .console__content .defaults-view .defaults-inputs button {
+.console__content .open-api-view .open-api-inputs button, .console__content .open-api-view .async-api-inputs button, .console__content .open-api-view .defaults-inputs button, .console__content .open-api-view .visualize-inputs button, .console__content .async-api-view .open-api-inputs button, .console__content .async-api-view .async-api-inputs button, .console__content .async-api-view .defaults-inputs button, .console__content .async-api-view .visualize-inputs button, .console__content .defaults-view .open-api-inputs button, .console__content .defaults-view .async-api-inputs button, .console__content .defaults-view .defaults-inputs button, .console__content .defaults-view .visualize-inputs button, .console__content .visualize-view .open-api-inputs button, .console__content .visualize-view .async-api-inputs button, .console__content .visualize-view .defaults-inputs button, .console__content .visualize-view .visualize-inputs button {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -770,10 +771,10 @@ main .console {
   align-items: center;
   gap: 1rem;
 }
-.console__content .open-api-view .open-api-inputs button:hover, .console__content .open-api-view .async-api-inputs button:hover, .console__content .open-api-view .defaults-inputs button:hover, .console__content .async-api-view .open-api-inputs button:hover, .console__content .async-api-view .async-api-inputs button:hover, .console__content .async-api-view .defaults-inputs button:hover, .console__content .defaults-view .open-api-inputs button:hover, .console__content .defaults-view .async-api-inputs button:hover, .console__content .defaults-view .defaults-inputs button:hover {
+.console__content .open-api-view .open-api-inputs button:hover, .console__content .open-api-view .async-api-inputs button:hover, .console__content .open-api-view .defaults-inputs button:hover, .console__content .open-api-view .visualize-inputs button:hover, .console__content .async-api-view .open-api-inputs button:hover, .console__content .async-api-view .async-api-inputs button:hover, .console__content .async-api-view .defaults-inputs button:hover, .console__content .async-api-view .visualize-inputs button:hover, .console__content .defaults-view .open-api-inputs button:hover, .console__content .defaults-view .async-api-inputs button:hover, .console__content .defaults-view .defaults-inputs button:hover, .console__content .defaults-view .visualize-inputs button:hover, .console__content .visualize-view .open-api-inputs button:hover, .console__content .visualize-view .async-api-inputs button:hover, .console__content .visualize-view .defaults-inputs button:hover, .console__content .visualize-view .visualize-inputs button:hover {
   background-color: var(--clr-primary-900);
 }
-.console__content .open-api-view .open-api-inputs button:disabled, .console__content .open-api-view .async-api-inputs button:disabled, .console__content .open-api-view .defaults-inputs button:disabled, .console__content .async-api-view .open-api-inputs button:disabled, .console__content .async-api-view .async-api-inputs button:disabled, .console__content .async-api-view .defaults-inputs button:disabled, .console__content .defaults-view .open-api-inputs button:disabled, .console__content .defaults-view .async-api-inputs button:disabled, .console__content .defaults-view .defaults-inputs button:disabled {
+.console__content .open-api-view .open-api-inputs button:disabled, .console__content .open-api-view .async-api-inputs button:disabled, .console__content .open-api-view .defaults-inputs button:disabled, .console__content .open-api-view .visualize-inputs button:disabled, .console__content .async-api-view .open-api-inputs button:disabled, .console__content .async-api-view .async-api-inputs button:disabled, .console__content .async-api-view .defaults-inputs button:disabled, .console__content .async-api-view .visualize-inputs button:disabled, .console__content .defaults-view .open-api-inputs button:disabled, .console__content .defaults-view .async-api-inputs button:disabled, .console__content .defaults-view .defaults-inputs button:disabled, .console__content .defaults-view .visualize-inputs button:disabled, .console__content .visualize-view .open-api-inputs button:disabled, .console__content .visualize-view .async-api-inputs button:disabled, .console__content .visualize-view .defaults-inputs button:disabled, .console__content .visualize-view .visualize-inputs button:disabled {
   background-color: var(--clr-neutral-300);
   cursor: auto;
 }
@@ -785,6 +786,13 @@ main .console {
 }
 .console__content .defaults-view .defaults-inputs button i {
   font-size: var(--fs-p);
+}
+.console__content .visualize-view {
+  padding-left: 1rem;
+}
+.console__content .visualize-view .visualize-container .visualized {
+  width: 100%;
+  height: 100%;
 }
 
 @keyframes rotate {
@@ -1588,4 +1596,40 @@ main .console {
   transform: scale(0);
   opacity: 0;
   pointer-events: none;
+}
+
+/** Visualizations **/
+svg {
+  border: none;
+}
+svg g .node {
+  cursor: pointer;
+}
+svg g .node text {
+  font-size: var(--fs-footer);
+  font-family: var(--ff-secundary);
+  fill: var(--clr-neutral-900);
+}
+svg g .link {
+  fill: none;
+  stroke: var(--clr-neutral-300);
+  stroke-width: 1px;
+}
+
+.d3-tip {
+  font-size: var(--fs-p);
+  font-family: var(--ff-secundary);
+  color: var(--clr-neutral-900);
+  border: 1px solid var(--clr-neutral-300);
+  border-radius: 5px;
+  padding: 1rem 2rem;
+  max-width: 30rem;
+  word-wrap: break-word;
+  background-color: var(--clr-shades-trans);
+  text-align: left;
+  z-index: 10;
+}
+
+.visualized {
+  overflow: auto;
 }/*# sourceMappingURL=styles.css.map */

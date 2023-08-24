@@ -7,7 +7,6 @@
     "build": "webpack",
     "dev": "webpack && node server/server.js",
     "server": "node server/server.js",
-    "serverdev": "nodemon server/server.js",
     "examples": "node external-scripts/examples.js"
   },
   "keywords": [],
@@ -39,8 +38,12 @@
     "@thing-description-playground/td_to_asyncapi": "^1.1.1",
     "@thing-description-playground/td_to_openapi": "^1.3.1",
     "@thing-description-playground/web": "^1.6.0",
+    "d3": "^3.5.17",
+    "d3-tip": "^0.6.7",
     "express": "^4.18.2",
     "monaco-editor": "^0.40.0",
-    "papaparse": "^5.4.1"
+    "papaparse": "^5.4.1",
+    "string-direction": "^0.1.2",
+    "svg-crowbar": "^0.7.0"
   }
 }

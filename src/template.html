@@ -9,7 +9,7 @@
     <!--Font awesome-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet"> 
 
     <!-- Font awesome icons -->
     <script src="https://kit.fontawesome.com/d66d421276.js" crossorigin="anonymous"></script>
@@ -225,7 +225,16 @@
 
                     </div> -->
 
-                    <div class="console-view hidden" id="visualize-view">
+                    <div class="console-view visualize-view hidden" id="visualize-view">
+                        <div class="visualize-container" id="visualize-container">
+                            <div id="visualized" class="visualized"></div>
+                        </div>
+                        <div class="visualize-inputs">
+                            <button id="collapse-all">Collapse All</button>
+                            <button id="expand-all">Expand all</button>
+                            <button id="svg-download"><i class="fa-solid fa-download"></i>SVG</button>
+                            <button id="png-download"><i class="fa-solid fa-download"></i>PNG</button>
+                        </div>
 
                     </div>
 

@@ -1,3 +1,7 @@
+import * as d3 from 'd3'
+import d3Tip from 'd3-tip';
+import { getDirection } from 'string-direction';
+
 /* eslint-disable no-underscore-dangle */
 'use strict';
 
@@ -25,9 +29,9 @@ export function jsonldVis(jsonld, selector, config) {
     .attr('width', w)
     .attr('height', h)
     .append('g')
-    .attr('transform', 'translate(' + maxLabelWidth + ',0)');
+    .attr('transform', 'translate(' + 100 + ',0)');
 
-  const tip = d3.tip()
+  const tip = d3Tip()
     .direction(function (d) {
       return d.children || d.privChildren ? 'w' : 'e';
     })
@@ -58,6 +62,7 @@ export function jsonldVis(jsonld, selector, config) {
       d3.select(selector + ' > svg').attr('width', newWidth);
     }
   }
+
 
   function getDirectedValue(source, key, parentKey) {
     const LRI = '\u2066';
@@ -197,7 +202,7 @@ export function jsonldVis(jsonld, selector, config) {
     const getDirectionSymbol = dir => (dir === 'ltr') ? LRI : RLI;
 
     if (!['title', 'description'].includes(key) && !['titles', 'descriptions'].includes(parentKey)) {
-      return getDirectionSymbol(source[key].toString().getDirection()) + source[key];
+      return getDirectionSymbol(getDirection(source[key].toString())) + source[key]
     }
 
     if (parentKey === 'titles' || parentKey === 'descriptions') {
@@ -234,7 +239,7 @@ export function jsonldVis(jsonld, selector, config) {
       }
     }
 
-    return getDirectionSymbol(source[key].toString().getDirection()) + source[key];
+    return getDirectionSymbol(getDirection(source[key].toString())) + source[key]
   }
 
   function jsonldTree(source, parentKey) {
@@ -463,6 +468,6 @@ export function jsonldVis(jsonld, selector, config) {
 
   update(root);
 
-  document.getElementById('vis-collapse-all').addEventListener('click', _ => collapse(root, true));
-  document.getElementById('vis-expand-all').addEventListener('click', _ => expand(root, true));
+  document.getElementById('collapse-all').addEventListener('click', _ => collapse(root, true));
+  document.getElementById('expand-all').addEventListener('click', _ => expand(root, true));
 }
