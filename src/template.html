@@ -191,8 +191,10 @@
                     <div class="console-view open-api-view hidden" id="open-api-view">
                         <div class="open-api-container" id="open-api-container"></div>
                         <div class="open-api-inputs">
-                            <button id="open-api-json">JSON</button>
-                            <button id="open-api-yaml">YAML</button>
+                            <div class="input-field">
+                                <button id="open-api-json" class="btn-left">JSON</button>
+                                <button id="open-api-yaml" class="btn-right">YAML</button>
+                            </div>
                             <button id="open-api-download"><i class="fa-solid fa-download"></i>Download</button>
                         </div>
                     </div>
@@ -200,8 +202,10 @@
                     <div class="console-view async-api-view hidden" id="async-api-view">
                         <div class="async-api-container" id="async-api-container"></div>
                         <div class="async-api-inputs">
-                            <button id="async-api-json">JSON</button>
-                            <button id="async-api-yaml">YAML</button>
+                            <div class="input-field">
+                                <button id="async-api-json" class="btn-left">JSON</button>
+                                <button id="async-api-yaml" class="btn-right">YAML</button>
+                            </div>
                             <button id="async-api-download"><i class="fa-solid fa-download"></i>Download</button>
                         </div>
                     </div>
@@ -209,10 +213,14 @@
                     <div class="console-view defaults-view hidden" id="defaults-view">
                         <div class="defaults-container" id="defaults-container"></div>
                         <div class="defaults-inputs">
-                            <button id="defaults-json">JSON</button>
-                            <button id="defaults-yaml">YAML</button>
-                            <button id="defaults-add"><i class="fa-solid fa-plus"></i>Defaults</button>
-                            <button id="defaults-remove"><i class="fa-solid fa-minus"></i>Defaults</button>
+                            <div class="input-field">
+                                <button id="defaults-json" class="btn-left">JSON</button>
+                                <button id="defaults-yaml" class="btn-right">YAML</button>
+                            </div>
+                            <div class="input-field">
+                                <button id="defaults-add" class="btn-left"><i class="fa-solid fa-plus"></i>Defaults</button>
+                                <button id="defaults-remove" class="btn-right"><i class="fa-solid fa-minus"></i>Defaults</button>
+                            </div>
                             <button id="defaults-download"><i class="fa-solid fa-download"></i>Download</button>
                         </div>
                     </div>
@@ -230,10 +238,35 @@
                             <div id="visualized" class="visualized"></div>
                         </div>
                         <div class="visualize-inputs">
-                            <button id="collapse-all">Collapse All</button>
-                            <button id="expand-all">Expand all</button>
-                            <button id="svg-download"><i class="fa-solid fa-download"></i>SVG</button>
-                            <button id="png-download"><i class="fa-solid fa-download"></i>PNG</button>
+                            <div class="vis-type">
+                                <div class="vis-type__option">
+                                    <label for="graph-view">Graph:</label>
+                                    <input type="radio" name="vis-type" id="graph-view" checked>
+                                </div>
+                                <div class="vis-type__option">
+                                    <label for="tree-view">Tree:</label>
+                                    <input type="radio" name="vis-type" id="tree-view">
+                                </div>
+                            </div>
+
+                            <div class="visualize-inputs__graph">
+                                <div class="input-field">
+                                    <button id="collapse-all" class="btn-left">Collapse All</button>
+                                    <button id="expand-all" class="btn-right">Expand all</button>
+                                </div>
+                                <div class="input-field">
+                                    <button id="graph-svg" class="btn-left"><i class="fa-solid fa-download"></i>SVG</button>
+                                    <button id="graph-png" class="btn-right"><i class="fa-solid fa-download"></i>PNG</button>
+                                </div>
+                            </div>
+
+                            <div class="visualize-inputs__tree hidden">
+                                <div class="input-field">
+                                    <button id="tree-svg" class="btn-left"><i class="fa-solid fa-download"></i>SVG</button>
+                                    <button id="tree-png" class="btn-right"><i class="fa-solid fa-download"></i>PNG</button>
+                                </div>
+                            </div>
+                            
                         </div>
 
                     </div>

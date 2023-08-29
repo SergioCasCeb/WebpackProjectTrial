@@ -168,6 +168,10 @@ function onmouseupY(e) {
   document.removeEventListener("mousemove", onmousemoveY)
   document.removeEventListener("mouseup", onmouseupY)
   delete e.clientY
+
+  if(visualizeTab.checked === true){
+    visualizeTab.click()
+  }
 }
 
 import './editor'
@@ -180,3 +184,4 @@ import './open-api'
 import './async-api'
 import './defaults'
 import './visualize'
+import { visualizeTab } from './visualize'

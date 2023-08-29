@@ -744,7 +744,7 @@ main .console {
   width: calc(100% - 15rem);
 }
 .console__content .open-api-view .open-api-inputs, .console__content .open-api-view .async-api-inputs, .console__content .open-api-view .defaults-inputs, .console__content .open-api-view .visualize-inputs, .console__content .async-api-view .open-api-inputs, .console__content .async-api-view .async-api-inputs, .console__content .async-api-view .defaults-inputs, .console__content .async-api-view .visualize-inputs, .console__content .defaults-view .open-api-inputs, .console__content .defaults-view .async-api-inputs, .console__content .defaults-view .defaults-inputs, .console__content .defaults-view .visualize-inputs, .console__content .visualize-view .open-api-inputs, .console__content .visualize-view .async-api-inputs, .console__content .visualize-view .defaults-inputs, .console__content .visualize-view .visualize-inputs {
-  width: 15rem;
+  width: 30rem;
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
@@ -778,6 +778,25 @@ main .console {
   background-color: var(--clr-neutral-300);
   cursor: auto;
 }
+.console__content .open-api-view .open-api-inputs .input-field, .console__content .open-api-view .async-api-inputs .input-field, .console__content .open-api-view .defaults-inputs .input-field, .console__content .open-api-view .visualize-inputs .input-field, .console__content .async-api-view .open-api-inputs .input-field, .console__content .async-api-view .async-api-inputs .input-field, .console__content .async-api-view .defaults-inputs .input-field, .console__content .async-api-view .visualize-inputs .input-field, .console__content .defaults-view .open-api-inputs .input-field, .console__content .defaults-view .async-api-inputs .input-field, .console__content .defaults-view .defaults-inputs .input-field, .console__content .defaults-view .visualize-inputs .input-field, .console__content .visualize-view .open-api-inputs .input-field, .console__content .visualize-view .async-api-inputs .input-field, .console__content .visualize-view .defaults-inputs .input-field, .console__content .visualize-view .visualize-inputs .input-field {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.console__content .open-api-view .open-api-inputs .input-field .btn-left, .console__content .open-api-view .async-api-inputs .input-field .btn-left, .console__content .open-api-view .defaults-inputs .input-field .btn-left, .console__content .open-api-view .visualize-inputs .input-field .btn-left, .console__content .async-api-view .open-api-inputs .input-field .btn-left, .console__content .async-api-view .async-api-inputs .input-field .btn-left, .console__content .async-api-view .defaults-inputs .input-field .btn-left, .console__content .async-api-view .visualize-inputs .input-field .btn-left, .console__content .defaults-view .open-api-inputs .input-field .btn-left, .console__content .defaults-view .async-api-inputs .input-field .btn-left, .console__content .defaults-view .defaults-inputs .input-field .btn-left, .console__content .defaults-view .visualize-inputs .input-field .btn-left, .console__content .visualize-view .open-api-inputs .input-field .btn-left, .console__content .visualize-view .async-api-inputs .input-field .btn-left, .console__content .visualize-view .defaults-inputs .input-field .btn-left, .console__content .visualize-view .visualize-inputs .input-field .btn-left {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.console__content .open-api-view .open-api-inputs .input-field .btn-right, .console__content .open-api-view .async-api-inputs .input-field .btn-right, .console__content .open-api-view .defaults-inputs .input-field .btn-right, .console__content .open-api-view .visualize-inputs .input-field .btn-right, .console__content .async-api-view .open-api-inputs .input-field .btn-right, .console__content .async-api-view .async-api-inputs .input-field .btn-right, .console__content .async-api-view .defaults-inputs .input-field .btn-right, .console__content .async-api-view .visualize-inputs .input-field .btn-right, .console__content .defaults-view .open-api-inputs .input-field .btn-right, .console__content .defaults-view .async-api-inputs .input-field .btn-right, .console__content .defaults-view .defaults-inputs .input-field .btn-right, .console__content .defaults-view .visualize-inputs .input-field .btn-right, .console__content .visualize-view .open-api-inputs .input-field .btn-right, .console__content .visualize-view .async-api-inputs .input-field .btn-right, .console__content .visualize-view .defaults-inputs .input-field .btn-right, .console__content .visualize-view .visualize-inputs .input-field .btn-right {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
 .console__content .defaults-view .defaults-inputs button {
   display: flex;
   align-items: center;
@@ -788,11 +807,67 @@ main .console {
   font-size: var(--fs-p);
 }
 .console__content .visualize-view {
-  padding-left: 1rem;
+  padding-left: 2rem;
 }
 .console__content .visualize-view .visualize-container .visualized {
   width: 100%;
   height: 100%;
+  overflow: auto;
+}
+.console__content .visualize-view .visualize-inputs {
+  gap: 2rem;
+}
+.console__content .visualize-view .visualize-inputs .vis-type {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.console__content .visualize-view .visualize-inputs .vis-type__option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.console__content .visualize-view .visualize-inputs .vis-type__option label {
+  margin-right: 1rem;
+  font-size: var(--fs-p);
+  font-family: var(--ff-primary);
+}
+.console__content .visualize-view .visualize-inputs .vis-type__option input[type=radio] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  outline: 2px solid var(--clr-primary-500);
+  outline-offset: 2px;
+  background-color: var(--clr-neutral-50);
+  cursor: pointer;
+  transition: background-color 250ms ease-in-out;
+}
+.console__content .visualize-view .visualize-inputs .vis-type__option input[type=radio]:checked {
+  background-color: var(--clr-primary-500);
+}
+.console__content .visualize-view .visualize-inputs__graph, .console__content .visualize-view .visualize-inputs__tree {
+  width: 100%;
+  height: -moz-fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  opacity: 1;
+  transition: opacity 250ms ease-in-out;
+}
+.console__content .visualize-view .visualize-inputs__graph.hidden, .console__content .visualize-view .visualize-inputs__tree.hidden {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 @keyframes rotate {
@@ -1628,8 +1703,4 @@ svg g .link {
   background-color: var(--clr-shades-trans);
   text-align: left;
   z-index: 10;
-}
-
-.visualized {
-  overflow: auto;
 }/*# sourceMappingURL=styles.css.map */

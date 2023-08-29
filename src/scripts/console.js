@@ -1,6 +1,6 @@
 import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-api'
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
-import { defaultsView, defaultsJsonBtn, defaultsYamlBtn } from './defaults'
+import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
 import { visualizeView, visualize } from './visualize'
 import { convertTDYamlToJson, detectProtocolSchemes } from '@thing-description-playground/core/dist/web-bundle.min.js'
 import { generateOAP, generateAAP, addDefaults } from './util'
@@ -124,6 +124,7 @@ visualizationOptions.forEach(option => {
                     } else {
                         errorContainer.classList.add("hidden")
                         addDefaults(editor)
+                        defaultsAddBtn.disabled = true
                         defaultsView.classList.remove("hidden")
                     }
                 }
@@ -135,9 +136,7 @@ visualizationOptions.forEach(option => {
             editorList.forEach(editor => {
                 if (editor["_domElement"].classList.contains("active")) {
                     const editorValue = editor["_domElement"].dataset.modeId === "yaml" ? convertTDYamlToJson(editor.getValue()) : editor.getValue()
-                    
                     if(editorValue){
-                        visualizeView.classList.remove("hidden")
                         visualize(editorValue)
                     }
                 }

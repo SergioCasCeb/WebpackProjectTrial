@@ -216,14 +216,14 @@
             }
 
             .open-api-inputs, .async-api-inputs, .defaults-inputs, .visualize-inputs{
-                width: 15rem;
+                width: 30rem;
                 padding: 0 1rem;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 gap: 1rem;
-                
+
                 button{
                     appearance: none;
                     border: none;
@@ -250,6 +250,28 @@
                         cursor: auto;
                     }
                 }
+
+                .input-field{
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 2px;
+
+                    .btn-left{
+                        border-top-left-radius: 5px;
+                        border-bottom-left-radius: 5px;
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+
+                    .btn-right{
+                        border-top-right-radius: 5px;
+                        border-bottom-right-radius: 5px;
+                        border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
+                    }
+                }
             }
         }
 
@@ -270,11 +292,69 @@
         }
 
         .visualize-view{
-            padding-left: 1rem;
+            padding-left: 2rem;
             .visualize-container{
                 .visualized{
                     width: 100%;
                     height: 100%;
+                    overflow: auto;
+                }
+            }
+
+            .visualize-inputs{
+                gap: 2rem;
+                .vis-type{
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 2rem;
+                    &__option{
+                        width: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        label{
+                            margin-right: 1rem;
+                            font-size: var(--fs-p);
+                            font-family: var(--ff-primary);
+                        }
+
+                        input[type="radio"]{
+                            appearance: none;
+                            width: 1.5rem;
+                            height: 1.5rem;
+                            border-radius: 50%;
+                            outline: 2px solid var(--clr-primary-500);
+                            outline-offset: 2px;
+                            background-color: var(--clr-neutral-50);
+                            cursor: pointer;
+                            transition: background-color 250ms ease-in-out;
+                        }
+
+                        input[type="radio"]:checked{
+                            background-color: var(--clr-primary-500);
+                        }
+                    }
+                }
+
+                &__graph, &__tree{
+                    width: 100%;
+                    height: fit-content;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 1rem;
+                    opacity: 1;
+                    transition: opacity 250ms ease-in-out;
+
+                    &.hidden{
+                        width: 0;
+                        height: 0;
+                        opacity: 0;
+                        pointer-events: none;
+                    }
                 }
             }
         }

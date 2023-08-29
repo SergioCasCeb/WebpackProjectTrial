@@ -17,7 +17,7 @@ import { getEditorData } from './editor'
 //Default Elements
 export const defaultsJsonBtn = document.querySelector("#defaults-json")
 export const defaultsYamlBtn = document.querySelector("#defaults-yaml")
-const defaultsAddBtn = document.querySelector("#defaults-add")
+export const defaultsAddBtn = document.querySelector("#defaults-add")
 const defaultsRemoveBtn = document.querySelector("#defaults-remove")
 const defaultsDownload = document.querySelector("#defaults-download")
 export const defaultsView = document.querySelector("#defaults-view")
@@ -65,12 +65,16 @@ defaultsYamlBtn.addEventListener("click", () => {
 
 //Add defaults btn
 defaultsAddBtn.addEventListener("click", () => {
+    defaultsAddBtn.disabled = true
+    defaultsRemoveBtn.disabled = false
     addDefaults(window.defaultsEditor)
 })
 
 //Remove defaults btn
 defaultsRemoveBtn.addEventListener("click", () => {
     removeDefaults(window.defaultsEditor)
+    defaultsAddBtn.disabled = false
+    defaultsRemoveBtn.disabled = true
 })
 
 //Donwload btn
@@ -78,9 +82,10 @@ defaultsDownload.addEventListener("click", () => {
     const editorData = getEditorData(window.defaultsEditor)
     const contentType = `application/${editorData[0]};charset=utf-8;`
     const visualizationName = editorData[2]["title"].replace(/\s/g, "-")
+    const defaultState = defaultsAddBtn.disabled === true ? 'with-Defaults' : 'without-Defaults'
 
     offerFileDownload(
-        `${visualizationName}-Defaults.${editorData[0]}`,
+        `${visualizationName}-${defaultState}.${editorData[0]}`,
         window.defaultsEditor.getModel().getValue(),
         contentType
     )

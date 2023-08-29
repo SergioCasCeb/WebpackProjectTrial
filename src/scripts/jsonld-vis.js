@@ -1,9 +1,14 @@
 import * as d3 from 'd3'
-import d3Tip from 'd3-tip';
-import { getDirection } from 'string-direction';
+import d3Tip from 'd3-tip'
+import { getDirection } from 'string-direction'
+import { downloadSvg, downloadPng } from 'svg-crowbar'
 
 /* eslint-disable no-underscore-dangle */
 'use strict';
+export const collapseBtn = document.getElementById('collapse-all')
+export const expandBtn = document.getElementById('expand-all')
+const graphSvg = document.getElementById('graph-svg')
+const graphPng = document.getElementById('graph-png')
 
 export function jsonldVis(jsonld, selector, config) {
   if (!arguments.length) return jsonldVis;
@@ -29,7 +34,7 @@ export function jsonldVis(jsonld, selector, config) {
     .attr('width', w)
     .attr('height', h)
     .append('g')
-    .attr('transform', 'translate(' + 100 + ',0)');
+    .attr('transform', 'translate(' + 150 + ',0)');
 
   const tip = d3Tip()
     .direction(function (d) {
@@ -46,7 +51,8 @@ export function jsonldVis(jsonld, selector, config) {
   svg.call(tip);
 
   const treeData = {
-    name: jsonld.title || `_${Math.random().toString(10).slice(-7)}`,
+    // name: (jsonld.title).slice(0, 25) + "..." || `_${Math.random().toString(10).slice(-7)}`,
+    name: (jsonld.title).length > 22 ? (jsonld.title).slice(0, 22) + "..." : jsonld.title,
     isIdNode: true,
     isBlankNode: true,
     children: jsonldTree(jsonld, null)
@@ -468,6 +474,23 @@ export function jsonldVis(jsonld, selector, config) {
 
   update(root);
 
-  document.getElementById('collapse-all').addEventListener('click', _ => collapse(root, true));
-  document.getElementById('expand-all').addEventListener('click', _ => expand(root, true));
+  collapseBtn.addEventListener('click',() => {
+    collapseBtn.disabled = true
+    expandBtn.disabled = false
+    collapse(root, true)
+  })
+
+  expandBtn.addEventListener('click', () => {
+    collapseBtn.disabled = false
+    expandBtn.disabled = true
+    expand(root, true)
+  })
 }
+
+graphSvg.addEventListener("click",  () => {
+  downloadSvg(document.querySelector("#visualized svg"), "Graph-visualization")
+})
+
+graphPng.addEventListener("click",  () => {
+  downloadPng(document.querySelector("#visualized svg"), "Graph-visualization")
+})
