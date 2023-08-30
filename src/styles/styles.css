@@ -741,7 +741,7 @@ main .console {
 }
 .console__content .open-api-view .open-api-container, .console__content .open-api-view .async-api-container, .console__content .open-api-view .defaults-container, .console__content .open-api-view .visualize-container, .console__content .async-api-view .open-api-container, .console__content .async-api-view .async-api-container, .console__content .async-api-view .defaults-container, .console__content .async-api-view .visualize-container, .console__content .defaults-view .open-api-container, .console__content .defaults-view .async-api-container, .console__content .defaults-view .defaults-container, .console__content .defaults-view .visualize-container, .console__content .visualize-view .open-api-container, .console__content .visualize-view .async-api-container, .console__content .visualize-view .defaults-container, .console__content .visualize-view .visualize-container {
   height: 100%;
-  width: calc(100% - 15rem);
+  width: calc(100% - 30rem);
 }
 .console__content .open-api-view .open-api-inputs, .console__content .open-api-view .async-api-inputs, .console__content .open-api-view .defaults-inputs, .console__content .open-api-view .visualize-inputs, .console__content .async-api-view .open-api-inputs, .console__content .async-api-view .async-api-inputs, .console__content .async-api-view .defaults-inputs, .console__content .async-api-view .visualize-inputs, .console__content .defaults-view .open-api-inputs, .console__content .defaults-view .async-api-inputs, .console__content .defaults-view .defaults-inputs, .console__content .defaults-view .visualize-inputs, .console__content .visualize-view .open-api-inputs, .console__content .visualize-view .async-api-inputs, .console__content .visualize-view .defaults-inputs, .console__content .visualize-view .visualize-inputs {
   width: 30rem;
@@ -815,27 +815,28 @@ main .console {
   overflow: auto;
 }
 .console__content .visualize-view .visualize-inputs {
-  gap: 2rem;
+  gap: 0;
 }
-.console__content .visualize-view .visualize-inputs .vis-type {
+.console__content .visualize-view .visualize-inputs__type {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 2rem;
+  margin-bottom: 2rem;
 }
-.console__content .visualize-view .visualize-inputs .vis-type__option {
+.console__content .visualize-view .visualize-inputs__type .vis-type-option {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.console__content .visualize-view .visualize-inputs .vis-type__option label {
+.console__content .visualize-view .visualize-inputs__type .vis-type-option label {
   margin-right: 1rem;
   font-size: var(--fs-p);
   font-family: var(--ff-primary);
 }
-.console__content .visualize-view .visualize-inputs .vis-type__option input[type=radio] {
+.console__content .visualize-view .visualize-inputs__type .vis-type-option input[type=radio] {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -848,7 +849,7 @@ main .console {
   cursor: pointer;
   transition: background-color 250ms ease-in-out;
 }
-.console__content .visualize-view .visualize-inputs .vis-type__option input[type=radio]:checked {
+.console__content .visualize-view .visualize-inputs__type .vis-type-option input[type=radio]:checked {
   background-color: var(--clr-primary-500);
 }
 .console__content .visualize-view .visualize-inputs__graph, .console__content .visualize-view .visualize-inputs__tree {
@@ -861,13 +862,18 @@ main .console {
   justify-content: center;
   gap: 1rem;
   opacity: 1;
-  transition: opacity 250ms ease-in-out;
+  transition: width 0s, height 0s, opacity 250ms ease-in-out;
 }
 .console__content .visualize-view .visualize-inputs__graph.hidden, .console__content .visualize-view .visualize-inputs__tree.hidden {
   width: 0;
   height: 0;
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0s ease-in-out;
+}
+.console__content .visualize-view .visualize-inputs__download {
+  width: 100%;
+  margin-top: 2rem;
 }
 
 @keyframes rotate {

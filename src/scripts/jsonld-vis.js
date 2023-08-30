@@ -1,14 +1,16 @@
+/**
+ * @file The `jsonld-vis.js` handles the d3 visualization for the
+ * graph option, by utilizin the d3 and d3-tip dependencies
+ */
+
 import * as d3 from 'd3'
 import d3Tip from 'd3-tip'
 import { getDirection } from 'string-direction'
-import { downloadSvg, downloadPng } from 'svg-crowbar'
 
 /* eslint-disable no-underscore-dangle */
 'use strict';
 export const collapseBtn = document.getElementById('collapse-all')
 export const expandBtn = document.getElementById('expand-all')
-const graphSvg = document.getElementById('graph-svg')
-const graphPng = document.getElementById('graph-png')
 
 export function jsonldVis(jsonld, selector, config) {
   if (!arguments.length) return jsonldVis;
@@ -486,11 +488,3 @@ export function jsonldVis(jsonld, selector, config) {
     expand(root, true)
   })
 }
-
-graphSvg.addEventListener("click",  () => {
-  downloadSvg(document.querySelector("#visualized svg"), "Graph-visualization")
-})
-
-graphPng.addEventListener("click",  () => {
-  downloadPng(document.querySelector("#visualized svg"), "Graph-visualization")
-})

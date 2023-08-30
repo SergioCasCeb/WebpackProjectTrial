@@ -1,25 +1,42 @@
-import {collapseBtn, expandBtn, jsonldVis} from "./jsonld-vis.js"
+import { collapseBtn, expandBtn, jsonldVis } from "./jsonld-vis.js"
 import * as vVis from "./vega-vis.js"
+import { downloadSvg, downloadPng } from 'svg-crowbar'
 
 export const visualizeView = document.querySelector("#visualize-view")
 export const visualizeTab = document.querySelector("#visualize-tab")
+const downloadSvgBtn = document.getElementById('download-svg')
+const downloadPngBtn = document.getElementById('download-png')
+const graphViewInput = document.querySelector("#graph-view")
+const treeViewInput = document.querySelector("#tree-view")
+const graphInputs = document.querySelector(".visualize-inputs__graph")
+const treeInputs = document.querySelector(".visualize-inputs__tree")
+const visViews = [graphViewInput, treeViewInput]
 
 export function visualize(editorValue) {
     let td
     collapseBtn.disabled = false
     expandBtn.disabled = false
-    
+
     try {
         td = JSON.parse(editorValue)
         visualizeView.classList.remove("hidden")
 
-        document.getElementById("visualized").innerHTML = "";
-        jsonldVis(td, "#visualized", {
-            h: document.getElementById("visualize-container").offsetHeight - 30,
-            w: document.getElementById("visualize-container").offsetWidth - 20,
-            maxLabelWidth: 200,
-            scalingFactor: 5,
-        })
+        if(graphViewInput.checked === true){
+            graphInputs.classList.remove("hidden")
+            treeInputs.classList.add("hidden")
+            document.getElementById("visualized").innerHTML = "";
+            jsonldVis(td, "#visualized", {
+                h: document.getElementById("visualize-container").offsetHeight - 30,
+                w: document.getElementById("visualize-container").offsetWidth - 20,
+                maxLabelWidth: 200,
+                scalingFactor: 5,
+            })
+        }else{
+            graphInputs.classList.add("hidden")
+            treeInputs.classList.remove("hidden")
+            console.log("tree");
+        }
+        
 
     } catch (err) {
         alert(`Incorrect JSON: ${err}`);
@@ -39,14 +56,22 @@ export function visualize(editorValue) {
     //     vVis.vegaVis("#visualized", td);
     // }
 
-    // // Alter visibility of related controls
-    // document.querySelectorAll(`div[class*="controls-"]`).forEach((x) => {
-    //     if (x.classList.contains(`controls-${visType}`) || x.classList.contains("controls-all")) {
-    //         x.style.display = "block";
-    //     } else {
-    //         x.style.display = "none";
-    //     }
-    // });
 
     return true;
 }
+
+downloadSvgBtn.addEventListener("click", () => {
+    const visualizationName = graphViewInput.checked === true ? "Graph-visualization" : "Tree-visualization"
+    downloadSvg(document.querySelector("#visualized svg"), visualizationName)
+})
+
+downloadPngBtn.addEventListener("click", () => {
+    const visualizationName = graphViewInput.checked === true ? "Graph-visualization" : "Tree-visualization"
+    downloadPng(document.querySelector("#visualized svg"), visualizationName)
+})
+
+visViews.forEach(el => {
+    el.addEventListener("click", () => {
+        visualizeTab.click()
+    })
+})

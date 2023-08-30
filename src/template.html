@@ -238,12 +238,12 @@
                             <div id="visualized" class="visualized"></div>
                         </div>
                         <div class="visualize-inputs">
-                            <div class="vis-type">
-                                <div class="vis-type__option">
+                            <div class="visualize-inputs__type">
+                                <div class="vis-type-option">
                                     <label for="graph-view">Graph:</label>
                                     <input type="radio" name="vis-type" id="graph-view" checked>
                                 </div>
-                                <div class="vis-type__option">
+                                <div class="vis-type-option">
                                     <label for="tree-view">Tree:</label>
                                     <input type="radio" name="vis-type" id="tree-view">
                                 </div>
@@ -254,19 +254,19 @@
                                     <button id="collapse-all" class="btn-left">Collapse All</button>
                                     <button id="expand-all" class="btn-right">Expand all</button>
                                 </div>
-                                <div class="input-field">
-                                    <button id="graph-svg" class="btn-left"><i class="fa-solid fa-download"></i>SVG</button>
-                                    <button id="graph-png" class="btn-right"><i class="fa-solid fa-download"></i>PNG</button>
-                                </div>
                             </div>
 
                             <div class="visualize-inputs__tree hidden">
                                 <div class="input-field">
-                                    <button id="tree-svg" class="btn-left"><i class="fa-solid fa-download"></i>SVG</button>
-                                    <button id="tree-png" class="btn-right"><i class="fa-solid fa-download"></i>PNG</button>
                                 </div>
                             </div>
                             
+                            <div class="visualize-inputs__download">
+                                <div class="input-field">
+                                    <button id="download-svg" class="btn-left"><i class="fa-solid fa-download"></i>SVG</button>
+                                    <button id="download-png" class="btn-right"><i class="fa-solid fa-download"></i>PNG</button>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
