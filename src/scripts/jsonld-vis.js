@@ -12,6 +12,12 @@ import { getDirection } from 'string-direction'
 export const collapseBtn = document.getElementById('collapse-all')
 export const expandBtn = document.getElementById('expand-all')
 
+/**
+ * Generate the graph visualization with d3
+ * @param { json object } jsonld - the value of the current editor
+ * @param { html element } selector - an html element to be used as the container
+ * @param { json object } config - the configuration values for the visualization
+ */
 export function jsonldVis(jsonld, selector, config) {
   if (!arguments.length) return jsonldVis;
   config = config || {};
@@ -70,7 +76,6 @@ export function jsonldVis(jsonld, selector, config) {
       d3.select(selector + ' > svg').attr('width', newWidth);
     }
   }
-
 
   function getDirectedValue(source, key, parentKey) {
     const LRI = '\u2066';

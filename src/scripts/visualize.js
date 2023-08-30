@@ -1,3 +1,9 @@
+/**
+ * @file The `visualize.js` takes care of setting eventHandlers
+ * and and the the main functions to initialize both the d3 and the vega
+ * visualizations as well as the visualization type and download buttons
+ */
+
 import { collapseBtn, expandBtn, jsonldVis } from "./jsonld-vis.js"
 import * as vVis from "./vega-vis.js"
 import { downloadSvg, downloadPng } from 'svg-crowbar'
@@ -12,10 +18,18 @@ const graphInputs = document.querySelector(".visualize-inputs__graph")
 const treeInputs = document.querySelector(".visualize-inputs__tree")
 const visViews = [graphViewInput, treeViewInput]
 
+/**
+ * parses the edito value, if it works, checks the the vis type
+ * and initializes the rescpective visualization and well as 
+ * enabling the respective inputs
+ * @param { String } editorValue 
+ * @returns true or false
+ */
 export function visualize(editorValue) {
     let td
     collapseBtn.disabled = false
     expandBtn.disabled = false
+    document.getElementById("visualized").innerHTML = "";
 
     try {
         td = JSON.parse(editorValue)
@@ -24,7 +38,6 @@ export function visualize(editorValue) {
         if(graphViewInput.checked === true){
             graphInputs.classList.remove("hidden")
             treeInputs.classList.add("hidden")
-            document.getElementById("visualized").innerHTML = "";
             jsonldVis(td, "#visualized", {
                 h: document.getElementById("visualize-container").offsetHeight - 30,
                 w: document.getElementById("visualize-container").offsetWidth - 20,
@@ -60,16 +73,19 @@ export function visualize(editorValue) {
     return true;
 }
 
+// Download as svg button
 downloadSvgBtn.addEventListener("click", () => {
     const visualizationName = graphViewInput.checked === true ? "Graph-visualization" : "Tree-visualization"
     downloadSvg(document.querySelector("#visualized svg"), visualizationName)
 })
 
+// Download as png button
 downloadPngBtn.addEventListener("click", () => {
     const visualizationName = graphViewInput.checked === true ? "Graph-visualization" : "Tree-visualization"
     downloadPng(document.querySelector("#visualized svg"), visualizationName)
 })
 
+//If the vis type is changed simulate a click on the visualize tab to call the visualize function
 visViews.forEach(el => {
     el.addEventListener("click", () => {
         visualizeTab.click()
