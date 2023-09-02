@@ -176,10 +176,6 @@ img {
   margin: 0 auto;
 }
 
-[contenteditable=true]:focus {
-  outline: 2px solid var(--clr-primary-500);
-}
-
 /***** Header *****/
 header {
   background-color: var(--clr-primary-500);
@@ -577,7 +573,8 @@ main .console {
   align-items: center;
   justify-content: center;
 }
-.console__tabs .console-controllers .trash, .console__tabs .console-controllers .download {
+.console__tabs .console-controllers .trash,
+.console__tabs .console-controllers .download {
   padding: 1rem 0.5rem;
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -587,11 +584,13 @@ main .console {
   color: var(--clr-primary-500);
   transition: color 250ms ease;
 }
-.console__tabs .console-controllers .trash:hover, .console__tabs .console-controllers .download:hover {
+.console__tabs .console-controllers .trash:hover,
+.console__tabs .console-controllers .download:hover {
   color: var(--clr-primary-900);
   cursor: pointer;
 }
-.console__tabs .console-controllers .trash:disabled, .console__tabs .console-controllers .download:disabled {
+.console__tabs .console-controllers .trash:disabled,
+.console__tabs .console-controllers .download:disabled {
   color: var(--clr-neutral-300);
   cursor: auto;
 }
@@ -731,28 +730,79 @@ main .console {
 .console__content .console-view.validation-view .section-header .show-icon {
   cursor: pointer;
 }
-.console__content .open-api-view, .console__content .async-api-view, .console__content .defaults-view, .console__content .visualize-view {
+.console__content .open-api-view,
+.console__content .async-api-view,
+.console__content .defaults-view,
+.console__content .visualize-view {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1rem;
-  padding: 2rem 1rem 1rem 0;
+  padding: 2rem 1rem 2rem 0;
 }
-.console__content .open-api-view .open-api-container, .console__content .open-api-view .async-api-container, .console__content .open-api-view .defaults-container, .console__content .open-api-view .visualize-container, .console__content .async-api-view .open-api-container, .console__content .async-api-view .async-api-container, .console__content .async-api-view .defaults-container, .console__content .async-api-view .visualize-container, .console__content .defaults-view .open-api-container, .console__content .defaults-view .async-api-container, .console__content .defaults-view .defaults-container, .console__content .defaults-view .visualize-container, .console__content .visualize-view .open-api-container, .console__content .visualize-view .async-api-container, .console__content .visualize-view .defaults-container, .console__content .visualize-view .visualize-container {
+.console__content .open-api-view .open-api-container,
+.console__content .open-api-view .async-api-container,
+.console__content .open-api-view .defaults-container,
+.console__content .open-api-view .visualize-container,
+.console__content .async-api-view .open-api-container,
+.console__content .async-api-view .async-api-container,
+.console__content .async-api-view .defaults-container,
+.console__content .async-api-view .visualize-container,
+.console__content .defaults-view .open-api-container,
+.console__content .defaults-view .async-api-container,
+.console__content .defaults-view .defaults-container,
+.console__content .defaults-view .visualize-container,
+.console__content .visualize-view .open-api-container,
+.console__content .visualize-view .async-api-container,
+.console__content .visualize-view .defaults-container,
+.console__content .visualize-view .visualize-container {
   height: 100%;
   width: calc(100% - 30rem);
 }
-.console__content .open-api-view .open-api-inputs, .console__content .open-api-view .async-api-inputs, .console__content .open-api-view .defaults-inputs, .console__content .open-api-view .visualize-inputs, .console__content .async-api-view .open-api-inputs, .console__content .async-api-view .async-api-inputs, .console__content .async-api-view .defaults-inputs, .console__content .async-api-view .visualize-inputs, .console__content .defaults-view .open-api-inputs, .console__content .defaults-view .async-api-inputs, .console__content .defaults-view .defaults-inputs, .console__content .defaults-view .visualize-inputs, .console__content .visualize-view .open-api-inputs, .console__content .visualize-view .async-api-inputs, .console__content .visualize-view .defaults-inputs, .console__content .visualize-view .visualize-inputs {
+.console__content .open-api-view .open-api-inputs,
+.console__content .open-api-view .async-api-inputs,
+.console__content .open-api-view .defaults-inputs,
+.console__content .open-api-view .visualize-inputs,
+.console__content .async-api-view .open-api-inputs,
+.console__content .async-api-view .async-api-inputs,
+.console__content .async-api-view .defaults-inputs,
+.console__content .async-api-view .visualize-inputs,
+.console__content .defaults-view .open-api-inputs,
+.console__content .defaults-view .async-api-inputs,
+.console__content .defaults-view .defaults-inputs,
+.console__content .defaults-view .visualize-inputs,
+.console__content .visualize-view .open-api-inputs,
+.console__content .visualize-view .async-api-inputs,
+.console__content .visualize-view .defaults-inputs,
+.console__content .visualize-view .visualize-inputs {
   width: 30rem;
+  height: 100%;
   padding: 0 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
   gap: 1rem;
 }
-.console__content .open-api-view .open-api-inputs button, .console__content .open-api-view .async-api-inputs button, .console__content .open-api-view .defaults-inputs button, .console__content .open-api-view .visualize-inputs button, .console__content .async-api-view .open-api-inputs button, .console__content .async-api-view .async-api-inputs button, .console__content .async-api-view .defaults-inputs button, .console__content .async-api-view .visualize-inputs button, .console__content .defaults-view .open-api-inputs button, .console__content .defaults-view .async-api-inputs button, .console__content .defaults-view .defaults-inputs button, .console__content .defaults-view .visualize-inputs button, .console__content .visualize-view .open-api-inputs button, .console__content .visualize-view .async-api-inputs button, .console__content .visualize-view .defaults-inputs button, .console__content .visualize-view .visualize-inputs button {
+.console__content .open-api-view .open-api-inputs button,
+.console__content .open-api-view .async-api-inputs button,
+.console__content .open-api-view .defaults-inputs button,
+.console__content .open-api-view .visualize-inputs button,
+.console__content .async-api-view .open-api-inputs button,
+.console__content .async-api-view .async-api-inputs button,
+.console__content .async-api-view .defaults-inputs button,
+.console__content .async-api-view .visualize-inputs button,
+.console__content .defaults-view .open-api-inputs button,
+.console__content .defaults-view .async-api-inputs button,
+.console__content .defaults-view .defaults-inputs button,
+.console__content .defaults-view .visualize-inputs button,
+.console__content .visualize-view .open-api-inputs button,
+.console__content .visualize-view .async-api-inputs button,
+.console__content .visualize-view .defaults-inputs button,
+.console__content .visualize-view .visualize-inputs button {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -771,27 +821,102 @@ main .console {
   align-items: center;
   gap: 1rem;
 }
-.console__content .open-api-view .open-api-inputs button:hover, .console__content .open-api-view .async-api-inputs button:hover, .console__content .open-api-view .defaults-inputs button:hover, .console__content .open-api-view .visualize-inputs button:hover, .console__content .async-api-view .open-api-inputs button:hover, .console__content .async-api-view .async-api-inputs button:hover, .console__content .async-api-view .defaults-inputs button:hover, .console__content .async-api-view .visualize-inputs button:hover, .console__content .defaults-view .open-api-inputs button:hover, .console__content .defaults-view .async-api-inputs button:hover, .console__content .defaults-view .defaults-inputs button:hover, .console__content .defaults-view .visualize-inputs button:hover, .console__content .visualize-view .open-api-inputs button:hover, .console__content .visualize-view .async-api-inputs button:hover, .console__content .visualize-view .defaults-inputs button:hover, .console__content .visualize-view .visualize-inputs button:hover {
+.console__content .open-api-view .open-api-inputs button:hover,
+.console__content .open-api-view .async-api-inputs button:hover,
+.console__content .open-api-view .defaults-inputs button:hover,
+.console__content .open-api-view .visualize-inputs button:hover,
+.console__content .async-api-view .open-api-inputs button:hover,
+.console__content .async-api-view .async-api-inputs button:hover,
+.console__content .async-api-view .defaults-inputs button:hover,
+.console__content .async-api-view .visualize-inputs button:hover,
+.console__content .defaults-view .open-api-inputs button:hover,
+.console__content .defaults-view .async-api-inputs button:hover,
+.console__content .defaults-view .defaults-inputs button:hover,
+.console__content .defaults-view .visualize-inputs button:hover,
+.console__content .visualize-view .open-api-inputs button:hover,
+.console__content .visualize-view .async-api-inputs button:hover,
+.console__content .visualize-view .defaults-inputs button:hover,
+.console__content .visualize-view .visualize-inputs button:hover {
   background-color: var(--clr-primary-900);
 }
-.console__content .open-api-view .open-api-inputs button:disabled, .console__content .open-api-view .async-api-inputs button:disabled, .console__content .open-api-view .defaults-inputs button:disabled, .console__content .open-api-view .visualize-inputs button:disabled, .console__content .async-api-view .open-api-inputs button:disabled, .console__content .async-api-view .async-api-inputs button:disabled, .console__content .async-api-view .defaults-inputs button:disabled, .console__content .async-api-view .visualize-inputs button:disabled, .console__content .defaults-view .open-api-inputs button:disabled, .console__content .defaults-view .async-api-inputs button:disabled, .console__content .defaults-view .defaults-inputs button:disabled, .console__content .defaults-view .visualize-inputs button:disabled, .console__content .visualize-view .open-api-inputs button:disabled, .console__content .visualize-view .async-api-inputs button:disabled, .console__content .visualize-view .defaults-inputs button:disabled, .console__content .visualize-view .visualize-inputs button:disabled {
+.console__content .open-api-view .open-api-inputs button:disabled,
+.console__content .open-api-view .async-api-inputs button:disabled,
+.console__content .open-api-view .defaults-inputs button:disabled,
+.console__content .open-api-view .visualize-inputs button:disabled,
+.console__content .async-api-view .open-api-inputs button:disabled,
+.console__content .async-api-view .async-api-inputs button:disabled,
+.console__content .async-api-view .defaults-inputs button:disabled,
+.console__content .async-api-view .visualize-inputs button:disabled,
+.console__content .defaults-view .open-api-inputs button:disabled,
+.console__content .defaults-view .async-api-inputs button:disabled,
+.console__content .defaults-view .defaults-inputs button:disabled,
+.console__content .defaults-view .visualize-inputs button:disabled,
+.console__content .visualize-view .open-api-inputs button:disabled,
+.console__content .visualize-view .async-api-inputs button:disabled,
+.console__content .visualize-view .defaults-inputs button:disabled,
+.console__content .visualize-view .visualize-inputs button:disabled {
   background-color: var(--clr-neutral-300);
   cursor: auto;
 }
-.console__content .open-api-view .open-api-inputs .input-field, .console__content .open-api-view .async-api-inputs .input-field, .console__content .open-api-view .defaults-inputs .input-field, .console__content .open-api-view .visualize-inputs .input-field, .console__content .async-api-view .open-api-inputs .input-field, .console__content .async-api-view .async-api-inputs .input-field, .console__content .async-api-view .defaults-inputs .input-field, .console__content .async-api-view .visualize-inputs .input-field, .console__content .defaults-view .open-api-inputs .input-field, .console__content .defaults-view .async-api-inputs .input-field, .console__content .defaults-view .defaults-inputs .input-field, .console__content .defaults-view .visualize-inputs .input-field, .console__content .visualize-view .open-api-inputs .input-field, .console__content .visualize-view .async-api-inputs .input-field, .console__content .visualize-view .defaults-inputs .input-field, .console__content .visualize-view .visualize-inputs .input-field {
+.console__content .open-api-view .open-api-inputs .input-field,
+.console__content .open-api-view .async-api-inputs .input-field,
+.console__content .open-api-view .defaults-inputs .input-field,
+.console__content .open-api-view .visualize-inputs .input-field,
+.console__content .async-api-view .open-api-inputs .input-field,
+.console__content .async-api-view .async-api-inputs .input-field,
+.console__content .async-api-view .defaults-inputs .input-field,
+.console__content .async-api-view .visualize-inputs .input-field,
+.console__content .defaults-view .open-api-inputs .input-field,
+.console__content .defaults-view .async-api-inputs .input-field,
+.console__content .defaults-view .defaults-inputs .input-field,
+.console__content .defaults-view .visualize-inputs .input-field,
+.console__content .visualize-view .open-api-inputs .input-field,
+.console__content .visualize-view .async-api-inputs .input-field,
+.console__content .visualize-view .defaults-inputs .input-field,
+.console__content .visualize-view .visualize-inputs .input-field {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 2px;
 }
-.console__content .open-api-view .open-api-inputs .input-field .btn-left, .console__content .open-api-view .async-api-inputs .input-field .btn-left, .console__content .open-api-view .defaults-inputs .input-field .btn-left, .console__content .open-api-view .visualize-inputs .input-field .btn-left, .console__content .async-api-view .open-api-inputs .input-field .btn-left, .console__content .async-api-view .async-api-inputs .input-field .btn-left, .console__content .async-api-view .defaults-inputs .input-field .btn-left, .console__content .async-api-view .visualize-inputs .input-field .btn-left, .console__content .defaults-view .open-api-inputs .input-field .btn-left, .console__content .defaults-view .async-api-inputs .input-field .btn-left, .console__content .defaults-view .defaults-inputs .input-field .btn-left, .console__content .defaults-view .visualize-inputs .input-field .btn-left, .console__content .visualize-view .open-api-inputs .input-field .btn-left, .console__content .visualize-view .async-api-inputs .input-field .btn-left, .console__content .visualize-view .defaults-inputs .input-field .btn-left, .console__content .visualize-view .visualize-inputs .input-field .btn-left {
+.console__content .open-api-view .open-api-inputs .input-field .btn-left,
+.console__content .open-api-view .async-api-inputs .input-field .btn-left,
+.console__content .open-api-view .defaults-inputs .input-field .btn-left,
+.console__content .open-api-view .visualize-inputs .input-field .btn-left,
+.console__content .async-api-view .open-api-inputs .input-field .btn-left,
+.console__content .async-api-view .async-api-inputs .input-field .btn-left,
+.console__content .async-api-view .defaults-inputs .input-field .btn-left,
+.console__content .async-api-view .visualize-inputs .input-field .btn-left,
+.console__content .defaults-view .open-api-inputs .input-field .btn-left,
+.console__content .defaults-view .async-api-inputs .input-field .btn-left,
+.console__content .defaults-view .defaults-inputs .input-field .btn-left,
+.console__content .defaults-view .visualize-inputs .input-field .btn-left,
+.console__content .visualize-view .open-api-inputs .input-field .btn-left,
+.console__content .visualize-view .async-api-inputs .input-field .btn-left,
+.console__content .visualize-view .defaults-inputs .input-field .btn-left,
+.console__content .visualize-view .visualize-inputs .input-field .btn-left {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.console__content .open-api-view .open-api-inputs .input-field .btn-right, .console__content .open-api-view .async-api-inputs .input-field .btn-right, .console__content .open-api-view .defaults-inputs .input-field .btn-right, .console__content .open-api-view .visualize-inputs .input-field .btn-right, .console__content .async-api-view .open-api-inputs .input-field .btn-right, .console__content .async-api-view .async-api-inputs .input-field .btn-right, .console__content .async-api-view .defaults-inputs .input-field .btn-right, .console__content .async-api-view .visualize-inputs .input-field .btn-right, .console__content .defaults-view .open-api-inputs .input-field .btn-right, .console__content .defaults-view .async-api-inputs .input-field .btn-right, .console__content .defaults-view .defaults-inputs .input-field .btn-right, .console__content .defaults-view .visualize-inputs .input-field .btn-right, .console__content .visualize-view .open-api-inputs .input-field .btn-right, .console__content .visualize-view .async-api-inputs .input-field .btn-right, .console__content .visualize-view .defaults-inputs .input-field .btn-right, .console__content .visualize-view .visualize-inputs .input-field .btn-right {
+.console__content .open-api-view .open-api-inputs .input-field .btn-right,
+.console__content .open-api-view .async-api-inputs .input-field .btn-right,
+.console__content .open-api-view .defaults-inputs .input-field .btn-right,
+.console__content .open-api-view .visualize-inputs .input-field .btn-right,
+.console__content .async-api-view .open-api-inputs .input-field .btn-right,
+.console__content .async-api-view .async-api-inputs .input-field .btn-right,
+.console__content .async-api-view .defaults-inputs .input-field .btn-right,
+.console__content .async-api-view .visualize-inputs .input-field .btn-right,
+.console__content .defaults-view .open-api-inputs .input-field .btn-right,
+.console__content .defaults-view .async-api-inputs .input-field .btn-right,
+.console__content .defaults-view .defaults-inputs .input-field .btn-right,
+.console__content .defaults-view .visualize-inputs .input-field .btn-right,
+.console__content .visualize-view .open-api-inputs .input-field .btn-right,
+.console__content .visualize-view .async-api-inputs .input-field .btn-right,
+.console__content .visualize-view .defaults-inputs .input-field .btn-right,
+.console__content .visualize-view .visualize-inputs .input-field .btn-right {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   border-top-left-radius: 0;
@@ -813,6 +938,13 @@ main .console {
   width: 100%;
   height: 100%;
   overflow: auto;
+  display: grid;
+  place-items: center;
+}
+.console__content .visualize-view .visualize-container .visualized svg text {
+  font-size: 1.2rem;
+  font-family: var(--ff-secundary);
+  fill: var(--clr-neutral-900);
 }
 .console__content .visualize-view .visualize-inputs {
   gap: 0;
@@ -825,32 +957,42 @@ main .console {
   gap: 2rem;
   margin-bottom: 2rem;
 }
-.console__content .visualize-view .visualize-inputs__type .vis-type-option {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.console__content .visualize-view .visualize-inputs__type .vis-type-option label {
-  margin-right: 1rem;
-  font-size: var(--fs-p);
-  font-family: var(--ff-primary);
-}
 .console__content .visualize-view .visualize-inputs__type .vis-type-option input[type=radio] {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  outline: 2px solid var(--clr-primary-500);
-  outline-offset: 2px;
-  background-color: var(--clr-neutral-50);
+  width: 100%;
+  height: 3.25rem;
+  background-color: var(--clr-primary-500);
   cursor: pointer;
   transition: background-color 250ms ease-in-out;
+  position: relative;
+}
+.console__content .visualize-view .visualize-inputs__type .vis-type-option input[type=radio]:hover {
+  background-color: var(--clr-primary-900);
+}
+.console__content .visualize-view .visualize-inputs__type .vis-type-option input[type=radio]::before {
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-p);
+  font-family: var(--ff-primary);
+  text-transform: capitalize;
+  color: var(--clr-neutral-50);
+}
+.console__content .visualize-view .visualize-inputs__type .vis-type-option input[type=radio]:nth-child(1)::before {
+  content: "Graph";
+}
+.console__content .visualize-view .visualize-inputs__type .vis-type-option input[type=radio]:nth-child(2)::before {
+  content: "Tree";
 }
 .console__content .visualize-view .visualize-inputs__type .vis-type-option input[type=radio]:checked {
-  background-color: var(--clr-primary-500);
+  background-color: var(--clr-neutral-300);
+  cursor: auto;
 }
 .console__content .visualize-view .visualize-inputs__graph, .console__content .visualize-view .visualize-inputs__tree {
   width: 100%;
@@ -860,7 +1002,7 @@ main .console {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
   opacity: 1;
   transition: width 0s, height 0s, opacity 250ms ease-in-out;
 }
@@ -870,6 +1012,147 @@ main .console {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0s ease-in-out;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind {
+  width: 100%;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind span {
+  font-size: var(--fs-p);
+  font-family: var(--ff-primary);
+  color: var(--clr-neutral-900);
+  min-width: 3rem;
+  text-transform: capitalize;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind span.vega-bind-name {
+  min-width: 6.5rem;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label input,
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label select {
+  width: 100%;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label input[type=checkbox] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 2px solid var(--clr-primary-500);
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+  height: 3rem;
+  position: relative;
+  background-color: var(--clr-primary-500);
+  transition: all 250ms ease-in-out;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label input[type=checkbox]::before {
+  position: absolute;
+  content: "\f06e";
+  display: inline-block;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  font: var(--fa-font-solid);
+  font-size: var(--fs-p);
+  color: var(--clr-neutral-50);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 500ms ease-in-out;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label input[type=checkbox]:hover {
+  background-color: var(--clr-primary-900);
+  border-color: var(--clr-primary-900);
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label input[type=checkbox]:checked::before {
+  content: "\f070";
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label input[type=range] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  height: 4px;
+  border-radius: 50vw;
+  background-color: var(--clr-neutral-200);
+  cursor: pointer;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label input[type=range]::-moz-range-thumb {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  background-color: var(--clr-primary-500);
+  border: none;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  background-color: var(--clr-primary-500);
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label input[type=range] input[type=range]::-ms-thumb {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  background-color: var(--clr-primary-500);
+  border: none;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind label select {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  background-color: var(--clr-primary-500);
+  border-radius: 5px;
+  color: var(--clr-neutral-50);
+  font-size: var(--fs-p);
+  font-family: var(--ff-primary);
+  padding: 0.75rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind:nth-child(6) .vega-bind-radio {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind:nth-child(6) .vega-bind-radio label {
+  position: relative;
+  z-index: 0;
+  color: var(--clr-neutral-50);
+  padding: 0.75rem 1.5rem;
+  justify-content: center;
+  cursor: pointer;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind:nth-child(6) .vega-bind-radio label input[type=radio] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--clr-primary-500);
+  cursor: pointer;
+  z-index: -1;
+  transition: background-color 250ms ease-in-out;
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind:nth-child(6) .vega-bind-radio label input[type=radio]:hover {
+  background-color: var(--clr-primary-900);
+}
+.console__content .visualize-view .visualize-inputs__tree .vega-bind:nth-child(6) .vega-bind-radio label input[type=radio]:checked {
+  background-color: var(--clr-neutral-300);
+  cursor: auto;
 }
 .console__content .visualize-view .visualize-inputs__download {
   width: 100%;
@@ -1685,11 +1968,6 @@ svg {
 }
 svg g .node {
   cursor: pointer;
-}
-svg g .node text {
-  font-size: var(--fs-footer);
-  font-family: var(--ff-secundary);
-  fill: var(--clr-neutral-900);
 }
 svg g .link {
   fill: none;

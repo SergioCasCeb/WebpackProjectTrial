@@ -4,12 +4,6 @@ svg {
     g{
         .node {
             cursor: pointer;
-        
-            text {
-                font-size: var(--fs-footer);
-                font-family: var(--ff-secundary);
-                fill: var(--clr-neutral-900);
-            }
         }
 
         .link {

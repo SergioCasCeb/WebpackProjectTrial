@@ -239,13 +239,9 @@
                         </div>
                         <div class="visualize-inputs">
                             <div class="visualize-inputs__type">
-                                <div class="vis-type-option">
-                                    <label for="graph-view">Graph:</label>
-                                    <input type="radio" name="vis-type" id="graph-view" checked>
-                                </div>
-                                <div class="vis-type-option">
-                                    <label for="tree-view">Tree:</label>
-                                    <input type="radio" name="vis-type" id="tree-view">
+                                <div class="vis-type-option input-field">
+                                    <input type="radio" name="vis-type" id="graph-view" class="btn-left" checked>
+                                    <input type="radio" name="vis-type" id="tree-view" class="btn-right">
                                 </div>
                             </div>
 
@@ -256,8 +252,8 @@
                                 </div>
                             </div>
 
-                            <div class="visualize-inputs__tree hidden">
-                                <div class="input-field">
+                            <div class="visualize-inputs__tree hidden" id="vega-bindings-wrapper">
+                                <div class="input-field" >
                                 </div>
                             </div>
                             

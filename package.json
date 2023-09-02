@@ -44,6 +44,8 @@
     "monaco-editor": "^0.40.0",
     "papaparse": "^5.4.1",
     "string-direction": "^0.1.2",
-    "svg-crowbar": "^0.7.0"
+    "svg-crowbar": "^0.7.0",
+    "vega": "^5.22.1",
+    "vega-embed": "^6.21.0"
   }
 }

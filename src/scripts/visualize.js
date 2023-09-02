@@ -5,7 +5,7 @@
  */
 
 import { collapseBtn, expandBtn, jsonldVis } from "./jsonld-vis.js"
-import * as vVis from "./vega-vis.js"
+import { vegaVis } from "./vega-vis.js"
 import { downloadSvg, downloadPng } from 'svg-crowbar'
 
 export const visualizeView = document.querySelector("#visualize-view")
@@ -47,7 +47,8 @@ export function visualize(editorValue) {
         }else{
             graphInputs.classList.add("hidden")
             treeInputs.classList.remove("hidden")
-            console.log("tree");
+
+            vegaVis("#visualized", td)
         }
         
 
@@ -55,20 +56,6 @@ export function visualize(editorValue) {
         alert(`Incorrect JSON: ${err}`);
         return false;
     }
-
-
-
-    // if (visType === "graph") {
-    //     document.getElementById("visualized").innerHTML = "";
-    //     .jsonldVis(td, "#visualized", {
-    //         h: document.getElementById("visualized-wrapper").offsetHeight,
-    //         maxLabelWidth: 200,
-    //         scalingFactor: 5,
-    //     });
-    // } else {
-    //     vVis.vegaVis("#visualized", td);
-    // }
-
 
     return true;
 }
