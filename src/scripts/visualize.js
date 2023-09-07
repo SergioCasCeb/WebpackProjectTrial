@@ -23,41 +23,51 @@ const visViews = [graphViewInput, treeViewInput]
  * and initializes the rescpective visualization and well as 
  * enabling the respective inputs
  * @param { String } editorValue 
- * @returns true or false
  */
 export function visualize(editorValue) {
-    let td
     collapseBtn.disabled = false
     expandBtn.disabled = false
-    document.getElementById("visualized").innerHTML = "";
+    document.getElementById("visualized").innerHTML = ""
+    visualizeView.classList.remove("hidden")
 
-    try {
-        td = JSON.parse(editorValue)
-        visualizeView.classList.remove("hidden")
+    if (graphViewInput.checked === true) {
+        graphInputs.classList.remove("hidden")
+        treeInputs.classList.add("hidden")
+        jsonldVis(editorValue, "#visualized", {
+            h: document.getElementById("visualize-container").offsetHeight - 30,
+            w: document.getElementById("visualize-container").offsetWidth - 20,
+            maxLabelWidth: 200,
+            scalingFactor: 5,
+        })
+    } else {
+        graphInputs.classList.add("hidden")
+        treeInputs.classList.remove("hidden")
 
-        if(graphViewInput.checked === true){
-            graphInputs.classList.remove("hidden")
-            treeInputs.classList.add("hidden")
-            jsonldVis(td, "#visualized", {
-                h: document.getElementById("visualize-container").offsetHeight - 30,
-                w: document.getElementById("visualize-container").offsetWidth - 20,
-                maxLabelWidth: 200,
-                scalingFactor: 5,
-            })
-        }else{
-            graphInputs.classList.add("hidden")
-            treeInputs.classList.remove("hidden")
-
-            vegaVis("#visualized", td)
-        }
-        
-
-    } catch (err) {
-        alert(`Incorrect JSON: ${err}`);
-        return false;
+        vegaVis("#visualized", editorValue)
     }
 
-    return true;
+    // try {
+    //     td = JSON.parse(editorValue)
+    //     visualizeView.classList.remove("hidden")
+
+    //     if(graphViewInput.checked === true){
+    //         graphInputs.classList.remove("hidden")
+    //         treeInputs.classList.add("hidden")
+    //         jsonldVis(td, "#visualized", {
+    //             h: document.getElementById("visualize-container").offsetHeight - 30,
+    //             w: document.getElementById("visualize-container").offsetWidth - 20,
+    //             maxLabelWidth: 200,
+    //             scalingFactor: 5,
+    //         })
+    //     }else{
+    //         graphInputs.classList.add("hidden")
+    //         treeInputs.classList.remove("hidden")
+
+    //         vegaVis("#visualized", td)
+    //     }
+
+
+    // }
 }
 
 // Download as svg button

@@ -8,8 +8,9 @@
  */
 
 import * as monaco from 'monaco-editor'
-import { getEditorValue } from "./util"
+import { getEditorValue, validate } from "./util"
 import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
+import { autoValidateBtn, validationTab } from './validation'
 import { jsonBtn, yamlBtn } from './json-yaml'
 import tdSchema from '../../node_modules/@thing-description-playground/core/td-schema.json'
 import tmSchema from '../../node_modules/@thing-description-playground/core/tm-schema.json'
@@ -195,15 +196,20 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
   })
 
   editor.getModel().onDidChangeContent(_ => {
-    clearConsole()
 
     try {
       const editorValues = getEditorData(editor)
       changeThingIcon(editorValues[1])
       updateTabName(editorValues[2]["title"])
 
+      if (autoValidateBtn.checked === true && validationTab.checked === true) {
+        validate(editorValues[1], JSON.stringify(editorValues[2]))
+      }else{
+        clearConsole()
+      }
+
       //Only use the spell checker if file is json
-      if (jsonBtn.checked === true) {
+      if (editorValues[0] === "json") {
         //Get if thing type and set the respective schema
         if (editorValues[2]["@type"] === "tm:ThingModel") {
           // Configure JSON language support with schemas and schema associations
@@ -232,8 +238,6 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
         }
 
         markTypos(editor.getModel());
-        //TODO add auto validate functionality
-        // // util.validate('auto', autoValidate, docType);
       }
     } catch (err) {
       console.error("Not a proper JSON object");

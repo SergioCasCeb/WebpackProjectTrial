@@ -708,11 +708,28 @@ main .console {
 .console__content .console-view.validation-view {
   overflow: auto;
 }
+.console__content .console-view.validation-view details {
+  margin-bottom: 1rem;
+}
+.console__content .console-view.validation-view details summary .show-icon {
+  transform: rotate(0);
+  transition: transform 250ms ease-in-out;
+}
+.console__content .console-view.validation-view details .section-content {
+  padding: 1rem 2rem;
+}
+.console__content .console-view.validation-view details[open] {
+  margin-bottom: 0;
+}
+.console__content .console-view.validation-view details[open] summary .show-icon {
+  transform: rotate(-90deg);
+}
 .console__content .console-view.validation-view .section-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
+  cursor: pointer;
 }
 .console__content .console-view.validation-view .section-header .fa-circle-check {
   color: var(--clr-success-500);
@@ -720,7 +737,7 @@ main .console {
 .console__content .console-view.validation-view .section-header .fa-circle-exclamation {
   color: var(--clr-warning-500);
 }
-.console__content .console-view.validation-view .section-header .fa-triangle-exclamation {
+.console__content .console-view.validation-view .section-header .fa-circle-xmark {
   color: var(--clr-error-500);
 }
 .console__content .console-view.validation-view .section-header .fa-spinner {
@@ -729,6 +746,26 @@ main .console {
 }
 .console__content .console-view.validation-view .section-header .show-icon {
   cursor: pointer;
+}
+.console__content .console-view.validation-view .section-header .title {
+  font-weight: var(--fw-bold);
+}
+.console__content .console-view.validation-view .section-content {
+  list-style-position: inside;
+  list-style-type: disc;
+}
+.console__content .console-view.validation-view .section-content details {
+  margin-bottom: 1rem;
+}
+.console__content .console-view.validation-view .section-content details summary .show-icon {
+  transform: rotate(0);
+  transition: transform 250ms ease-in-out;
+}
+.console__content .console-view.validation-view .section-content details[open] {
+  margin-bottom: 0;
+}
+.console__content .console-view.validation-view .section-content details[open] summary .show-icon {
+  transform: rotate(-90deg);
 }
 .console__content .open-api-view,
 .console__content .async-api-view,

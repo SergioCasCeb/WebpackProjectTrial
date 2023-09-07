@@ -25,37 +25,39 @@ import * as Validators from '@thing-description-playground/core/dist/web-bundle.
 import tdToOpenAPI from '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
 import tdToAsyncAPI from '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
 import * as tdDefaults from '@thing-description-playground/defaults/dist/web-bundle.min.js'
+import { autoValidateBtn, resetLoggingBtn, validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
 
 /**
  * Fetch the TD from the given address and return the JSON object
  * @param {string} urlAddr url of the TD to fetch
  */
-export function getTdUrl(urlAddr){
-    return new Promise( resolve => {
+export function getTdUrl(urlAddr) {
+    return new Promise(resolve => {
 
         fetch(urlAddr)
-        .then(res => res.json())
-        .then(data => {
-            resolve(data)
-        }, err => {alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err)})
+            .then(res => res.json())
+            .then(data => {
+                resolve(data)
+            }, err => { alert("JSON could not be fetched from: " + urlAddr + "\n Error: " + err) })
 
     })
 }
 
-/**
- * Fetch the File from the given address and return the content as string
- * @param {string} urlAddr url of the TD to fetch
- */
-function getTextUrl(urlAddr){
-    return new Promise( resolve => {
+//TODO : Remove function?
+// /**
+//  * Fetch the File from the given address and return the content as string
+//  * @param {string} urlAddr url of the TD to fetch
+//  */
+// function getTextUrl(urlAddr){
+//     return new Promise( resolve => {
 
-        fetch(urlAddr)
-        .then(res => res.text())
-        .then(data => {
-            resolve(data)
-        }, err => {alert("Text could not be fetched from: " + urlAddr + "\n Error: " + err)})
-    })
-}
+//         fetch(urlAddr)
+//         .then(res => res.text())
+//         .then(data => {
+//             resolve(data)
+//         }, err => {alert("Text could not be fetched from: " + urlAddr + "\n Error: " + err)})
+//     })
+// }
 
 
 /**
@@ -92,8 +94,8 @@ export function offerFileDownload(fileName, content, type) {
  * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
- export function generateTD(fileType, editor){
-    return new Promise( (res, rej) => {
+export function generateTD(fileType, editor) {
+    return new Promise((res, rej) => {
         const tdToValidate = editor.getValue()
 
         if (tdToValidate === "") {
@@ -105,8 +107,8 @@ export function offerFileDownload(fileName, content, type) {
         else {
             try {
                 const content = fileType === "json"
-                        ? JSON.stringify(JSON.parse(Validators.convertTDYamlToJson(tdToValidate)), undefined, 4)
-                        : Validators.convertTDJsonToYaml(tdToValidate)
+                    ? JSON.stringify(JSON.parse(Validators.convertTDYamlToJson(tdToValidate)), undefined, 4)
+                    : Validators.convertTDJsonToYaml(tdToValidate)
 
                 monaco.editor.setModelLanguage(editor.getModel(), fileType)
                 editor.setValue(content)
@@ -122,12 +124,12 @@ export function offerFileDownload(fileName, content, type) {
  * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
-export function generateOAP(fileType, editor){
-    return new Promise( (res, rej) => {
+export function generateOAP(fileType, editor) {
+    return new Promise((res, rej) => {
         const tdToValidate = fileType === "json"
-             ? editor.getValue()
-             : Validators.convertTDYamlToJson(editor.getValue())
-             
+            ? editor.getValue()
+            : Validators.convertTDYamlToJson(editor.getValue())
+
         if (tdToValidate === "") {
             rej("No TD given to generate OpenAPI instance")
         }
@@ -135,11 +137,11 @@ export function generateOAP(fileType, editor){
             rej("Wrong content type required: " + fileType)
         }
         else {
-            tdToOpenAPI(JSON.parse(tdToValidate)).then( openAPI => {
+            tdToOpenAPI(JSON.parse(tdToValidate)).then(openAPI => {
                 const content = fileType === "json" ? JSON.stringify(openAPI[fileType], undefined, 4) : openAPI[fileType]
                 monaco.editor.setModelLanguage(window.openApiEditor.getModel(), fileType)
                 window.openApiEditor.getModel().setValue(content)
-            }, err => {rej("OpenAPI generation problem: " + err)})
+            }, err => { rej("OpenAPI generation problem: " + err) })
         }
     })
 }
@@ -149,11 +151,11 @@ export function generateOAP(fileType, editor){
  * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
-export function generateAAP(fileType, editor){
-    return new Promise( (res, rej) => {
+export function generateAAP(fileType, editor) {
+    return new Promise((res, rej) => {
         const tdToValidate = fileType === "json"
-             ? editor.getValue()
-             : Validators.convertTDYamlToJson(editor.getValue())
+            ? editor.getValue()
+            : Validators.convertTDYamlToJson(editor.getValue())
 
         if (tdToValidate === "") {
             rej("No TD given to generate AsyncAPI instance")
@@ -162,11 +164,11 @@ export function generateAAP(fileType, editor){
             rej("Wrong content type required: " + fileType)
         }
         else {
-            tdToAsyncAPI(JSON.parse(tdToValidate)).then( asyncAPI => {
+            tdToAsyncAPI(JSON.parse(tdToValidate)).then(asyncAPI => {
                 const content = fileType === "json" ? JSON.stringify(asyncAPI[fileType], undefined, 4) : asyncAPI[fileType]
                 monaco.editor.setModelLanguage(window.asyncApiEditor.getModel(), fileType)
                 window.asyncApiEditor.getModel().setValue(content)
-            }, err => {rej("AsyncAPI generation problem: " + err)})
+            }, err => { rej("AsyncAPI generation problem: " + err) })
         }
     })
 }
@@ -177,12 +179,12 @@ export function generateAAP(fileType, editor){
  */
 export function addDefaults(editor) {
     const tdToExtend = editor["_domElement"].dataset.modeId === "json"
-             ? JSON.parse(editor.getValue())
-             : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
+        ? JSON.parse(editor.getValue())
+        : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
     tdDefaults.addDefaults(tdToExtend)
     window.defaultsEditor.getModel().setValue(JSON.stringify(tdToExtend, undefined, 4))
     monaco.editor.setModelLanguage(window.defaultsEditor.getModel(), editor["_domElement"].dataset.modeId)
-    if(editor["_domElement"].dataset.modeId === "yaml"){
+    if (editor["_domElement"].dataset.modeId === "yaml") {
         generateTD("yaml", window.defaultsEditor)
     }
 }
@@ -194,92 +196,18 @@ export function addDefaults(editor) {
  */
 export function removeDefaults(editor) {
     const tdToReduce = editor["_domElement"].dataset.modeId === "json"
-             ? JSON.parse(editor.getValue())
-             : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
+        ? JSON.parse(editor.getValue())
+        : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
     tdDefaults.removeDefaults(tdToReduce)
     window.defaultsEditor.getModel().setValue(JSON.stringify(tdToReduce, undefined, 4))
     monaco.editor.setModelLanguage(window.defaultsEditor.getModel(), editor["_domElement"].dataset.modeId)
-    if(editor["_domElement"].dataset.modeId === "yaml"){
+    if (editor["_domElement"].dataset.modeId === "yaml") {
         generateTD("yaml", window.defaultsEditor)
-    } 
-}
-
-/**
- * Toggles Validation Table view
- */
-export function toggleValidationStatusTable(){
-    if (document.getElementById("validation_table").style.display === "") {
-        showValidationStatusTable()
-    }
-    else {
-        hideValidationStatusTable()
-    }
-}
-
-function showValidationStatusTable() {
-    document.getElementById("validation_table").style.display = "table-row-group"
-    document.getElementById("validation_table").style.opacity = 1
-    document.getElementById("table_head_arrow").setAttribute("class", "or-up")
-}
-
-function hideValidationStatusTable() {
-    document.getElementById("validation_table").style.opacity = 0
-    document.getElementById("validation_table").addEventListener("transitionend", () => {
-        document.getElementById("validation_table").style.display = ""
-    }, true)
-    document.getElementById("table_head_arrow").setAttribute("class", "or-down")
-}
-
-/**
- * Clear the editor, or paste TD -> according to user selection
- * @param {*} e selected example
- */
-export function exampleSelectHandler(e, obj) {
-
-    clearLog()
-    e.preventDefault()
-
-    if(document.getElementById("load_example").value === "select_none") {
-        window.editor.setValue("")
-    }
-    else{
-        const urlAddr=obj.urlAddrObject[document.getElementById("load_example").value].addr;
-        getTdUrl(urlAddr).then( data => {
-            if (window.editor === window.tdEditor) {
-                if (window.editorFormat === 'json') {
-                    window.editor.setValue(JSON.stringify(data,null,4))
-                } else {
-                    window.editor.setValue(Validators.convertTDJsonToYaml(JSON.stringify(data)))
-                }
-            } else {
-                window.editor.setValue(JSON.stringify(data,null,4))
-            }
-        })
     }
 }
 
 
-/**
- * Calls the validation function if intended
- * @param {string} source "auto" or "manual"
- * @param {boolean} autoValidate is autovalidation active?
- * @param {string} docType "td" or "tm"
- * @param {object} editor monaco object
- */
-export function validate(source, autoValidate, docType="td", editor) {
-    // console.log(autoValidate);
-    if(source === "manual" || (source === "auto" && autoValidate)) {
-        const text = editor.getValue();
-        console.log(source);
-        console.log(text);
-
-        //TODO FIX RESET VALIDATION STATUS
-        resetValidationStatus()
-
-        //todo fix real validator
-        // realValidator(text, docType, source);
-    }
-}
+//TODO-------------------- Doing now ------------------------------
 
 /**
  * Calls the Validator of the core package
@@ -287,122 +215,89 @@ export function validate(source, autoValidate, docType="td", editor) {
  * @param {string} docType "td" or "tm"
  * @param {*} source "manual" or "auto"
  */
-function realValidator(body, docType, source) {
-    // document.getElementById("btn_validate").setAttribute("disabled", "true")
-    if (document.getElementById("reset-logging").checked) {
-        // document.getElementById("console").innerHTML = ""
-        console.log("console");
-    }
-
-    if (source === "manual") {log("------- New Validation Started -------")}
-
-    const checkJsonLd = document.getElementById("validate-jsonld").checked
-    const checkTmConformance = document.getElementById("tm-conformance").checked
-
-    const validator = (docType === "td") ? Validators.tdValidator : Validators.tmValidator
-
-    validator(body, log, {checkDefaults: true, checkJsonLd, checkTmConformance})
-    .then( result => {
-        let resultStatus = "success"
-
-        Object.keys(result.report).forEach( el => {
-            console.log(el);
-            // const spotName = "spot-" + el
-            // if (result.report[el] === "passed") {
-            //     document.getElementById(spotName).style.visibility = "visible"
-            //     document.getElementById(spotName).setAttribute("fill", "green")
-            //     if(source === "manual") {log(el + " validation... OK")}
-            // }
-            // else if (result.report[el] === "warning") {
-            //     document.getElementById(spotName).style.visibility = "visible"
-            //     document.getElementById(spotName).setAttribute("fill", "orange")
-            //     resultStatus = (resultStatus !== "danger") ? "warning" : "danger"
-            //     if(source === "manual") {log(el + " optional validation... KO")}
-
-            // }
-            // else if (result.report[el] === "failed") {
-            //     document.getElementById(spotName).style.visibility = "visible"
-            //     document.getElementById(spotName).setAttribute("fill", "red")
-            //     resultStatus = "danger"
-            //     if(source === "manual") {log("X " + el + " validation... KO")}
-            // }
-            // else if (result.report[el] === null) {
-            //     // do nothing
-            // }
-            // else {
-            //     console.error("unknown report feedback value")
-            // }
-        })
-
-        if (source === "manual") {
-            // log("Details of the \"additional\" checks: ")
-            Object.keys(result.details).forEach(el => {
-                // console.log(el);
-                // log("    " + el + " " + result.details[el] + " (" + result.detailComments[el] + ")")
-            })
-        }
-
-        updateValidationStatusHead(resultStatus);
-        // document.getElementById("btn_validate").removeAttribute("disabled")
-    })
-}
-
-/**
- * Prints a message in a container
- * @param {string} message
- */
-function log(message) {
-    // document.getElementById("console").innerHTML += message + '&#13;&#10;'
-}
-
-/**
- * Hides an element with visibility = "hidden"
- * @param {string} id Id of the element to hide
- */
-function reset(id) {
-    // document.getElementById(id).style.visibility = "hidden"
-    // document.getElementById(id).children[0].children[0].classList.remove("fa-solid")
-}
-
-/**
- * Resets all spot lights
- */
-function resetValidationStatus(){
-    reset('spot-json')
-    reset('spot-schema')
-    reset('spot-defaults')
-    reset('spot-jsonld')
-    reset('spot-additional')
-}
-
-/**
- * Shows/Hides the validation table and sets the header color
- * @param {string} validationStatus "success", "warning" or "danger"
- */
-function updateValidationStatusHead(validationStatus)
-{
-    if (validationStatus === "danger") {
-        showValidationStatusTable()
-    }
-    else {
-        hideValidationStatusTable()
-    }
-
-    document.getElementById("validation_table_head").setAttribute("class", "btn-" + validationStatus)
-}
-
-/**
- * Delete the content of the logging container and reset the validation lights
- */
-export function clearLog() {
-
-    document.getElementById("console").innerHTML = "Reset! Waiting for validation... " + "&#13;&#10;"
+export function validate(thingType, editorContent) {
 
     resetValidationStatus()
 
-    document.getElementById("validation_table_head").setAttribute("class", "btn-info")
+    const checkJsonLd = validateJsonLdBtn.checked
+    const checkTmConformance = tmConformanceBtn.checked
 
-    hideValidationStatusTable()
+    const validator = thingType === "td" ? Validators.tdValidator : Validators.tmValidator
+
+    validator(editorContent, log, { checkDefaults: true, checkJsonLd, checkTmConformance })
+        .then(result => {
+            console.log(result)
+
+            Object.keys(result.report).forEach(el => {
+                const spotName = "spot-" + el
+                const resultIcon = document.getElementById(spotName).children[0].children[0]
+                if (result.report[el] === "passed") {
+                    resultIcon.classList.remove("fa-spinner")
+                    resultIcon.classList.add("fa-circle-check")
+                }
+                else if (result.report[el] === "warning") {
+                    resultIcon.classList.remove("fa-spinner")
+                    resultIcon.classList.add("fa-circle-exclamation")
+
+                }
+                else if (result.report[el] === "failed") {
+                    resultIcon.classList.remove("fa-spinner")
+                    resultIcon.classList.add("fa-circle-xmark")
+                }
+                else if (result.report[el] === null) {
+                    // do nothing
+                }
+                else {
+                    console.error("unknown report feedback value")
+                }
+            })
+
+            Object.keys(result.details).forEach(el => {
+                const detailsName = el + "-section"
+                const detailsIcon = document.getElementById(detailsName).children[0].children[0]
+                
+                if (result.details[el] === "passed") {
+                    detailsIcon.classList.remove("fa-spinner")
+                    detailsIcon.classList.add("fa-circle-check")
+                }
+                else if (result.details[el] === "warning" || result.details[el] === "not-impl") {
+                    detailsIcon.classList.remove("fa-spinner")
+                    detailsIcon.classList.add("fa-circle-exclamation")
+                }
+                else if (result.details[el] === "failed") {
+                    detailsIcon.classList.remove("fa-spinner")
+                    detailsIcon.classList.add("fa-circle-xmark")
+                }
+                else if (result.details[el] === null) {
+                    // do nothing
+                }
+                else {
+                    console.error("unknown report feedback value")
+                }
+            })
+
+            Object.keys(result.detailComments).forEach(el => {
+                const detailsName = el + "-section"
+                const detailsDesc = document.querySelector(`#${detailsName} .description`)
+                
+                detailsDesc.textContent = result.detailComments[el]
+            })
+        })
+}
+
+function resetValidationStatus(){
+    sectionHeaders.forEach(header => {
+        const headerIcon = header.children[0]
+        if(!headerIcon.classList.contains("fa-spinner")){
+            headerIcon.classList.remove("fa-circle-check", "fa-circle-exclamation", "fa-circle-xmark")
+            headerIcon.classList.add("fa-spinner")
+        }
+    })
+}
+//TODO-------------------- Doing now ------------------------------
+
+function log(message) {
+    console.log(message);
 }
 
 /**
@@ -498,7 +393,7 @@ function searchPath(textModel, position) {
 
             if (recordingParent) {
                 if (currentChar === QUOTE) {
-                    if(stack[stack.length - 1] === QUOTE) {
+                    if (stack[stack.length - 1] === QUOTE) {
                         stack.pop()
                         path = "/" + parentKey + path
                         parentKey = ""
@@ -554,7 +449,7 @@ function searchPath(textModel, position) {
                     isValue = false
                     if (stack.length > 0 && stack[stack.length - 1] === RIGHT_BRACKET) {
                         stack.pop()
-                    }  else {
+                    } else {
                         commaCount = 0
                         stack.push(currentChar)
                     }

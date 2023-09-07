@@ -1,10 +1,11 @@
 import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-api'
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
-import { visualizeView, visualize } from './visualize'
+import { visualize } from './visualize'
+import { validationView } from './validation'
 import { convertTDYamlToJson, detectProtocolSchemes } from '@thing-description-playground/core/dist/web-bundle.min.js'
-import { generateOAP, generateAAP, addDefaults } from './util'
-import { editorList } from './editor'
+import { generateOAP, generateAAP, addDefaults, validate } from './util'
+import { editorList, getEditorData } from './editor'
 
 /******************************************************************/
 /*                    Console functionality                       */
@@ -56,97 +57,92 @@ visualizationOptions.forEach(option => {
             container.classList.add("hidden")
         })
 
-        //OpenAPI console behaviour
-        if (option.id === "open-api-tab") {
-            editorList.forEach(editor => {
-                if (editor["_domElement"].classList.contains("active")) {
-                    let td = editor.getValue()
-                    if (editor["_domElement"].dataset.modeId === "yaml") {
-                        td = convertTDYamlToJson(td)
-                        openApiJsonBtn.disabled = false
-                        openApiYamlBtn.disabled = true
+        editorList.forEach(editor => {
+            if (editor["_domElement"].classList.contains("active")) {
+                const editorValue = editor["_domElement"].dataset.modeId === "yaml" ? convertTDYamlToJson(editor.getValue()) : editor.getValue()
+                try {
+                    let td = JSON.parse(editorValue)
+                    hideConsoleError()
+
+                    if ((td["@type"] === "tm:ThingModel" && option.id === "open-api-tab") || (td["@type"] === "tm:ThingModel" && option.id === "async-api-tab") || (td["@type"] === "tm:ThingModel" && option.id === "defaults-tab")) {
+                        showConsoleError("This function is only allowed for Thing Descriptions!")
                     } else {
-                        openApiJsonBtn.disabled = true
-                        openApiYamlBtn.disabled = false
+                        switch (option.id) {
+                            case "open-api-tab":
+                                if (editor["_domElement"].dataset.modeId === "yaml") {
+                                    openApiJsonBtn.disabled = false
+                                    openApiYamlBtn.disabled = true
+                                } else {
+                                    openApiJsonBtn.disabled = true
+                                    openApiYamlBtn.disabled = false
+                                }
+
+                                if (td["@type"] !== "tm:ThingModel") {
+                                    enableAPIConversionWithProtocol(editor)
+                                }
+
+                                break;
+
+                            case "async-api-tab":
+                                if (editor["_domElement"].dataset.modeId === "yaml") {
+                                    asyncApiJsonBtn.disabled = false
+                                    asyncApiYamlBtn.disabled = true
+                                } else {
+                                    asyncApiJsonBtn.disabled = true
+                                    asyncApiYamlBtn.disabled = false
+                                }
+
+                                if (td["@type"] !== "tm:ThingModel") {
+                                    enableAPIConversionWithProtocol(editor)
+                                }
+
+                                break;
+
+                            case "defaults-tab":
+                                if (editor["_domElement"].dataset.modeId === "yaml") {
+                                    defaultsJsonBtn.disabled = false
+                                    defaultsYamlBtn.disabled = true
+                                } else {
+                                    defaultsJsonBtn.disabled = true
+                                    defaultsYamlBtn.disabled = false
+                                }
+                                if (td["@type"] !== "tm:ThingModel") {
+                                    addDefaults(editor)
+                                    defaultsAddBtn.disabled = true
+                                    defaultsView.classList.remove("hidden")
+                                }
+
+                                break;
+
+                            case "visualize-tab":
+                                visualize(td)
+
+                                break;
+
+                            case "validation-tab":
+                                validationView.classList.remove("hidden")
+                                const editorData = getEditorData(editor)
+                                validate(editorData[1], editorValue)
+
+                                break;
+
+                            default:
+                                break;
+                        }
+
                     }
-                    if (JSON.parse(td)["@type"] === "tm:ThingModel") {
-                        errorTxt.innerText = "This function is only allowed for Thing Descriptions!"
-                        errorContainer.classList.remove("hidden")
-                    } else {
-                        errorContainer.classList.add("hidden")
-                        enableAPIConversionWithProtocol(editor)
-                    }
+
                 }
-            })
-        }
-
-        //AsyncAPI console behaviour
-        if (option.id === "async-api-tab") {
-            editorList.forEach(editor => {
-                if (editor["_domElement"].classList.contains("active")) {
-                    let td = editor.getValue()
-                    if (editor["_domElement"].dataset.modeId === "yaml") {
-                        td = convertTDYamlToJson(td)
-                        asyncApiJsonBtn.disabled = false
-                        asyncApiYamlBtn.disabled = true
-                    } else {
-                        asyncApiJsonBtn.disabled = true
-                        asyncApiYamlBtn.disabled = false
-                    }
-
-                    if (JSON.parse(td)["@type"] === "tm:ThingModel") {
-                        errorTxt.innerText = "This function is only allowed for Thing Descriptions!"
-                        errorContainer.classList.remove("hidden")
-                    } else {
-                        errorContainer.classList.add("hidden")
-                        enableAPIConversionWithProtocol(editor)
-                    }
+                catch (err) {
+                    console.error(err);
+                    errorTxt.innerText = "Invalid or Empty document"
+                    errorContainer.classList.remove("hidden")
                 }
-            })
-        }
-
-        //Defaults console behaviour
-        if (option.id === "defaults-tab") {
-            editorList.forEach(editor => {
-                if (editor["_domElement"].classList.contains("active")) {
-                    let td = editor.getValue()
-                    if (editor["_domElement"].dataset.modeId === "yaml") {
-                        td = convertTDYamlToJson(td)
-                        defaultsJsonBtn.disabled = false
-                        defaultsYamlBtn.disabled = true
-                    } else {
-                        defaultsJsonBtn.disabled = true
-                        defaultsYamlBtn.disabled = false
-                    }
-                    if (JSON.parse(td)["@type"] === "tm:ThingModel") {
-                        errorTxt.innerText = "This function is only allowed for Thing Descriptions!"
-                        errorContainer.classList.remove("hidden")
-                    } else {
-                        errorContainer.classList.add("hidden")
-                        addDefaults(editor)
-                        defaultsAddBtn.disabled = true
-                        defaultsView.classList.remove("hidden")
-                    }
-                }
-            })
-        }
-
-        //Visualize console behaviour
-        if (option.id === "visualize-tab") {
-            editorList.forEach(editor => {
-                if (editor["_domElement"].classList.contains("active")) {
-                    const editorValue = editor["_domElement"].dataset.modeId === "yaml" ? convertTDYamlToJson(editor.getValue()) : editor.getValue()
-                    if(editorValue){
-                        visualize(editorValue)
-                    }
-                }
-            })
-        }
-
+            }
+        })
     })
 })
 
-/***********  Visualizations  ***********/
 
 /**
  * Enable Open/Async API elements according to the protocol schemes of a TD
@@ -167,8 +163,7 @@ function enableAPIConversionWithProtocol(editor) {
                 generateOAP(editor["_domElement"].dataset.modeId, editor)
                 openApiView.classList.remove("hidden")
             } else {
-                errorTxt.innerText = "Please insert a TD which uses HTTP!"
-                errorContainer.classList.remove("hidden")
+                showConsoleError("Please insert a TD which uses HTTP!")
             }
         }
 
@@ -177,9 +172,18 @@ function enableAPIConversionWithProtocol(editor) {
                 generateAAP(editor["_domElement"].dataset.modeId, editor)
                 asyncApiView.classList.remove("hidden")
             } else {
-                errorTxt.innerText = "Please insert a TD which uses MQTT!"
-                errorContainer.classList.remove("hidden")
+                showConsoleError("Please insert a TD which uses MQTT!")
             }
         }
     }
+}
+
+function showConsoleError(msg) {
+    errorTxt.innerText = msg
+    errorContainer.classList.remove("hidden")
+}
+
+function hideConsoleError() {
+    errorTxt.innerText = ""
+    errorContainer.classList.add("hidden")
 }

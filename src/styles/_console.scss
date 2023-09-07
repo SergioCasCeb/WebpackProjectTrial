@@ -176,11 +176,38 @@
             &.validation-view {
                 overflow: auto;
 
+                details{
+                    margin-bottom: 1rem;
+                    summary{
+                        .show-icon{
+                            transform: rotate(0);
+                            transition: transform 250ms ease-in-out;
+                        }
+                    }
+
+                    .section-content{
+                        padding: 1rem 2rem;
+                    }
+                }
+
+                details[open]{
+                    margin-bottom: 0;
+                    summary{
+                        .show-icon{
+                            transform: rotate(-90deg);
+                        }
+                    }
+                    // .section-content{
+                    //     padding: 1rem 0;
+                    // }
+                }
+
                 .section-header {
                     display: flex;
                     align-items: center;
                     justify-content: flex-start;
                     gap: 1rem;
+                    cursor: pointer;
 
                     .fa-circle-check {
                         color: var(--clr-success-500);
@@ -190,7 +217,7 @@
                         color: var(--clr-warning-500);
                     }
 
-                    .fa-triangle-exclamation {
+                    .fa-circle-xmark {
                         color: var(--clr-error-500);
                     }
 
@@ -201,7 +228,34 @@
 
                     .show-icon {
                         cursor: pointer;
-                        // font-size: var(--fs-footer);
+                    }
+
+                    .title{
+                        font-weight: var(--fw-bold);
+                    }
+                }
+
+                .section-content{
+                    list-style-position: inside;
+                    list-style-type: disc;
+
+                    details{
+                        margin-bottom: 1rem;
+                        summary{
+                            .show-icon{
+                                transform: rotate(0);
+                                transition: transform 250ms ease-in-out;
+                            }
+                        }
+                    }
+    
+                    details[open]{
+                        margin-bottom: 0;
+                        summary{
+                            .show-icon{
+                                transform: rotate(-90deg);
+                            }
+                        }
                     }
                 }
             }

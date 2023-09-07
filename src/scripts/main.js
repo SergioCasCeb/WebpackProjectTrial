@@ -6,6 +6,7 @@
  */
 
 import '../styles/styles.scss'
+import { visualizeTab } from './visualize'
 
 
 /***********************************************************/
@@ -184,4 +185,3 @@ import './open-api'
 import './async-api'
 import './defaults'
 import './visualize'
-import { visualizeTab } from './visualize'
