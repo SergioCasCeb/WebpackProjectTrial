@@ -185,8 +185,80 @@
                         }
                     }
 
-                    .section-content{
+                    .section-header {
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        gap: 1rem;
+                        cursor: pointer;
+    
+                        .fa-circle-check {
+                            color: var(--clr-success-500);
+                        }
+    
+                        .fa-circle-exclamation {
+                            color: var(--clr-warning-500);
+                        }
+    
+                        .fa-circle-xmark {
+                            color: var(--clr-error-500);
+                        }
+    
+                        .fa-spinner {
+                            color: var(--clr-neutral-300);
+                            animation: rotate 2s infinite ease-in-out;
+                        }
+    
+                        .fa-circle{
+                            color: var(--clr-neutral-300);
+                        }
+    
+                        .show-icon {
+                            cursor: pointer;
+                        }
+    
+                        .title{
+                            font-weight: var(--fw-bold);
+                        }
+                    }
+
+                    .section-content, .section-additional{
                         padding: 1rem 2rem;
+                    }
+
+                    .section-content{
+                        list-style-position: inside;
+                        list-style-type: disc;
+
+                        &.empty{
+                            padding: 0 0 1rem 0;
+                        }
+
+                        .notice-prompt{
+                            color: var(--clr-neutral-300);
+                            font-size: var(--fs-footer);
+                        }
+                    }
+
+                    .section-additional{
+                        details{
+                            margin-bottom: 1rem;
+                            summary{
+                                .show-icon{
+                                    transform: rotate(0);
+                                    transition: transform 250ms ease-in-out;
+                                }
+                            }
+                        }
+        
+                        details[open]{
+                            margin-bottom: 0;
+                            summary{
+                                .show-icon{
+                                    transform: rotate(-90deg);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -195,66 +267,6 @@
                     summary{
                         .show-icon{
                             transform: rotate(-90deg);
-                        }
-                    }
-                    // .section-content{
-                    //     padding: 1rem 0;
-                    // }
-                }
-
-                .section-header {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-start;
-                    gap: 1rem;
-                    cursor: pointer;
-
-                    .fa-circle-check {
-                        color: var(--clr-success-500);
-                    }
-
-                    .fa-circle-exclamation {
-                        color: var(--clr-warning-500);
-                    }
-
-                    .fa-circle-xmark {
-                        color: var(--clr-error-500);
-                    }
-
-                    .fa-spinner {
-                        color: var(--clr-neutral-300);
-                        animation: rotate 2s infinite ease-in-out;
-                    }
-
-                    .show-icon {
-                        cursor: pointer;
-                    }
-
-                    .title{
-                        font-weight: var(--fw-bold);
-                    }
-                }
-
-                .section-content{
-                    list-style-position: inside;
-                    list-style-type: disc;
-
-                    details{
-                        margin-bottom: 1rem;
-                        summary{
-                            .show-icon{
-                                transform: rotate(0);
-                                transition: transform 250ms ease-in-out;
-                            }
-                        }
-                    }
-    
-                    details[open]{
-                        margin-bottom: 0;
-                        summary{
-                            .show-icon{
-                                transform: rotate(-90deg);
-                            }
                         }
                     }
                 }

@@ -10,7 +10,7 @@
 import * as monaco from 'monaco-editor'
 import { getEditorValue, validate } from "./util"
 import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
-import { autoValidateBtn, validationTab } from './validation'
+import { autoValidateBtn, validationTab, validationView } from './validation'
 import { jsonBtn, yamlBtn } from './json-yaml'
 import tdSchema from '../../node_modules/@thing-description-playground/core/td-schema.json'
 import tmSchema from '../../node_modules/@thing-description-playground/core/tm-schema.json'
@@ -33,10 +33,13 @@ export let editorList = []
 export const ideCount = {
   ideNumber: 1
 }
-// export let ideNumber = 1
 
 //Initiate by generating the first editor and the respective tab
 createIde(ideCount.ideNumber)
+
+//Initialized the program with an open validation view
+validationTab.checked = true
+validationView.classList.remove("hidden")
 
 /**
  * Funtion which creates a tab for the respective editor
@@ -116,8 +119,8 @@ export function createIde(ideNumber, exampleValue) {
         "@context": "https://www.w3.org/2022/wot/td/v1.1",
         "id": "urn:uuid:0804d572-cce8-422a-bb7c-4412fcd56f06",
         "@type": "Thing",
-        "title": `My thing ${ideNumber}`,
-        "description": "Thing Description for a Lamp thing",
+        "title": `My Thing Template`,
+        "description": "This is your customizable template. Edit it to fit your Thing Description or Thing Model needs!",
         "securityDefinitions": {
           "basic_sc": { "scheme": "basic", "in": "header" }
         },

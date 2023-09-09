@@ -715,56 +715,66 @@ main .console {
   transform: rotate(0);
   transition: transform 250ms ease-in-out;
 }
-.console__content .console-view.validation-view details .section-content {
-  padding: 1rem 2rem;
-}
-.console__content .console-view.validation-view details[open] {
-  margin-bottom: 0;
-}
-.console__content .console-view.validation-view details[open] summary .show-icon {
-  transform: rotate(-90deg);
-}
-.console__content .console-view.validation-view .section-header {
+.console__content .console-view.validation-view details .section-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
   cursor: pointer;
 }
-.console__content .console-view.validation-view .section-header .fa-circle-check {
+.console__content .console-view.validation-view details .section-header .fa-circle-check {
   color: var(--clr-success-500);
 }
-.console__content .console-view.validation-view .section-header .fa-circle-exclamation {
+.console__content .console-view.validation-view details .section-header .fa-circle-exclamation {
   color: var(--clr-warning-500);
 }
-.console__content .console-view.validation-view .section-header .fa-circle-xmark {
+.console__content .console-view.validation-view details .section-header .fa-circle-xmark {
   color: var(--clr-error-500);
 }
-.console__content .console-view.validation-view .section-header .fa-spinner {
+.console__content .console-view.validation-view details .section-header .fa-spinner {
   color: var(--clr-neutral-300);
   animation: rotate 2s infinite ease-in-out;
 }
-.console__content .console-view.validation-view .section-header .show-icon {
+.console__content .console-view.validation-view details .section-header .fa-circle {
+  color: var(--clr-neutral-300);
+}
+.console__content .console-view.validation-view details .section-header .show-icon {
   cursor: pointer;
 }
-.console__content .console-view.validation-view .section-header .title {
+.console__content .console-view.validation-view details .section-header .title {
   font-weight: var(--fw-bold);
 }
-.console__content .console-view.validation-view .section-content {
+.console__content .console-view.validation-view details .section-content, .console__content .console-view.validation-view details .section-additional {
+  padding: 1rem 2rem;
+}
+.console__content .console-view.validation-view details .section-content {
   list-style-position: inside;
   list-style-type: disc;
 }
-.console__content .console-view.validation-view .section-content details {
+.console__content .console-view.validation-view details .section-content.empty {
+  padding: 0 0 1rem 0;
+}
+.console__content .console-view.validation-view details .section-content .notice-prompt {
+  color: var(--clr-neutral-300);
+  font-size: var(--fs-footer);
+}
+.console__content .console-view.validation-view details .section-additional details {
   margin-bottom: 1rem;
 }
-.console__content .console-view.validation-view .section-content details summary .show-icon {
+.console__content .console-view.validation-view details .section-additional details summary .show-icon {
   transform: rotate(0);
   transition: transform 250ms ease-in-out;
 }
-.console__content .console-view.validation-view .section-content details[open] {
+.console__content .console-view.validation-view details .section-additional details[open] {
   margin-bottom: 0;
 }
-.console__content .console-view.validation-view .section-content details[open] summary .show-icon {
+.console__content .console-view.validation-view details .section-additional details[open] summary .show-icon {
+  transform: rotate(-90deg);
+}
+.console__content .console-view.validation-view details[open] {
+  margin-bottom: 0;
+}
+.console__content .console-view.validation-view details[open] summary .show-icon {
   transform: rotate(-90deg);
 }
 .console__content .open-api-view,

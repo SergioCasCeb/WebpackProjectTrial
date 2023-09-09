@@ -1,3 +1,9 @@
+/**
+ * @file The `console.js` takes care of setting the main eventHandlers
+ * for opening and closing the corresponding visualizations as well as
+ * calling their respective functions when interacted with
+ */
+
 import { openApiTab, openApiJsonBtn, openApiYamlBtn, openApiView } from './open-api'
 import { asyncApiTab, asyncApiJsonBtn, asyncApiYamlBtn, asyncApiView } from './async-api'
 import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from './defaults'
@@ -18,13 +24,6 @@ const eraseConsole = document.querySelector(".console__tabs .trash")
 export const visualizationOptions = document.querySelectorAll(".visualization__option")
 export const visualizationContainers = document.querySelectorAll(".console-view")
 
-// const validatorView = document.querySelector("#validation-view")
-
-
-visualizationOptions.forEach(option => {
-    option.checked = false
-})
-
 eraseConsole.addEventListener("click", () => {
     clearConsole()
 })
@@ -43,6 +42,9 @@ export function clearConsole() {
     clearVisualizationEditors()
 }
 
+/**
+ * Clear the value of all the viisualization monaco editor
+ */
 function clearVisualizationEditors() {
     window.openApiEditor.getModel().setValue('')
     window.asyncApiEditor.getModel().setValue('')
@@ -50,6 +52,7 @@ function clearVisualizationEditors() {
 }
 
 
+//Set the behavior for each visualization tab when clicked on it
 visualizationOptions.forEach(option => {
     option.addEventListener("click", () => {
         clearVisualizationEditors()
@@ -178,11 +181,18 @@ function enableAPIConversionWithProtocol(editor) {
     }
 }
 
+/**
+ * Populates the text that should be shown by the console when theres an error
+ * @param { String } msg - the text that should be shown in the error view 
+ */
 function showConsoleError(msg) {
     errorTxt.innerText = msg
     errorContainer.classList.remove("hidden")
 }
 
+/**
+ * Hides the console error and remove the previous given text
+ */
 function hideConsoleError() {
     errorTxt.innerText = ""
     errorContainer.classList.add("hidden")

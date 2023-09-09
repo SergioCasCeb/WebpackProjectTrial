@@ -25,8 +25,10 @@ import * as Validators from '@thing-description-playground/core/dist/web-bundle.
 import tdToOpenAPI from '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
 import tdToAsyncAPI from '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
 import * as tdDefaults from '@thing-description-playground/defaults/dist/web-bundle.min.js'
-import { autoValidateBtn, resetLoggingBtn, validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
+import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
 
+
+let errorMessages = []
 /**
  * Fetch the TD from the given address and return the JSON object
  * @param {string} urlAddr url of the TD to fetch
@@ -206,11 +208,8 @@ export function removeDefaults(editor) {
     }
 }
 
-
-//TODO-------------------- Doing now ------------------------------
-
 /**
- * Calls the Validator of the core package
+ * Calls the Validator of the core package and updates the status of the console categories
  * @param {string} body Thing Description/Thing Model to validate
  * @param {string} docType "td" or "tm"
  * @param {*} source "manual" or "auto"
@@ -226,10 +225,10 @@ export function validate(thingType, editorContent) {
 
     validator(editorContent, log, { checkDefaults: true, checkJsonLd, checkTmConformance })
         .then(result => {
-            console.log(result)
-
+            // console.log(result)
             Object.keys(result.report).forEach(el => {
                 const spotName = "spot-" + el
+                document.getElementById(spotName).removeAttribute('open')
                 const resultIcon = document.getElementById(spotName).children[0].children[0]
                 if (result.report[el] === "passed") {
                     resultIcon.classList.remove("fa-spinner")
@@ -245,7 +244,8 @@ export function validate(thingType, editorContent) {
                     resultIcon.classList.add("fa-circle-xmark")
                 }
                 else if (result.report[el] === null) {
-                    // do nothing
+                    resultIcon.classList.remove("fa-spinner")
+                    resultIcon.classList.add("fa-circle")
                 }
                 else {
                     console.error("unknown report feedback value")
@@ -254,50 +254,96 @@ export function validate(thingType, editorContent) {
 
             Object.keys(result.details).forEach(el => {
                 const detailsName = el + "-section"
-                const detailsIcon = document.getElementById(detailsName).children[0].children[0]
-                
-                if (result.details[el] === "passed") {
-                    detailsIcon.classList.remove("fa-spinner")
-                    detailsIcon.classList.add("fa-circle-check")
-                }
-                else if (result.details[el] === "warning" || result.details[el] === "not-impl") {
-                    detailsIcon.classList.remove("fa-spinner")
-                    detailsIcon.classList.add("fa-circle-exclamation")
-                }
-                else if (result.details[el] === "failed") {
-                    detailsIcon.classList.remove("fa-spinner")
-                    detailsIcon.classList.add("fa-circle-xmark")
-                }
-                else if (result.details[el] === null) {
-                    // do nothing
-                }
-                else {
-                    console.error("unknown report feedback value")
+                if (document.getElementById(detailsName)) {
+                    document.getElementById(detailsName).removeAttribute('open')
+                    const detailsIcon = document.getElementById(detailsName).children[0].children[0]
+
+                    if (result.details[el] === "passed") {
+                        detailsIcon.classList.remove("fa-spinner")
+                        detailsIcon.classList.add("fa-circle-check")
+                    }
+                    else if (result.details[el] === "warning" || result.details[el] === "not-impl") {
+                        detailsIcon.classList.remove("fa-spinner")
+                        detailsIcon.classList.add("fa-circle-exclamation")
+                    }
+                    else if (result.details[el] === "failed") {
+                        detailsIcon.classList.remove("fa-spinner")
+                        detailsIcon.classList.add("fa-circle-xmark")
+                    }
+                    else if (result.details[el] === null) {
+                        detailsIcon.classList.remove("fa-spinner")
+                        detailsIcon.classList.add("fa-circle")
+                    }
+                    else {
+                        console.error("unknown report feedback value")
+                    }
                 }
             })
 
             Object.keys(result.detailComments).forEach(el => {
                 const detailsName = el + "-section"
-                const detailsDesc = document.querySelector(`#${detailsName} .description`)
-                
-                detailsDesc.textContent = result.detailComments[el]
+
+                if (document.querySelector(`#${detailsName} .description`)) {
+                    const detailsDesc = document.querySelector(`#${detailsName} .description`)
+
+                    detailsDesc.textContent = result.detailComments[el]
+                }
             })
+
+            populateCategory(errorMessages)
         })
 }
 
-function resetValidationStatus(){
+/**
+ * Resets the status of the validation headers, as well as the error message list
+ */
+function resetValidationStatus() {
+    while (errorMessages.length > 0) {
+        errorMessages.pop()
+    }
     sectionHeaders.forEach(header => {
         const headerIcon = header.children[0]
-        if(!headerIcon.classList.contains("fa-spinner")){
-            headerIcon.classList.remove("fa-circle-check", "fa-circle-exclamation", "fa-circle-xmark")
+        if (!headerIcon.classList.contains("fa-spinner")) {
+            headerIcon.classList.remove("fa-circle-check", "fa-circle-exclamation", "fa-circle-xmark", "fa-circle")
             headerIcon.classList.add("fa-spinner")
         }
     })
 }
-//TODO-------------------- Doing now ------------------------------
 
+/**
+ * Logs the error messages provided by the Validator
+ * @param { String } message - text sent from the validator
+ */
 function log(message) {
-    console.log(message);
+    errorMessages.push(message)
+}
+
+//TODO: This function should only be used for the moment being as it should be changed or adpated when the corresponding changes to the Validator have been finalized
+/**
+ * Populates the error messages on the categories where the validation has failed or has a warning
+ * @param { Array } messagesList - Array of error messages
+ */
+function populateCategory(messagesList) {
+    // console.log(messagesList);
+    document.querySelectorAll("#spot-json, #spot-schema, #spot-defaults, #spot-jsonld, #spot-additional").forEach(category => {
+        const categoryContainer = category.querySelector("ul.section-content")
+        categoryContainer.classList.add("empty")
+        while (categoryContainer.children.length > 0) {
+            categoryContainer.children[0].remove()
+        }
+        if (category.children[0].children[0].classList.contains("fa-circle-xmark") || category.children[0].children[0].classList.contains("fa-circle-exclamation")) {
+            const noticePrompt = document.createElement("p")
+            noticePrompt.textContent = "*This feature is still in the testing phase, and it may not refer to the correct source of the error*"
+            noticePrompt.classList.add("notice-prompt")
+            categoryContainer.append(noticePrompt)
+            messagesList.forEach(message => {
+                const listElement = document.createElement("li")
+                listElement.textContent = message
+                categoryContainer.append(listElement)
+            })
+            categoryContainer.classList.remove("empty")
+        }
+    })
 }
 
 /**
