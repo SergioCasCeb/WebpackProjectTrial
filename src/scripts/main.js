@@ -5,7 +5,7 @@
  * to integrate the monaco editor
  */
 
-import '../styles/styles.scss'
+// import '../styles/styles.scss'
 import { visualizeTab } from './visualize'
 
 

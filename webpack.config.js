@@ -1,13 +1,23 @@
+/**
+ * @file The `webpack.config.js` takes care of all the configuration values for webpack 
+ * to bundle and compile all the necessary modules. This includes bundling all the multiple 
+ * js files as well as the external modules and dependencies. Once its set to production it also 
+ * works as a minifier to further optimize the code and create an optimized production-ready dist folder.
+ */
+
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
     mode: 'development',
     entry: {
         bundle: path.resolve(__dirname, 'src/scripts/main.js'),
+        styles: path.resolve(__dirname, 'src/styles/styles.css'),
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -29,10 +39,6 @@ module.exports = {
     module: {
         rules: [
             {
-                test:/\.scss$/,
-                use: ['style-loader','css-loader','sass-loader'],
-            },
-            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
@@ -47,8 +53,12 @@ module.exports = {
                 type: 'asset/resource'
             },
             {
+                test:/\.scss$/,
+                use: ['style-loader','css-loader','sass-loader'],
+            },
+            {
                 test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
             },
 			{
 				test: /\.ttf$/,
@@ -81,6 +91,14 @@ module.exports = {
                 },
             ],
         }),
-        new MonacoWebpackPlugin()
+        new MonacoWebpackPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].css',
+        })
     ],
+    optimization: {
+        minimizer: [
+            new CssMinimizerPlugin(),
+        ]
+    }
 }
