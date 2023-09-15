@@ -198,6 +198,9 @@ header .navbar__logo {
 header .navbar__logo .logo path {
   fill: var(--clr-neutral-50);
 }
+header .navbar__title span {
+  font-size: var(--fs-footer);
+}
 header .navbar__links {
   display: flex;
   align-items: center;

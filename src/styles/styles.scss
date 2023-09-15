@@ -236,6 +236,12 @@ header {
             }
         }
 
+        &__title{
+            span{
+                font-size: var(--fs-footer);
+            }
+        }
+
         &__links {
             display: flex;
             align-items: center;
