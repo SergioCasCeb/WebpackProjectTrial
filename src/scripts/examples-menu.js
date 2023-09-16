@@ -29,15 +29,6 @@ const tmSearchResults = tmExamplesContainer.querySelector("#filtered-results")
  */
 closeExamples.addEventListener("click", () => {
     examplesMenu.classList.add("closed")
-
-    //clean all categories
-    while (tdExamplesContainer.children.length > 1) {
-        tdExamplesContainer.lastElementChild.remove()
-    }
-
-    while (tmExamplesContainer.children.length > 1) {
-        tmExamplesContainer.lastElementChild.remove()
-    } 
 })
 
 /**
@@ -47,7 +38,6 @@ closeExamples.addEventListener("click", () => {
 examplesBtn.addEventListener("click", () => {
     examplesMenu.classList.remove("closed")
     filterThingType()
-    populateCategories()
 })
 
 
@@ -65,6 +55,7 @@ async function getCategories() {
 
     const categoriesTD = Object.entries(data["td"])
     categoriesTD.forEach(category => {
+
         const newCategory = {
             name: "",
             description: "",
@@ -77,12 +68,8 @@ async function getCategories() {
         //Use the category as the id
         newCategory["id"] = category[0]
 
-        //Utilze the path to the raw file to fetch the description
-        fetch(category[1].description)
-            .then(response => response.text())
-            .then(textString => {
-                newCategory["description"] = textString
-            })
+        //get the description text
+        newCategory["description"] = category[1]["description"]
 
         //Push to the td categories array
         tdCategories.push(newCategory)
@@ -90,6 +77,7 @@ async function getCategories() {
 
     const categoriesTM = Object.entries(data["tm"])
     categoriesTM.forEach(category => {
+
         const newCategory = {
             name: "",
             description: "",
@@ -102,16 +90,14 @@ async function getCategories() {
         //use the category as the id
         newCategory["id"] = category[0]
 
-        //Utilze the path to the raw file to fetch the description
-        fetch(category[1].description)
-            .then(response => response.text())
-            .then(textString => {
-                newCategory["description"] = textString
-            })
+        //get the description text
+        newCategory["description"] = category[1]["description"]
 
         //Push to the td categories array
         tmCategories.push(newCategory)
     })
+
+    populateCategories()
 }
 
 /**
@@ -146,7 +132,6 @@ function filterThingType() {
         })
     }
 }
-
 
 /**
  * Event listeners to check for changes and scroll to the respective category
@@ -236,100 +221,94 @@ function populateCategories() {
  * @param {string} thingType - td or tm
  */
 async function getAllExamples(categoryId, thingType) {
+
     const res = await fetch('./examples/examples-paths.json')
     const data = await res.json()
+
     const examples = Object.entries(data[thingType][categoryId]["examples"])
-    examples.forEach(example => {
-        createExample(categoryId, example[1]["path"])
-    })
+
+    for (const example of examples) {
+
+        //get category
+        const categoryContainer = document.querySelector(`[data-category='${categoryId}'] .examples-category__container`)
+
+        //individual examples
+        const exampleContainer = document.createElement('div')
+        exampleContainer.classList.add("example")
+        categoryContainer.appendChild(exampleContainer)
+
+        //create example title
+        const exampleName = document.createElement('div')
+        exampleName.classList.add("example__name")
+        const exampleNameIcon = document.createElement('i')
+        exampleNameIcon.classList.add("fa-solid", "fa-file-code")
+        exampleName.appendChild(exampleNameIcon)
+        const exampleNameTitle = document.createElement('p')
+        exampleNameTitle.innerText = example[1]["title"]
+        // exampleNameTitle.innerText = data['$title']
+        exampleName.appendChild(exampleNameTitle)
+        exampleContainer.appendChild(exampleName)
+
+        //add event listener to show example information and interaction btns
+        exampleName.addEventListener('click', () => {
+            exampleName.parentElement.classList.toggle("open")
+        })
+
+        //create example content
+        const exampleContent = document.createElement('div')
+        exampleContent.classList.add("example__content")
+        exampleContainer.appendChild(exampleContent)
+
+        const exampleDescription = document.createElement('p')
+        exampleDescription.innerText = example[1]["description"]
+        exampleDescription.classList.add('example__description')
+        exampleContent.appendChild(exampleDescription)
+
+        const exampleBtns = document.createElement('div')
+        exampleBtns.classList.add("example__btn")
+        exampleContent.appendChild(exampleBtns)
+
+        const exampleBtnUse = document.createElement('button')
+        exampleBtnUse.classList.add("example__btn--use")
+        exampleBtns.appendChild(exampleBtnUse)
+
+        const exampleBtnShow = document.createElement('button')
+        exampleBtnShow.classList.add("example__btn--show")
+        exampleBtns.appendChild(exampleBtnShow)
+
+        const exampleIconShow = document.createElement('i')
+        exampleIconShow.classList.add("fa-solid", "fa-eye")
+        exampleBtnShow.appendChild(exampleIconShow)
+
+        const exampleTxtShow = document.createElement('p')
+        exampleTxtShow.innerText = "Show Snipet"
+        exampleBtnShow.appendChild(exampleTxtShow)
+
+        const exampleIconUse = document.createElement('i')
+        exampleIconUse.classList.add("fa-solid", "fa-file-pen")
+        exampleBtnUse.appendChild(exampleIconUse)
+
+        const exampleTxtUse = document.createElement('p')
+        exampleTxtUse.innerText = "Use as Template"
+        exampleBtnUse.appendChild(exampleTxtUse)
+
+        //Listener to generate an editor with the examples information
+        exampleBtnUse.addEventListener('click', () => {
+            getTemplateData(example[1]["path"])
+            exampleName.parentElement.classList.toggle("open")
+        })
+    }
 }
 
 /**
- * Create all the html container elements for the examples
- * and utilize the raw paths to fetch the respective information
- * @param { String } folderName - id of the category
- * @param { String } rawPath - the raw path to the github example
+ * Gets the example data to pupulate the monaco editor and allow the user to use it as a template
  */
-async function createExample(folderName, rawPath) {
-    const res = await fetch(rawPath)
+async function getTemplateData(path) {
+    const res = await fetch(path)
     const data = await res.json()
-
-    //get category
-    const categoryContainer = document.querySelector(`[data-category='${folderName}'] .examples-category__container`)
-
-    //individual examples
-    const exampleContainer = document.createElement('div')
-    exampleContainer.classList.add("example")
-    categoryContainer.appendChild(exampleContainer)
-
-    //create example title
-    const exampleName = document.createElement('div')
-    exampleName.classList.add("example__name")
-    const exampleNameIcon = document.createElement('i')
-    exampleNameIcon.classList.add("fa-solid", "fa-file-code")
-    exampleName.appendChild(exampleNameIcon)
-    const exampleNameTitle = document.createElement('p')
-    exampleNameTitle.innerText = data['$title']
-    exampleName.appendChild(exampleNameTitle)
-    exampleContainer.appendChild(exampleName)
-
-    //add event listener to show example information and interaction btns
-    exampleName.addEventListener('click', () => {
-        exampleName.parentElement.classList.toggle("open")
-    })
-
-    //create example content
-    const exampleContent = document.createElement('div')
-    exampleContent.classList.add("example__content")
-    exampleContainer.appendChild(exampleContent)
-
-    const exampleDescription = document.createElement('p')
-    exampleDescription.innerText = data['$description']
-    exampleDescription.classList.add('example__description')
-    exampleContent.appendChild(exampleDescription)
-
-    const exampleBtns = document.createElement('div')
-    exampleBtns.classList.add("example__btn")
-    exampleContent.appendChild(exampleBtns)
-
-    const exampleBtnUse = document.createElement('button')
-    exampleBtnUse.classList.add("example__btn--use")
-    exampleBtns.appendChild(exampleBtnUse)
-
-    const exampleBtnShow = document.createElement('button')
-    exampleBtnShow.classList.add("example__btn--show")
-    exampleBtns.appendChild(exampleBtnShow)
-
-    const exampleIconShow = document.createElement('i')
-    exampleIconShow.classList.add("fa-solid", "fa-eye")
-    exampleBtnShow.appendChild(exampleIconShow)
-
-    const exampleTxtShow = document.createElement('p')
-    exampleTxtShow.innerText = "Show Snipet"
-    exampleBtnShow.appendChild(exampleTxtShow)
-
-    const exampleIconUse = document.createElement('i')
-    exampleIconUse.classList.add("fa-solid", "fa-file-pen")
-    exampleBtnUse.appendChild(exampleIconUse)
-
-    const exampleTxtUse = document.createElement('p')
-    exampleTxtUse.innerText = "Use as Template"
-    exampleBtnUse.appendChild(exampleTxtUse)
-
-    //Listener to generate an editor with the examples information
-    exampleBtnUse.addEventListener('click', () => {
-        createIde(++ideCount.ideNumber, data)
-        examplesMenu.classList.add("closed")
-        // Clear all the categories content
-        while (tdExamplesContainer.children.length > 1) {
-            tdExamplesContainer.lastElementChild.remove()
-        }
-        while (tmExamplesContainer.children.length > 1) {
-            tmExamplesContainer.lastElementChild.remove()
-        }
-    })
+    createIde(++ideCount.ideNumber, data)
+    examplesMenu.classList.add("closed")
 }
-
 
 /**
  * Listener when search input is used in the examples menu

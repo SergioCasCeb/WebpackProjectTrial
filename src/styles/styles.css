@@ -176,6 +176,32 @@ img {
   margin: 0 auto;
 }
 
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: var(--clr-neutral-50);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--clr-primary-500);
+  border-radius: 50vh;
+  border: 1px solid var(--clr-neutral-50);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  border: none;
+}
+
+@supports (scrollbar-color: var(--clr-primary-500) var(--clr-neutral-50)) {
+  * {
+    scrollbar-color: var(--clr-primary-500) var(--clr-neutral-50);
+  }
+}
 /***** Header *****/
 header {
   background-color: var(--clr-primary-500);
@@ -1504,13 +1530,16 @@ main .console {
   content: "\f0d7";
   pointer-events: none;
 }
-.examples-menu .examples-menu-container__filter .form-field select, .examples-menu .examples-menu-container__filter .form-field .search-bar, .examples-menu .examples-menu-container__filter .form-field .search-input {
+.examples-menu .examples-menu-container__filter .form-field select,
+.examples-menu .examples-menu-container__filter .form-field .search-bar,
+.examples-menu .examples-menu-container__filter .form-field .search-input {
   background-color: var(--clr-neutral-50);
   color: var(--clr-neutral-900);
   font-family: var(--ff-primary);
   font-size: inherit;
 }
-.examples-menu .examples-menu-container__filter .form-field select, .examples-menu .examples-menu-container__filter .form-field .search-bar {
+.examples-menu .examples-menu-container__filter .form-field select,
+.examples-menu .examples-menu-container__filter .form-field .search-bar {
   border: 2px solid var(--clr-neutral-300);
 }
 .examples-menu .examples-menu-container__filter .form-field select {
@@ -1651,7 +1680,6 @@ main .console {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  max-width: 100%;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example__description {
   height: 0;
@@ -1659,7 +1687,8 @@ main .console {
   font-size: var(--fs-p);
   line-height: var(--lh-sub-header);
   max-width: 50ch;
-  overflow: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
   padding-right: 1rem;
   transition: height 250ms ease-in-out 250ms, margin 250ms ease-in-out 250ms, opacity 250ms ease-in-out 0ms;
 }
@@ -1705,7 +1734,7 @@ main .console {
   pointer-events: all;
 }
 .examples-menu .examples-menu-container .examples-container__td .examples-category__container .example.open .example__description, .examples-menu .examples-menu-container .examples-container__tm .examples-category__container .example.open .example__description {
-  height: 8rem;
+  height: 9rem;
   margin: 2rem 0;
   opacity: 1;
   transition: height 250ms ease-in-out 0s, margin 250ms ease-in-out 0s, opacity 200ms ease-in-out 250ms;
