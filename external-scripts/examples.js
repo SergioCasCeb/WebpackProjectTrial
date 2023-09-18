@@ -66,7 +66,7 @@ async function writeExamplesToFile(){
     
     try {
         const jsonData = JSON.stringify(examplesData, null, 2)
-        const filePath = "./src/examples/examples-paths.json"
+        const filePath = "./src/examples-paths/examples-paths.json"
         await fs.writeFile(filePath, jsonData, 'utf-8')
         console.log("File created succesfully");
         
