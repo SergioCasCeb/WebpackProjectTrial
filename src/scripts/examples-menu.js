@@ -50,7 +50,7 @@ getCategories()
  * Get all the td and tm names, description and id from the paths file
  */
 async function getCategories() {
-    const res = await fetch('./examples/examples-paths.json')
+    const res = await fetch('./examples-paths/examples-paths.json')
     const data = await res.json()
 
     const categoriesTD = Object.entries(data["td"])
@@ -222,7 +222,7 @@ function populateCategories() {
  */
 async function getAllExamples(categoryId, thingType) {
 
-    const res = await fetch('./examples/examples-paths.json')
+    const res = await fetch('./examples-paths/examples-paths.json')
     const data = await res.json()
 
     const examples = Object.entries(data[thingType][categoryId]["examples"])

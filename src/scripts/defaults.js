@@ -5,9 +5,9 @@
  * feature such as json, yaml conversion and the download option.
  */
 
-import * as monaco from 'monaco-editor'
+import { editor } from 'monaco-editor'
 import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
-import { generateTD, offerFileDownload, addDefaults, removeDefaults } from './util'
+import { generateTD, offerFileDownload, addDefaultsUtil, removeDefaultsUtil } from './util'
 import { getEditorData } from './editor'
 
 /******************************************************************/
@@ -28,7 +28,7 @@ export const defaultsView = document.querySelector("#defaults-view")
  * to the local storage to change the fontsize correspondingly
  */
 async function initDefaultsEditor() {
-    window.defaultsEditor = monaco.editor.create(document.getElementById('defaults-container'), {
+    window.defaultsEditor = editor.create(document.getElementById('defaults-container'), {
         value: "",
         language: "json",
         automaticLayout: true,
@@ -67,12 +67,12 @@ defaultsYamlBtn.addEventListener("click", () => {
 defaultsAddBtn.addEventListener("click", () => {
     defaultsAddBtn.disabled = true
     defaultsRemoveBtn.disabled = false
-    addDefaults(window.defaultsEditor)
+    addDefaultsUtil(window.defaultsEditor)
 })
 
 //Remove defaults btn
 defaultsRemoveBtn.addEventListener("click", () => {
-    removeDefaults(window.defaultsEditor)
+    removeDefaultsUtil(window.defaultsEditor)
     defaultsAddBtn.disabled = false
     defaultsRemoveBtn.disabled = true
 })

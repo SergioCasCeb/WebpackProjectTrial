@@ -45,29 +45,6 @@ export function visualize(editorValue) {
 
         vegaVis("#visualized", editorValue)
     }
-
-    // try {
-    //     td = JSON.parse(editorValue)
-    //     visualizeView.classList.remove("hidden")
-
-    //     if(graphViewInput.checked === true){
-    //         graphInputs.classList.remove("hidden")
-    //         treeInputs.classList.add("hidden")
-    //         jsonldVis(td, "#visualized", {
-    //             h: document.getElementById("visualize-container").offsetHeight - 30,
-    //             w: document.getElementById("visualize-container").offsetWidth - 20,
-    //             maxLabelWidth: 200,
-    //             scalingFactor: 5,
-    //         })
-    //     }else{
-    //         graphInputs.classList.add("hidden")
-    //         treeInputs.classList.remove("hidden")
-
-    //         vegaVis("#visualized", td)
-    //     }
-
-
-    // }
 }
 
 // Download as svg button

@@ -28,9 +28,9 @@ shareUrlContainer.value = ""
 
 //Open the save menu and change the text depending on the Thing type (TD or TM)
 saveMenuBtn.addEventListener("click", () => {
-  editorList.forEach(editor => {
-    if(editor["_domElement"].classList.contains("active")){
-      const editorValues = getEditorData(editor)
+  editorList.forEach(editorInstance => {
+    if(editorInstance["_domElement"].classList.contains("active")){
+      const editorValues = getEditorData(editorInstance)
       thingTypeText.innerText = editorValues[1].toUpperCase()
     }
   })
@@ -50,9 +50,9 @@ closeSaveMenu.addEventListener("click", () => {
  */
 shareUrlBtn.addEventListener("click", () => {
   try {
-    editorList.forEach(editor => {
-      if(editor["_domElement"].classList.contains("active")){
-        const editorValues = getEditorData(editor)
+    editorList.forEach(editorInstance => {
+      if(editorInstance["_domElement"].classList.contains("active")){
+        const editorValues = getEditorData(editorInstance)
 
         saveAsURL(editorValues[0], editorValues[1], editorValues[2])
       }
@@ -89,11 +89,11 @@ async function saveAsURL(formatType, thingType, editorContent){
  */
 openEditdorBtn.addEventListener("click", () => {
   try {
-    editorList.forEach(editor => {
-      if(editor["_domElement"].classList.contains("active")){
-        const editorValues = getEditorData(editor)
+    editorList.forEach(editorInstance => {
+      if(editorInstance["_domElement"].classList.contains("active")){
+        const editorValues = getEditorData(editorInstance)
 
-        openEditdor(editorValues[0], editorValues[1], editor)
+        openEditdor(editorValues[0], editorValues[1], editorInstance)
       }
     })
   } catch (err) {
@@ -121,13 +121,13 @@ openUrlTab.addEventListener("click", () => {
  * then it calls the utils offerFileDownload
  */
 downloadBtn.addEventListener("click", () => {
-  editorList.forEach(editor => {
-    if(editor["_domElement"].classList.contains("active")){
-      const editorValues = getEditorData(editor)
+  editorList.forEach(editorInstance => {
+    if(editorInstance["_domElement"].classList.contains("active")){
+      const editorValues = getEditorData(editorInstance)
       let tabName = editorValues[2]["title"].replaceAll(' ', '-')
       const contentType = `application/${editorValues[0]};charset=utf-8;`
 
-      offerFileDownload(`${tabName}.${editorValues[0]}`, editor.getValue(), contentType)
+      offerFileDownload(`${tabName}.${editorValues[0]}`, editorInstance.getValue(), contentType)
     }
   })
   saveMenu.classList.add("closed")
@@ -159,11 +159,11 @@ async function saveAsFile(){
     let editorContent = ""
     let acceptOpts = {}
     let acceptDesc = ""
-    editorList.forEach(editor => {
-      if(editor["_domElement"].classList.contains("active")){
-        const editorValues = getEditorData(editor)
+    editorList.forEach(editorInstance => {
+      if(editorInstance["_domElement"].classList.contains("active")){
+        const editorValues = getEditorData(editorInstance)
         fileName = `${editorValues[2]["title"]}.${editorValues[0]}`
-        editorContent = editor.getValue()
+        editorContent = editorInstance.getValue()
         acceptOpts = editorValues[0] === "json" ? { "text/plain": [".jsonld", ".json"] } : { "text/plain": [".yaml"] }
         acceptDesc = editorValues[0] === "json" ? "json or jsonld files only" : "yaml files only"
       }

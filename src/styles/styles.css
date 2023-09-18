@@ -178,6 +178,7 @@ img {
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 /* Track */
@@ -1009,7 +1010,7 @@ main .console {
   align-items: center;
   justify-content: center;
   gap: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 .console__content .visualize-view .visualize-inputs__type .vis-type-option input[type=radio] {
   -webkit-appearance: none;

@@ -20,10 +20,10 @@ jsonBtn.checked = true
 
 //Click event to show the warning text before converting the td/tm
 yamlBtn.addEventListener("click", ()=> {
-  editorList.forEach(editor => {
-    if(editor["_domElement"].classList.contains("active")){
+  editorList.forEach(editorInstance => {
+    if(editorInstance["_domElement"].classList.contains("active")){
       try{
-        JSON.parse(editor.getValue())
+        JSON.parse(editorInstance.getValue())
       }
       catch(err){
         alert('TD is not a valid JSON object');
@@ -55,9 +55,9 @@ jsonBtn.addEventListener("click", ()=> {
  * Get the currently active editor and its value and convert to json or yaml
  */
 function convertJsonYaml(){
-  editorList.forEach(editor => {
-    if(editor["_domElement"].classList.contains("active")){
-      generateTD(jsonBtn.checked === true ? "json" : "yaml", editor)
+  editorList.forEach(editorInstance => {
+    if(editorInstance["_domElement"].classList.contains("active")){
+      generateTD(jsonBtn.checked === true ? "json" : "yaml", editorInstance)
     }
   })
 }

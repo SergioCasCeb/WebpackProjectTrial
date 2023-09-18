@@ -20,11 +20,11 @@
  * and offers a few utility functions.
  */
 
-import * as monaco from 'monaco-editor'
-import * as Validators from '@thing-description-playground/core/dist/web-bundle.min.js'
+import { editor } from 'monaco-editor'
+import { convertTDJsonToYaml, convertTDYamlToJson, tdValidator, tmValidator, compress, decompress } from '@thing-description-playground/core/dist/web-bundle.min.js'
 import tdToOpenAPI from '@thing-description-playground/td_to_openapi/dist/web-bundle.min.js'
 import tdToAsyncAPI from '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
-import * as tdDefaults from '@thing-description-playground/defaults/dist/web-bundle.min.js'
+import { addDefaults, removeDefaults } from '@thing-description-playground/defaults/dist/web-bundle.min.js'
 import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
 
 
@@ -96,9 +96,9 @@ export function offerFileDownload(fileName, content, type) {
  * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
-export function generateTD(fileType, editor) {
+export function generateTD(fileType, editorInstance) {
     return new Promise((res, rej) => {
-        const tdToValidate = editor.getValue()
+        const tdToValidate = editorInstance.getValue()
 
         if (tdToValidate === "") {
             rej("No TD given to generate TD instance")
@@ -109,11 +109,11 @@ export function generateTD(fileType, editor) {
         else {
             try {
                 const content = fileType === "json"
-                    ? JSON.stringify(JSON.parse(Validators.convertTDYamlToJson(tdToValidate)), undefined, 4)
-                    : Validators.convertTDJsonToYaml(tdToValidate)
+                    ? JSON.stringify(JSON.parse(convertTDYamlToJson(tdToValidate)), undefined, 4)
+                    : convertTDJsonToYaml(tdToValidate)
 
-                monaco.editor.setModelLanguage(editor.getModel(), fileType)
-                editor.setValue(content)
+                editor.setModelLanguage(editorInstance.getModel(), fileType)
+                editorInstance.setValue(content)
             } catch (err) {
                 rej("TD generation problem: " + err)
             }
@@ -126,11 +126,11 @@ export function generateTD(fileType, editor) {
  * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
-export function generateOAP(fileType, editor) {
+export function generateOAP(fileType, editorInstance) {
     return new Promise((res, rej) => {
         const tdToValidate = fileType === "json"
-            ? editor.getValue()
-            : Validators.convertTDYamlToJson(editor.getValue())
+            ? editorInstance.getValue()
+            : convertTDYamlToJson(editorInstance.getValue())
 
         if (tdToValidate === "") {
             rej("No TD given to generate OpenAPI instance")
@@ -141,7 +141,7 @@ export function generateOAP(fileType, editor) {
         else {
             tdToOpenAPI(JSON.parse(tdToValidate)).then(openAPI => {
                 const content = fileType === "json" ? JSON.stringify(openAPI[fileType], undefined, 4) : openAPI[fileType]
-                monaco.editor.setModelLanguage(window.openApiEditor.getModel(), fileType)
+                editor.setModelLanguage(window.openApiEditor.getModel(), fileType)
                 window.openApiEditor.getModel().setValue(content)
             }, err => { rej("OpenAPI generation problem: " + err) })
         }
@@ -153,11 +153,11 @@ export function generateOAP(fileType, editor) {
  * the TD in the Editor
  * @param {"json"|"yaml"} fileType
  */
-export function generateAAP(fileType, editor) {
+export function generateAAP(fileType, editorInstance) {
     return new Promise((res, rej) => {
         const tdToValidate = fileType === "json"
-            ? editor.getValue()
-            : Validators.convertTDYamlToJson(editor.getValue())
+            ? editorInstance.getValue()
+            : convertTDYamlToJson(editorInstance.getValue())
 
         if (tdToValidate === "") {
             rej("No TD given to generate AsyncAPI instance")
@@ -168,7 +168,7 @@ export function generateAAP(fileType, editor) {
         else {
             tdToAsyncAPI(JSON.parse(tdToValidate)).then(asyncAPI => {
                 const content = fileType === "json" ? JSON.stringify(asyncAPI[fileType], undefined, 4) : asyncAPI[fileType]
-                monaco.editor.setModelLanguage(window.asyncApiEditor.getModel(), fileType)
+                editor.setModelLanguage(window.asyncApiEditor.getModel(), fileType)
                 window.asyncApiEditor.getModel().setValue(content)
             }, err => { rej("AsyncAPI generation problem: " + err) })
         }
@@ -179,14 +179,14 @@ export function generateAAP(fileType, editor) {
  * applies adding unset default values
  * to the TD in the editor
  */
-export function addDefaults(editor) {
-    const tdToExtend = editor["_domElement"].dataset.modeId === "json"
-        ? JSON.parse(editor.getValue())
-        : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
-    tdDefaults.addDefaults(tdToExtend)
+export function addDefaultsUtil(editorInstance) {
+    const tdToExtend = editorInstance["_domElement"].dataset.modeId === "json"
+        ? JSON.parse(editorInstance.getValue())
+        : JSON.parse(convertTDYamlToJson(editorInstance.getValue()))
+    addDefaults(tdToExtend)
     window.defaultsEditor.getModel().setValue(JSON.stringify(tdToExtend, undefined, 4))
-    monaco.editor.setModelLanguage(window.defaultsEditor.getModel(), editor["_domElement"].dataset.modeId)
-    if (editor["_domElement"].dataset.modeId === "yaml") {
+    editor.setModelLanguage(window.defaultsEditor.getModel(), editorInstance["_domElement"].dataset.modeId)
+    if (editorInstance["_domElement"].dataset.modeId === "yaml") {
         generateTD("yaml", window.defaultsEditor)
     }
 }
@@ -196,14 +196,14 @@ export function addDefaults(editor) {
  * default values from the TD
  * in the editor
  */
-export function removeDefaults(editor) {
-    const tdToReduce = editor["_domElement"].dataset.modeId === "json"
-        ? JSON.parse(editor.getValue())
-        : JSON.parse(Validators.convertTDYamlToJson(editor.getValue()))
-    tdDefaults.removeDefaults(tdToReduce)
+export function removeDefaultsUtil(editorInstance) {
+    const tdToReduce = editorInstance["_domElement"].dataset.modeId === "json"
+        ? JSON.parse(editorInstance.getValue())
+        : JSON.parse(convertTDYamlToJson(editorInstance.getValue()))
+    removeDefaults(tdToReduce)
     window.defaultsEditor.getModel().setValue(JSON.stringify(tdToReduce, undefined, 4))
-    monaco.editor.setModelLanguage(window.defaultsEditor.getModel(), editor["_domElement"].dataset.modeId)
-    if (editor["_domElement"].dataset.modeId === "yaml") {
+    editor.setModelLanguage(window.defaultsEditor.getModel(), editorInstance["_domElement"].dataset.modeId)
+    if (editorInstance["_domElement"].dataset.modeId === "yaml") {
         generateTD("yaml", window.defaultsEditor)
     }
 }
@@ -221,7 +221,7 @@ export function validate(thingType, editorContent) {
     const checkJsonLd = validateJsonLdBtn.checked
     const checkTmConformance = tmConformanceBtn.checked
 
-    const validator = thingType === "td" ? Validators.tdValidator : Validators.tmValidator
+    const validator = thingType === "td" ? tdValidator : tmValidator
 
     validator(editorContent, log, { checkDefaults: true, checkJsonLd, checkTmConformance })
         .then(result => {
@@ -360,7 +360,7 @@ export async function save(formatType, thingType, editorContent) {
     }
 
     const data = thingType + formatType + value
-    const compressed = Validators.compress(data)
+    const compressed = compress(data)
     return `${window.location.href}#${compressed}`
 }
 
@@ -369,15 +369,15 @@ export async function save(formatType, thingType, editorContent) {
  * @param {string} docType "td" or "tm"
  * @param {string} format "json" or "yaml"
  */
-export async function openEditdor(formatType, thingType, editor) {
+export async function openEditdor(formatType, thingType, editorInstance) {
 
-    const value = formatType === "yaml" ? Validators.convertTDYamlToJson(editor.getValue()) : editor.getValue()
+    const value = formatType === "yaml" ? convertTDYamlToJson(editorInstance.getValue()) : editorInstance.getValue()
     if (!value) {
         alert(`No ${thingType.toUpperCase()} provided`)
         return;
     }
     const data = thingType + formatType + value
-    const compressed = Validators.compress(data)
+    const compressed = compress(data)
     const URL = `https://eclipse.github.io/editdor/?td=${compressed}`
     window.open(URL, '_blank')
 }
@@ -386,7 +386,7 @@ export async function openEditdor(formatType, thingType, editor) {
  * Given a URL fragment construct current value of an editor.
  */
 export function getEditorValue(fragment) {
-    const data = Validators.decompress(fragment)
+    const data = decompress(fragment)
     return data || '';
 }
 

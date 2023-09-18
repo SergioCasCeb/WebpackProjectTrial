@@ -5,7 +5,7 @@
  * feature such as json, yaml conversion and the download option.
  */
 
-import * as monaco from 'monaco-editor'
+import { editor } from 'monaco-editor'
 import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
 import { generateTD, offerFileDownload } from './util'
 import { getEditorData } from './editor'
@@ -27,7 +27,7 @@ const asyncApiDownload = document.querySelector("#async-api-download")
  * to the local storage to change the fontsize correspondingly
  */
 async function initAsyncApiEditor() {
-    window.asyncApiEditor = monaco.editor.create(document.getElementById('async-api-container'), {
+    window.asyncApiEditor = editor.create(document.getElementById('async-api-container'), {
         value: "",
         language: "json",
         automaticLayout: true,

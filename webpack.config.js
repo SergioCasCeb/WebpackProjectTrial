@@ -86,8 +86,8 @@ module.exports = {
                     to: 'favicon',
                 },
                 {
-                    from: './src/examples',
-                    to: 'examples',
+                    from: './src/examples-paths',
+                    to: 'examples-paths',
                 },
             ],
         }),

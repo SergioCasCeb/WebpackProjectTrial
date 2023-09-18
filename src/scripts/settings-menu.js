@@ -5,7 +5,7 @@
  * subsequently stored in the local storage
  */  
 
-import * as monaco from 'monaco-editor'
+import { editor } from 'monaco-editor'
 import themeData from './monochrome-theme'
 
 /***********************************************************/
@@ -26,7 +26,7 @@ const tmConformanceBtn = document.querySelector('#tm-conformance')
 /***********************************************************/
 /*              Set New Theme Monaco editor                */
 /***********************************************************/
-monaco.editor.defineTheme('monochrome', themeData)
+editor.defineTheme('monochrome', themeData)
 
 //set the stored theme (if any)"
 document.onload = setTheme()
@@ -122,11 +122,11 @@ function setTheme () {
  * Function which gets the value from the localStorage and sets the new font size
  * @param {object} editor - the editor object which references the created monaco editor
  */
-export function setFontSize (editor) {
+export function setFontSize (editorInstance) {
     const activeFontSize = localStorage.getItem("fontSize") === null ? '14' : localStorage.getItem("fontSize")
     fontSizeTxt.innerText = activeFontSize
     fontSizeSlider.value = activeFontSize
-    editor.updateOptions({
+    editorInstance.updateOptions({
         fontSize: activeFontSize
     })
 }
@@ -137,10 +137,10 @@ export function setFontSize (editor) {
  */
 function setMonacoTheme(theme){
     if (theme == "dark-mode") {
-        monaco.editor.setTheme('vs-dark')
+        editor.setTheme('vs-dark')
     }else if (theme == "light-mode") {
-        monaco.editor.setTheme('vs')
+        editor.setTheme('vs')
     }else{
-        monaco.editor.setTheme('monochrome')
+        editor.setTheme('monochrome')
     }
 }

@@ -7,7 +7,7 @@
  * as well as the "Validators" and the "JsonSpellChecker" from the json-spell-checker dependency
  */
 
-import * as monaco from 'monaco-editor'
+import { editor, languages, MarkerSeverity } from 'monaco-editor'
 import { getEditorValue, validate } from "./util"
 import { setFontSize, editorForm, fontSizeSlider } from './settings-menu'
 import { autoValidateBtn, validationTab, validationView } from './validation'
@@ -180,7 +180,7 @@ export function createIde(ideNumber, exampleValue) {
  */
 async function initEditor(ideNumber, editorValue, editorLanguage) {
   editorValue = editorLanguage === "json" ? JSON.stringify(editorValue, null, 2) : convertTDJsonToYaml(JSON.stringify(editorValue))
-  let editor = monaco.editor.create(document.getElementById(`editor${ideNumber}`), {
+  let editorInstance = editor.create(document.getElementById(`editor${ideNumber}`), {
     value: editorValue,
     language: editorLanguage,
     automaticLayout: true,
@@ -188,20 +188,20 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
   })
 
   //Bind the font size slider from the settings to the editor(s) and assign the specified font size
-  document.onload = setFontSize(editor)
+  document.onload = setFontSize(editorInstance)
   fontSizeSlider.addEventListener("input", () => {
-    setFontSize(editor)
+    setFontSize(editorInstance)
   })
 
   //Bind the reset button form the settings to the editor and assign the specied font size
   editorForm.addEventListener("reset", () => {
-    setFontSize(editor)
+    setFontSize(editorInstance)
   })
 
-  editor.getModel().onDidChangeContent(_ => {
+  editorInstance.getModel().onDidChangeContent(_ => {
 
     try {
-      const editorValues = getEditorData(editor)
+      const editorValues = getEditorData(editorInstance)
       changeThingIcon(editorValues[1])
       updateTabName(editorValues[2]["title"])
 
@@ -216,11 +216,11 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
         //Get if thing type and set the respective schema
         if (editorValues[2]["@type"] === "tm:ThingModel") {
           // Configure JSON language support with schemas and schema associations
-          monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+          languages.json.jsonDefaults.setDiagnosticsOptions({
             validate: true,
             schemas: [
               {
-                fileMatch: [editor.getModel().uri.toString()],
+                fileMatch: [editorInstance.getModel().uri.toString()],
                 schema: tmSchema,
                 uri: 'file:///tm-schema.json'
               }
@@ -228,11 +228,11 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
           });
         }
         else {
-          monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+          languages.json.jsonDefaults.setDiagnosticsOptions({
             validate: true,
             schemas: [
               {
-                fileMatch: [editor.getModel().uri.toString()],
+                fileMatch: [editorInstance.getModel().uri.toString()],
                 schema: tdSchema,
                 uri: 'file:///td-schema.json'
               }
@@ -240,7 +240,7 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
           });
         }
 
-        markTypos(editor.getModel());
+        markTypos(editorInstance.getModel());
       }
     } catch (err) {
       console.error("Not a proper JSON object");
@@ -248,7 +248,7 @@ async function initEditor(ideNumber, editorValue, editorLanguage) {
 
   });
 
-  editorList.push(editor)
+  editorList.push(editorInstance)
 }
 
 /**
@@ -264,7 +264,7 @@ function markTypos(model) {
   typos.forEach(typo => {
     markers.push({
       message: typo.message,
-      severity: monaco.MarkerSeverity.Warning,
+      severity: MarkerSeverity.Warning,
       startLineNumber: typo.startLineNumber,
       startColumn: typo.startColumn,
       endLineNumber: typo.endLineNumber,
@@ -272,7 +272,7 @@ function markTypos(model) {
     })
   })
 
-  monaco.editor.setModelMarkers(model, 'typo', markers)
+  editor.setModelMarkers(model, 'typo', markers)
 }
 
 /**
@@ -280,9 +280,9 @@ function markTypos(model) {
  * @param { monaco object } editor 
  * @returns {String, String, JSON Object} , [formatType, thingType, editorContent]
  */
-export function getEditorData(editor) {
-  const formatType = editor["_domElement"].dataset.modeId
-  const editorContent = formatType === "json" ? JSON.parse(editor.getValue()) : JSON.parse(convertTDYamlToJson(editor.getValue()))
+export function getEditorData(editorInstance) {
+  const formatType = editorInstance["_domElement"].dataset.modeId
+  const editorContent = formatType === "json" ? JSON.parse(editorInstance.getValue()) : JSON.parse(convertTDYamlToJson(editorInstance.getValue()))
   const thingType = editorContent["@type"] === "tm:ThingModel" ? "tm" : "td"
 
   return [formatType, thingType, editorContent]
@@ -423,34 +423,3 @@ function updateTabName(docTitle) {
     }
   })
 }
-
-
-//TODO: To be changed in the future
-/**
- * Event listener to allow the user to change the name of the name by double clicking
- * @param {event} e - dblclick event
- */
-// tabsLeftContainer.addEventListener("dblclick", (e) => {
-//   const selectedElement = e.target
-
-//   //If target has the calss of content-tab set the attribute contenteditable to true and focus the element
-//   if (selectedElement.className == "content-tab") {
-//     selectedElement.setAttribute("contenteditable", "true")
-//     selectedElement.focus()
-
-//     //Once user presses enter disable the contenteditable attribute and stop focus
-//     selectedElement.addEventListener("keypress", (e) => {
-//       //If element is left empty add a default text
-//       //else remove the content editable attribute and stop focus
-//       if(e.key === "Enter"){
-//         if(selectedElement.innerText === "\n"){
-//           selectedElement.innerText = "My Thing"
-//         }
-//         else{
-//           selectedElement.setAttribute("contenteditable", "false")
-//           selectedElement.blur()
-//         }
-//       }
-//     })
-//   }
-// })

@@ -10,7 +10,7 @@ import { defaultsView, defaultsJsonBtn, defaultsYamlBtn, defaultsAddBtn } from '
 import { visualize } from './visualize'
 import { validationView } from './validation'
 import { convertTDYamlToJson, detectProtocolSchemes } from '@thing-description-playground/core/dist/web-bundle.min.js'
-import { generateOAP, generateAAP, addDefaults, validate } from './util'
+import { generateOAP, generateAAP, addDefaultsUtil, validate } from './util'
 import { editorList, getEditorData } from './editor'
 
 /******************************************************************/
@@ -60,9 +60,9 @@ visualizationOptions.forEach(option => {
             container.classList.add("hidden")
         })
 
-        editorList.forEach(editor => {
-            if (editor["_domElement"].classList.contains("active")) {
-                const editorValue = editor["_domElement"].dataset.modeId === "yaml" ? convertTDYamlToJson(editor.getValue()) : editor.getValue()
+        editorList.forEach(editorInstance => {
+            if (editorInstance["_domElement"].classList.contains("active")) {
+                const editorValue = editorInstance["_domElement"].dataset.modeId === "yaml" ? convertTDYamlToJson(editorInstance.getValue()) : editorInstance.getValue()
                 try {
                     let td = JSON.parse(editorValue)
                     hideConsoleError()
@@ -72,7 +72,7 @@ visualizationOptions.forEach(option => {
                     } else {
                         switch (option.id) {
                             case "open-api-tab":
-                                if (editor["_domElement"].dataset.modeId === "yaml") {
+                                if (editorInstance["_domElement"].dataset.modeId === "yaml") {
                                     openApiJsonBtn.disabled = false
                                     openApiYamlBtn.disabled = true
                                 } else {
@@ -81,13 +81,13 @@ visualizationOptions.forEach(option => {
                                 }
 
                                 if (td["@type"] !== "tm:ThingModel") {
-                                    enableAPIConversionWithProtocol(editor)
+                                    enableAPIConversionWithProtocol(editorInstance)
                                 }
 
                                 break;
 
                             case "async-api-tab":
-                                if (editor["_domElement"].dataset.modeId === "yaml") {
+                                if (editorInstance["_domElement"].dataset.modeId === "yaml") {
                                     asyncApiJsonBtn.disabled = false
                                     asyncApiYamlBtn.disabled = true
                                 } else {
@@ -96,13 +96,13 @@ visualizationOptions.forEach(option => {
                                 }
 
                                 if (td["@type"] !== "tm:ThingModel") {
-                                    enableAPIConversionWithProtocol(editor)
+                                    enableAPIConversionWithProtocol(editorInstance)
                                 }
 
                                 break;
 
                             case "defaults-tab":
-                                if (editor["_domElement"].dataset.modeId === "yaml") {
+                                if (editorInstance["_domElement"].dataset.modeId === "yaml") {
                                     defaultsJsonBtn.disabled = false
                                     defaultsYamlBtn.disabled = true
                                 } else {
@@ -110,7 +110,7 @@ visualizationOptions.forEach(option => {
                                     defaultsYamlBtn.disabled = false
                                 }
                                 if (td["@type"] !== "tm:ThingModel") {
-                                    addDefaults(editor)
+                                    addDefaultsUtil(editorInstance)
                                     defaultsAddBtn.disabled = true
                                     defaultsView.classList.remove("hidden")
                                 }
@@ -124,7 +124,7 @@ visualizationOptions.forEach(option => {
 
                             case "validation-tab":
                                 validationView.classList.remove("hidden")
-                                const editorData = getEditorData(editor)
+                                const editorData = getEditorData(editorInstance)
                                 validate(editorData[1], editorValue)
 
                                 break;
@@ -151,9 +151,9 @@ visualizationOptions.forEach(option => {
  * Enable Open/Async API elements according to the protocol schemes of a TD
  * @param {object} editor - currently active monaco editor
  */
-function enableAPIConversionWithProtocol(editor) {
-    let td = editor.getValue()
-    if (editor["_domElement"].dataset.modeId === "yaml") {
+function enableAPIConversionWithProtocol(editorInstance) {
+    let td = editorInstance.getValue()
+    if (editorInstance["_domElement"].dataset.modeId === "yaml") {
         td = convertTDYamlToJson(td)
     }
 
@@ -163,7 +163,7 @@ function enableAPIConversionWithProtocol(editor) {
 
         if (openApiTab.checked === true) {
             if (["http", "https"].some(p => protocolSchemes.includes(p))) {
-                generateOAP(editor["_domElement"].dataset.modeId, editor)
+                generateOAP(editorInstance["_domElement"].dataset.modeId, editorInstance)
                 openApiView.classList.remove("hidden")
             } else {
                 showConsoleError("Please insert a TD which uses HTTP!")
@@ -172,7 +172,7 @@ function enableAPIConversionWithProtocol(editor) {
 
         if (asyncApiTab.checked === true) {
             if (["mqtt", "mqtts"].some(p => protocolSchemes.includes(p))) {
-                generateAAP(editor["_domElement"].dataset.modeId, editor)
+                generateAAP(editorInstance["_domElement"].dataset.modeId, editorInstance)
                 asyncApiView.classList.remove("hidden")
             } else {
                 showConsoleError("Please insert a TD which uses MQTT!")

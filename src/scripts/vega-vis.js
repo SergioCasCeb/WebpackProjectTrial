@@ -1,6 +1,9 @@
-import vegaEmbed from 'vega-embed'
-// import * as vega from 'vega'
+/**
+ * @file The `vega-vis.js` handles the vega visualization for the
+ * tree option, by utilizin the vega and vega-embed dependencies
+ */
 
+import vegaEmbed from 'vega-embed'
 
 /**
  * Initialize and generat the Vega visualization by passing the container element and the td content
