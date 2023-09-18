@@ -5,8 +5,18 @@
  * to integrate the monaco editor
  */
 
-// import '../styles/styles.scss'
 import { visualizeTab } from './visualize'
+import './editor'
+import './json-yaml'
+import './settings-menu'
+import './save-menu'
+import './examples-menu'
+import './console'
+import './open-api'
+import './async-api'
+import './defaults'
+import './visualize'
+import './validation'
 
 
 /***********************************************************/
@@ -174,15 +184,3 @@ function onmouseupY(e) {
     visualizeTab.click()
   }
 }
-
-import './editor'
-import './json-yaml'
-import './settings-menu'
-import './save-menu'
-import './examples-menu'
-import './console'
-import './open-api'
-import './async-api'
-import './defaults'
-import './visualize'
-import './validation'

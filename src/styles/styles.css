@@ -955,48 +955,26 @@ main .console {
   align-items: center;
   justify-content: center;
   gap: 2px;
+  border-radius: 5px;
+  overflow: hidden;
 }
-.console__content .open-api-view .open-api-inputs .input-field .btn-left,
-.console__content .open-api-view .async-api-inputs .input-field .btn-left,
-.console__content .open-api-view .defaults-inputs .input-field .btn-left,
-.console__content .open-api-view .visualize-inputs .input-field .btn-left,
-.console__content .async-api-view .open-api-inputs .input-field .btn-left,
-.console__content .async-api-view .async-api-inputs .input-field .btn-left,
-.console__content .async-api-view .defaults-inputs .input-field .btn-left,
-.console__content .async-api-view .visualize-inputs .input-field .btn-left,
-.console__content .defaults-view .open-api-inputs .input-field .btn-left,
-.console__content .defaults-view .async-api-inputs .input-field .btn-left,
-.console__content .defaults-view .defaults-inputs .input-field .btn-left,
-.console__content .defaults-view .visualize-inputs .input-field .btn-left,
-.console__content .visualize-view .open-api-inputs .input-field .btn-left,
-.console__content .visualize-view .async-api-inputs .input-field .btn-left,
-.console__content .visualize-view .defaults-inputs .input-field .btn-left,
-.console__content .visualize-view .visualize-inputs .input-field .btn-left {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.console__content .open-api-view .open-api-inputs .input-field .btn-right,
-.console__content .open-api-view .async-api-inputs .input-field .btn-right,
-.console__content .open-api-view .defaults-inputs .input-field .btn-right,
-.console__content .open-api-view .visualize-inputs .input-field .btn-right,
-.console__content .async-api-view .open-api-inputs .input-field .btn-right,
-.console__content .async-api-view .async-api-inputs .input-field .btn-right,
-.console__content .async-api-view .defaults-inputs .input-field .btn-right,
-.console__content .async-api-view .visualize-inputs .input-field .btn-right,
-.console__content .defaults-view .open-api-inputs .input-field .btn-right,
-.console__content .defaults-view .async-api-inputs .input-field .btn-right,
-.console__content .defaults-view .defaults-inputs .input-field .btn-right,
-.console__content .defaults-view .visualize-inputs .input-field .btn-right,
-.console__content .visualize-view .open-api-inputs .input-field .btn-right,
-.console__content .visualize-view .async-api-inputs .input-field .btn-right,
-.console__content .visualize-view .defaults-inputs .input-field .btn-right,
-.console__content .visualize-view .visualize-inputs .input-field .btn-right {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+.console__content .open-api-view .open-api-inputs .input-field button,
+.console__content .open-api-view .async-api-inputs .input-field button,
+.console__content .open-api-view .defaults-inputs .input-field button,
+.console__content .open-api-view .visualize-inputs .input-field button,
+.console__content .async-api-view .open-api-inputs .input-field button,
+.console__content .async-api-view .async-api-inputs .input-field button,
+.console__content .async-api-view .defaults-inputs .input-field button,
+.console__content .async-api-view .visualize-inputs .input-field button,
+.console__content .defaults-view .open-api-inputs .input-field button,
+.console__content .defaults-view .async-api-inputs .input-field button,
+.console__content .defaults-view .defaults-inputs .input-field button,
+.console__content .defaults-view .visualize-inputs .input-field button,
+.console__content .visualize-view .open-api-inputs .input-field button,
+.console__content .visualize-view .async-api-inputs .input-field button,
+.console__content .visualize-view .defaults-inputs .input-field button,
+.console__content .visualize-view .visualize-inputs .input-field button {
+  border-radius: 0;
 }
 .console__content .defaults-view .defaults-inputs button {
   display: flex;
@@ -1232,7 +1210,12 @@ main .console {
 }
 .console__content .visualize-view .visualize-inputs__download {
   width: 100%;
+  height: 100%;
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 @keyframes rotate {
@@ -2063,7 +2046,7 @@ svg g .link {
   padding: 1rem 2rem;
   max-width: 30rem;
   word-wrap: break-word;
-  background-color: var(--clr-shades-trans);
+  background-color: var(--clr-neutral-50);
   text-align: left;
   z-index: 10;
 }/*# sourceMappingURL=styles.css.map */
