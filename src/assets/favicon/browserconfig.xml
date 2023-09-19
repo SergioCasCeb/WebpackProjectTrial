@@ -1,3 +1,13 @@
+<!-- 
+ This is the default license template.
+ 
+ File: browserconfig.xml
+ Author: sergh
+ Copyright (c) 2023 sergh
+ 
+ To edit this license information: Press Ctrl+Shift+P and press 'Create new License Template...'.
+ -->
+
 <?xml version="1.0" encoding="utf-8"?>
 <browserconfig>
     <msapplication>
