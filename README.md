@@ -102,7 +102,7 @@ npm run dev
 
 ### Production mode
 
-1. Build the project with the command `npm run build` which will automatically set the mode to production.
+1. Build the project with the command `npm run build` which will automatically set the mode to production
 2. Finally utilize the command `npm run serve` to serve the application utilizing express as the server
 
 ```sh
