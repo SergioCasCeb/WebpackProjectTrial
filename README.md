@@ -8,11 +8,11 @@ This package provides the new web interface of the Web of Things Playground. It 
 - Multiple editors
 - JSON and YAML conversion
 - An examples menu to use as templates
-- A save menu, where your currently open TD/TM can be:
+- A save menu, where your currently opened TD/TM can be:
   - Exported as an URL either on a new tab/browser or on the [ediTDor] (https://eclipse.github.io/editdor/) website
-  - Download directly
-  - Saved in a specific folder within your file system (This function only available on `Chrome`, `Edge` and `Opera`)
-- Preferences menu within the settings, where the color theme, and font size can be changed
+  - Downloaded directly
+  - Saved in a specific folder within your file system (This function is only available on `Chrome`, `Edge` and `Opera`)
+- A preferences menu within the settings, where the color theme, and font size can be change
 - OpenAPI conversion
 - AsyncAPI conversion
 - A defaults view where all defaults can be added or removed from your current TD
