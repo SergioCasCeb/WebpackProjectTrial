@@ -49,28 +49,28 @@ The `webpack.config.js` file is used to set up Webpack for the project. It manag
 
 ### 3. Webpack Configuration Obejct
 
-*** 3.1 Entry Points ***
+**3.1 Entry Points**
 - `entry`: Specifies the entry points for your application. In this case, there are two entry points: 'bundle' for JavaScript and 'styles' for CSS
 
-*** 3.2 Output ***
+**3.2 Output**
 - `output`: Specifies where Webpack should output the bundled files. The path property defines the output directory as 'dist', and the filename property determines the naming pattern for generated files. [name] is a placeholder for the entry point name, and [contenthash] is a unique hash based on file content
 - `clean`: Tells Webpack to clean the 'dist' directory before each build
 - `assetModuleFilename`: Specifies the filename for asset files
 
-*** 3.3 Development Server ***
+**3.3 Development Server**
 - `devServer`: Configures the development server with settings such as the port, enabling hot module replacement, compressing assets, and enabling history API fallback
 
-*** 3.4 Module Rules ***
+**3.4 Module Rules**
 - `module`: Defines rules for how Webpack should process different file types. There are rules for JavaScript, images, CSS, and more. For example, it uses Babel to transpile JavaScript, handles image assets, and processes CSS with style loaders and sass loaders
 
-*** 3.5 Plugins ***
+**3.5 Plugins**
 - `plugins`: Lists the plugins used in the build process. Key plugins include 
     - `HtmlWebpackPlugin` for generating HTML files, 
     - `CopyWebpackPlugin` for copying assets, 
     - `MonacoWebpackPlugin` for the Monaco code editor integration, and 
     - `MiniCssExtractPlugin` for extracting CSS into separate files
 
-*** 3.6 Optimization ***
+**3.6 Optimization**
 - `optimization`: Contains settings for optimizing the build, including minimizing CSS using `CssMinimizerPlugin`
 
 
