@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "dev": "webpack && node server/server.js",
-    "server": "node server/server.js",
-    "examples": "node external-scripts/examples.js"
+    "build": "webpack --mode development",
+    "dev": "webpack-dev-server --mode development --config webpack.config.js",
+    "serve": "node server/server.js",
+    "examples": "node external-scripts/examples.js",
+    "test": "node tests/test.js",
+    "test-debug": "node tests/test.js -d"
   },
   "keywords": [],
   "author": "",
