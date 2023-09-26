@@ -250,162 +250,164 @@
                 </div>
                 <div class="console__content">
                     <div class="console-view validation-view hidden" id="validation-view">
-                        <details class="json-validation-section" id="spot-json">
-                            <summary class="section-header">
-                                <i class="fa-solid fa-spinner"></i>
-                                <p class="title">JSON Validation</p>
-                                <i class="show-icon fa-solid fa-caret-down"></i>
-                            </summary>
-                            <ul class="section-content empty"></ul>
-                        </details>
-
-                        <details class="json-schema-validation-section" id="spot-schema">
-                            <summary class="section-header">
-                                <i class="fa-solid fa-spinner"></i>
-                                <p class="title">JSON Schema Validation</p>
-                                <i class="show-icon fa-solid fa-caret-down"></i>
-                            </summary>
-                            <ul class="section-content empty">
-                            </ul>
-                        </details>
-
-                        <details class="json-schema-defaults-section" id="spot-defaults">
-                            <summary class="section-header">
-                                <i class="fa-solid fa-spinner"></i>
-                                <p class="title">(With Defaults) JSON Schema Validation</p>
-                                <i class="show-icon fa-solid fa-caret-down"></i>
-                            </summary>
-                            <ul class="section-content empty"></ul>
-                        </details>
-
-                        <details class="jsonls-validation-section" id="spot-jsonld">
-                            <summary class="section-header">
-                                <i class="fa-solid fa-spinner"></i>
-                                <p class="title">JSON-LD Validation</p>
-                                <i class="show-icon fa-solid fa-caret-down"></i>
-                            </summary>
-                            <ul class="section-content empty"></ul>
-                        </details>
-
-                        <details class="additional-checks-section" id="spot-additional">
-                            <summary class="section-header">
-                                <i class="fa-solid fa-spinner"></i>
-                                <p class="title">Additional Checks</p>
-                                <i class="show-icon fa-solid fa-caret-down"></i>
-                            </summary>
-                            <ul class="section-content empty"></ul>
-                            <div class="section-additional">
-                                <details class="enumConst-section" id="enumConst-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">Enum/Const</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-
-                                <details class="linkedAffordances-section" id="linkedAffordances-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">Linked Affordances</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-
-                                <details class="linkedStructure-section" id="linkedStructure-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">Linked Structure</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-
-                                <details class="linksRelTypeCount-section" id="linksRelTypeCount-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">Links Rel:Type Count</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-
-                                <details class="multiLangConsistency-section" id="multiLangConsistency-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">Multi-Language Consistency</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-
-                                <details class="propItems-section" id="propItems-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">Properties Items</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-
-                                <details class="propUniqueness-section" id="propUniqueness-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">Properties Uniqueness</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-
-                                <details class="readWriteOnly-section" id="readWriteOnly-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">Read/WriteOnly</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-
-                                <details class="security-section" id="security-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">Security</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-
-                                <details class="uriVariableSecurity-section" id="uriVariableSecurity-section">
-                                    <summary class="section-header">
-                                        <i class="fa-solid fa-spinner"></i>
-                                        <p class="sub-title">URI Variable Security</p>
-                                        <i class="show-icon fa-solid fa-caret-down"></i>
-                                    </summary>
-                                    <ul class="section-content">
-                                        <li class="description"></li>
-                                    </ul>
-                                </details>
-                            </div>
-                        </details>
+                        <div class="validation-container">
+                            <details class="json-validation-section" id="spot-json">
+                                <summary class="section-header">
+                                    <i class="fa-solid fa-circle"></i>
+                                    <p class="title">JSON Validation</p>
+                                    <i class="show-icon fa-solid fa-caret-down"></i>
+                                </summary>
+                                <ul class="section-content empty"></ul>
+                            </details>
+    
+                            <details class="json-schema-validation-section" id="spot-schema">
+                                <summary class="section-header">
+                                    <i class="fa-solid fa-circle"></i>
+                                    <p class="title">JSON Schema Validation</p>
+                                    <i class="show-icon fa-solid fa-caret-down"></i>
+                                </summary>
+                                <ul class="section-content empty">
+                                </ul>
+                            </details>
+    
+                            <details class="json-schema-defaults-section" id="spot-defaults">
+                                <summary class="section-header">
+                                    <i class="fa-solid fa-circle"></i>
+                                    <p class="title">(With Defaults) JSON Schema Validation</p>
+                                    <i class="show-icon fa-solid fa-caret-down"></i>
+                                </summary>
+                                <ul class="section-content empty"></ul>
+                            </details>
+    
+                            <details class="jsonls-validation-section" id="spot-jsonld">
+                                <summary class="section-header">
+                                    <i class="fa-solid fa-circle"></i>
+                                    <p class="title">JSON-LD Validation</p>
+                                    <i class="show-icon fa-solid fa-caret-down"></i>
+                                </summary>
+                                <ul class="section-content empty"></ul>
+                            </details>
+    
+                            <details class="additional-checks-section" id="spot-additional">
+                                <summary class="section-header">
+                                    <i class="fa-solid fa-circle"></i>
+                                    <p class="title">Additional Checks</p>
+                                    <i class="show-icon fa-solid fa-caret-down"></i>
+                                </summary>
+                                <ul class="section-content empty"></ul>
+                                <div class="section-additional">
+                                    <details class="enumConst-section" id="enumConst-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">Enum/Const</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+    
+                                    <details class="linkedAffordances-section" id="linkedAffordances-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">Linked Affordances</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+    
+                                    <details class="linkedStructure-section" id="linkedStructure-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">Linked Structure</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+    
+                                    <details class="linksRelTypeCount-section" id="linksRelTypeCount-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">Links Rel:Type Count</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+    
+                                    <details class="multiLangConsistency-section" id="multiLangConsistency-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">Multi-Language Consistency</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+    
+                                    <details class="propItems-section" id="propItems-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">Properties Items</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+    
+                                    <details class="propUniqueness-section" id="propUniqueness-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">Properties Uniqueness</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+    
+                                    <details class="readWriteOnly-section" id="readWriteOnly-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">Read/WriteOnly</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+    
+                                    <details class="security-section" id="security-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">Security</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+    
+                                    <details class="uriVariableSecurity-section" id="uriVariableSecurity-section">
+                                        <summary class="section-header">
+                                            <i class="fa-solid fa-circle"></i>
+                                            <p class="sub-title">URI Variable Security</p>
+                                            <i class="show-icon fa-solid fa-caret-down"></i>
+                                        </summary>
+                                        <ul class="section-content">
+                                            <li class="description"></li>
+                                        </ul>
+                                    </details>
+                                </div>
+                            </details>
+                        </div>
                     </div>
 
                     <div class="console-view open-api-view hidden" id="open-api-view">
@@ -415,7 +417,9 @@
                                 <button id="open-api-json">JSON</button>
                                 <button id="open-api-yaml">YAML</button>
                             </div>
-                            <button id="open-api-download"><i class="fa-solid fa-download"></i>Download</button>
+                            <div class="view-download">
+                                <button id="open-api-download"><i class="fa-solid fa-download"></i>Download</button>
+                            </div>
                         </div>
                     </div>
 
@@ -426,7 +430,9 @@
                                 <button id="async-api-json">JSON</button>
                                 <button id="async-api-yaml">YAML</button>
                             </div>
-                            <button id="async-api-download"><i class="fa-solid fa-download"></i>Download</button>
+                            <div class="view-download">
+                                <button id="async-api-download"><i class="fa-solid fa-download"></i>Download</button>
+                            </div>
                         </div>
                     </div>
 
@@ -443,7 +449,10 @@
                                 <button id="defaults-remove"><i
                                         class="fa-solid fa-minus"></i>Defaults</button>
                             </div>
-                            <button id="defaults-download"><i class="fa-solid fa-download"></i>Download</button>
+                            <div class="view-download">
+                                <button id="defaults-download"><i class="fa-solid fa-download"></i>Download</button>
+                            </div>
+                            
                         </div>
                     </div>
 
