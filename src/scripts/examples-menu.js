@@ -46,7 +46,7 @@ closeExamples.addEventListener("click", () => {
     examplesMenu.classList.add("closed")
     const exampleCards = document.querySelectorAll(".example")
     exampleCards.forEach(card => {
-        if(card.classList.contains("open")){
+        if (card.classList.contains("open")) {
             card.classList.toggle("open")
         }
     })
@@ -166,7 +166,6 @@ categorySelect.addEventListener("change", () => {
     const element = document.getElementById(categorySelect.value);
     element.scrollIntoView({ behavior: "smooth", block: "start" })
 })
-
 
 /**
  * Creates all the html container elements for the TD and TM categories
@@ -293,9 +292,7 @@ async function getAllExamples(categoryId, thingType) {
         exampleBtns.appendChild(exampleBtnUse)
 
         const exampleIconUse = document.createElement('i')
-        exampleIconUse.classList.add("fa-solid", "fa-thumbs-up")
-        // exampleIconUse.classList.add("fa-solid", "fa-file-import")
-        // exampleIconUse.classList.add("fa-solid", "fa-check")
+        exampleIconUse.classList.add("fa-solid", "fa-file-import")
         exampleBtnUse.appendChild(exampleIconUse)
 
         const exampleTxtUse = document.createElement('p')
@@ -305,11 +302,6 @@ async function getAllExamples(categoryId, thingType) {
         const exampleBtnCancel = document.createElement('button')
         exampleBtnCancel.classList.add("example__btn--cancel")
         exampleBtns.appendChild(exampleBtnCancel)
-
-        const exampleIconCancel = document.createElement('i')
-        exampleIconCancel.classList.add("fa-solid", "fa-thumbs-down")
-        // exampleIconCancel.classList.add("fa-solid", "fa-xmark")
-        exampleBtnCancel.appendChild(exampleIconCancel)
 
         const exampleTxtCancel = document.createElement('p')
         exampleTxtCancel.innerText = "Cancel"
