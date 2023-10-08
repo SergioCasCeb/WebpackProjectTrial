@@ -41,6 +41,7 @@ import tdToOpenAPI from '@thing-description-playground/td_to_openapi/dist/web-bu
 import tdToAsyncAPI from '@thing-description-playground/td_to_asyncapi/dist/web-bundle.min.js'
 import { addDefaults, removeDefaults } from '@thing-description-playground/defaults/dist/web-bundle.min.js'
 import { validateJsonLdBtn, tmConformanceBtn, sectionHeaders } from './validation'
+import {AssetInterfaceDescriptionUtil} from '@node-wot/td-tools/dist/util/asset-interface-description.js'
 
 
 let errorMessages = []
@@ -59,23 +60,6 @@ export function getTdUrl(urlAddr) {
 
     })
 }
-
-//TODO : Remove function?
-// /**
-//  * Fetch the File from the given address and return the content as string
-//  * @param {string} urlAddr url of the TD to fetch
-//  */
-// function getTextUrl(urlAddr){
-//     return new Promise( resolve => {
-
-//         fetch(urlAddr)
-//         .then(res => res.text())
-//         .then(data => {
-//             resolve(data)
-//         }, err => {alert("Text could not be fetched from: " + urlAddr + "\n Error: " + err)})
-//     })
-// }
-
 
 /**
  *  Offers a given content for download as a file.
@@ -220,6 +204,31 @@ export function removeDefaultsUtil(editorInstance) {
     editor.setModelLanguage(window.defaultsEditor.getModel(), editorInstance["_domElement"].dataset.modeId)
     if (editorInstance["_domElement"].dataset.modeId === "yaml") {
         generateTD("yaml", window.defaultsEditor)
+    }
+}
+
+/**
+ * Generates an AAS instance from a TD in the current editor
+ * @param { String } fileType - JSON/YAML options
+ * @param { Monaco Object } editorInstance - Monaco editor object
+ */
+export function generateAAS(fileType, editorInstance){
+    const assetInterfaceDescriptionUtil = new AssetInterfaceDescriptionUtil()
+
+    const tdToConvert = fileType === "json"
+        ? editorInstance.getValue()
+        : convertTDYamlToJson(editorInstance.getValue())
+
+    const AASInstance = assetInterfaceDescriptionUtil.transformTD2AAS(tdToConvert, ["http", "coap"])
+    try {
+        const content = fileType === "json" 
+            ? JSON.stringify(JSON.parse(AASInstance), undefined, 4)
+            : convertTDJsonToYaml(AASInstance)
+        
+        editor.setModelLanguage(window.AASEditor.getModel(), fileType)
+        window.AASEditor.getModel().setValue(content)
+    } catch (err) {
+        console.error(err);
     }
 }
 

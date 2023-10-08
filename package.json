@@ -37,6 +37,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "@node-wot/td-tools": "^0.8.8",
     "@thing-description-playground/assertions": "^1.5.0",
     "@thing-description-playground/core": "^1.4.0",
     "@thing-description-playground/defaults": "^1.4.0",

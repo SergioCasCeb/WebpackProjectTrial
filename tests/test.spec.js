@@ -113,3 +113,160 @@ test.describe("Check all links", () => {
         await expect(legalPage).toHaveURL("https://www.eclipse.org/legal/")
     })
 })
+
+test.describe("Editors and Tabs creation and deletion", () => {
+    test("Adding a new editor and closing it", async ({ page }) => {
+        const editorTabs = page.locator("#tab")
+        const editors = page.locator(".editor")
+        await expect(editorTabs).toHaveCount(1)
+        await expect(editors).toHaveCount(1)
+
+        const initialTab = page.locator("#tab").nth(0)
+        await expect(initialTab).toHaveAttribute('data-tab-id', "1")
+        await expect(initialTab).toHaveText("TDThing Template")
+        await expect(initialTab).toHaveClass("active")
+
+        const initialEditor = page.locator("#editor1")
+        await expect(initialEditor).toHaveAttribute('data-ide-id', "1")
+        await expect(initialEditor).toHaveClass("editor active")
+
+        await page.locator("#ide-tab-add").click()
+        await expect(editorTabs).toHaveCount(2)
+        await expect(editors).toHaveCount(2)
+
+        await expect(initialTab).toHaveClass("")
+        await expect(initialEditor).toHaveClass("editor")
+
+        const secondTab = page.locator("#tab").nth(1)
+        await expect(secondTab).toHaveAttribute('data-tab-id', "2")
+        await expect(secondTab).toHaveText("TDThing Template")
+        await expect(secondTab).toHaveClass("active")
+
+        const secondEditor = page.locator("#editor2")
+        await expect(secondEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(secondEditor).toHaveClass("editor active")
+
+        await page.locator("#tab").nth(1).locator(".close-tab").click()
+
+        await expect(editorTabs).toHaveCount(1)
+        await expect(editors).toHaveCount(1)
+
+        await expect(initialTab).toHaveClass("active")
+        await expect(initialEditor).toHaveClass("editor active")
+    })
+
+    test("Opening an example and closing initial editor", async ({ page }) => {
+        const editorTabs = page.locator("#tab")
+        const editors = page.locator(".editor")
+        await expect(editorTabs).toHaveCount(1)
+        await expect(editors).toHaveCount(1)
+
+        const initialTab = page.locator("#tab").nth(0)
+        await expect(initialTab).toHaveAttribute('data-tab-id', "1")
+        await expect(initialTab).toHaveText("TDThing Template")
+        await expect(initialTab).toHaveClass("active")
+
+        const initialEditor = page.locator("#editor1")
+        await expect(initialEditor).toHaveAttribute('data-ide-id', "1")
+        await expect(initialEditor).toHaveClass("editor active")
+
+        await page.locator("#examples-btn").click()
+        await page.locator(".example").nth(0).click()
+        await page.locator(".example").nth(0).getByRole("button", { name: /Apply/ }).click()
+
+        await expect(editorTabs).toHaveCount(2)
+        await expect(editors).toHaveCount(2)
+
+        await expect(initialTab).toHaveClass("")
+        await expect(initialEditor).toHaveClass("editor")
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        await page.locator("#tab").nth(0).locator(".close-tab").click()
+
+        await expect(editorTabs).toHaveCount(1)
+        await expect(editors).toHaveCount(1)
+
+        // await page.screenshot({ path: './test-screenshots/editors-tabs-creation-examples.png'})
+    })
+})
+
+test.describe("JSON and YAML conversion", () => {
+    test("JSON to YAML and YAML to JSON", async ({ page }) => {
+        const editorTabs = page.locator("#tab")
+        const editors = page.locator(".editor")
+        await expect(editorTabs).toHaveCount(1)
+        await expect(editors).toHaveCount(1)
+
+        const jsonYamlPopup = page.locator('.json-yaml-warning')
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+
+        const initialEditor = page.locator("#editor1")
+        const jsonBtn = page.locator('#file-type-json')
+        const yamlBtn = page.locator('#file-type-yaml')
+
+        await expect(initialEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(jsonBtn).toBeChecked({checked: true})
+        await expect(yamlBtn).toBeChecked({checked: false})
+
+        await yamlBtn.click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning")
+        
+        await page.locator('#yaml-confirm-btn').click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+        await expect(initialEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(jsonBtn).toBeChecked({checked: false})
+        await expect(yamlBtn).toBeChecked({checked: true})
+
+        await jsonBtn.click()
+        await expect(initialEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(jsonBtn).toBeChecked({checked: true})
+        await expect(yamlBtn).toBeChecked({checked: false})
+    })
+
+    test("Cancel YAML conversion", async ({ page }) => {
+        const editorTabs = page.locator("#tab")
+        const editors = page.locator(".editor")
+        await expect(editorTabs).toHaveCount(1)
+        await expect(editors).toHaveCount(1)
+
+        const jsonYamlPopup = page.locator('.json-yaml-warning')
+        const initialEditor = page.locator("#editor1")
+        const jsonBtn = page.locator('#file-type-json')
+        const yamlBtn = page.locator('#file-type-yaml')
+
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+        await expect(initialEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(jsonBtn).toBeChecked({checked: true})
+        await expect(yamlBtn).toBeChecked({checked: false})
+
+        await yamlBtn.click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning")
+        
+        await page.locator('#yaml-cancel-btn').click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+        await expect(initialEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(jsonBtn).toBeChecked({checked: true})
+        await expect(yamlBtn).toBeChecked({checked: false})
+    })
+})
+
+
+/*
+2. json - yaml conversion
+3. utilizing examples and checking for tm and td changes
+4. save menu
+5. settings menu
+6. validation
+7. openapi
+8. async api
+9. defaults
+10. visualize
+*/
