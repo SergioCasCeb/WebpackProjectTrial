@@ -239,24 +239,71 @@
                             padding: 2rem;
                             box-shadow: 0px 0px 5px 0px var(--clr-shadow);
 
-                            &__name {
+                            &__header {
                                 display: flex;
-                                flex-direction: row;
                                 align-items: center;
-                                justify-content: center;
+                                justify-content: space-between;
                                 gap: 2rem;
-                                cursor: pointer;
-                                transition: all 250ms ease-in-out 250ms;
 
-                                i {
-                                    color: var(--clr-primary-500);
+                                &--name {
+                                    width: 100%;
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    justify-content: center;
+                                    gap: 2rem;
+                                    cursor: pointer;
+                                    transition: all 250ms ease-in-out 250ms;
+
+                                    i {
+                                        color: var(--clr-primary-500);
+                                    }
+
+                                    p {
+                                        font-weight: var(--fw-bold);
+                                    }
                                 }
 
-                                p {
-                                    font-weight: var(--fw-bold);
-                                }
+                                &--quick{
+                                    width: fit-content;
+                                    background-color: transparent;
+                                    border: none;
+                                    border-left: 2px solid var(--clr-primary-500);
+                                    padding: 1rem 1rem 1rem 2rem;
+                                    cursor: pointer;
 
+                                    i{
+                                        font-size: var(--fs-i);
+                                        color: var(--clr-primary-500);
+                                        transition: color 250ms ease-in-out 250ms;
+                                    }
+
+                                    &:hover{
+                                        i{
+                                            color: var(--clr-primary-700);
+                                        }
+                                    }
+                                }
                             }
+
+                            // &__name {
+                            //     display: flex;
+                            //     flex-direction: row;
+                            //     align-items: center;
+                            //     justify-content: center;
+                            //     gap: 2rem;
+                            //     cursor: pointer;
+                            //     transition: all 250ms ease-in-out 250ms;
+
+                            //     i {
+                            //         color: var(--clr-primary-500);
+                            //     }
+
+                            //     p {
+                            //         font-weight: var(--fw-bold);
+                            //     }
+
+                            // }
 
                             &__content {
                                 pointer-events: none;
@@ -289,7 +336,7 @@
                                 transition: opacity 250ms ease-in-out 0ms, height 250ms ease-in-out 250ms, ;
 
                                 button {
-                                    width: 100%; 
+                                    width: 100%;
                                     padding: .75rem 1.5rem;
                                     border-radius: 5px;
                                     font-family: var(--ff-primary);
@@ -312,19 +359,21 @@
                                     }
                                 }
 
-                                &--use{
+                                &--use {
                                     background-color: var(--clr-primary-500);
                                     border: none;
                                     color: var(--clr-neutral-50);
+
                                     &:hover {
                                         background-color: var(--clr-primary-700);
                                     }
                                 }
 
-                                &--cancel{
+                                &--cancel {
                                     background-color: var(--clr-neutral-50);
                                     border: 2px solid var(--clr-primary-500);
                                     color: var(--clr-primary-500);
+
                                     &:hover {
                                         background-color: var(--clr-primary-700);
                                         border-color: var(--clr-primary-700);
