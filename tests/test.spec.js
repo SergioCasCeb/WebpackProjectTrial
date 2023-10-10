@@ -213,22 +213,22 @@ test.describe("JSON and YAML conversion", () => {
         const yamlBtn = page.locator('#file-type-yaml')
 
         await expect(initialEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(jsonBtn).toBeChecked({checked: true})
-        await expect(yamlBtn).toBeChecked({checked: false})
+        await expect(jsonBtn).toBeChecked({ checked: true })
+        await expect(yamlBtn).toBeChecked({ checked: false })
 
         await yamlBtn.click()
         await expect(jsonYamlPopup).toHaveClass("json-yaml-warning")
-        
+
         await page.locator('#yaml-confirm-btn').click()
         await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
         await expect(initialEditor).toHaveAttribute('data-mode-id', "yaml")
-        await expect(jsonBtn).toBeChecked({checked: false})
-        await expect(yamlBtn).toBeChecked({checked: true})
+        await expect(jsonBtn).toBeChecked({ checked: false })
+        await expect(yamlBtn).toBeChecked({ checked: true })
 
         await jsonBtn.click()
         await expect(initialEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(jsonBtn).toBeChecked({checked: true})
-        await expect(yamlBtn).toBeChecked({checked: false})
+        await expect(jsonBtn).toBeChecked({ checked: true })
+        await expect(yamlBtn).toBeChecked({ checked: false })
     })
 
     test("Cancel YAML conversion", async ({ page }) => {
@@ -244,50 +244,184 @@ test.describe("JSON and YAML conversion", () => {
 
         await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
         await expect(initialEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(jsonBtn).toBeChecked({checked: true})
-        await expect(yamlBtn).toBeChecked({checked: false})
+        await expect(jsonBtn).toBeChecked({ checked: true })
+        await expect(yamlBtn).toBeChecked({ checked: false })
 
         await yamlBtn.click()
         await expect(jsonYamlPopup).toHaveClass("json-yaml-warning")
-        
+
         await page.locator('#yaml-cancel-btn').click()
         await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
         await expect(initialEditor).toHaveAttribute('data-mode-id', "json")
-        await expect(jsonBtn).toBeChecked({checked: true})
-        await expect(yamlBtn).toBeChecked({checked: false})
+        await expect(jsonBtn).toBeChecked({ checked: true })
+        await expect(yamlBtn).toBeChecked({ checked: false })
     })
 })
 
 
 test.describe("Examples menu functionality", () => {
     test("Open and close examples menu", async ({ page }) => {
+
+        await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({ visible: false })
+        await page.locator("#examples-btn").click()
+
+        await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({ visible: true })
+        await page.locator(".examples-menu-container__close > i").click()
+
+        await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({visible: false})
     })
 
     test("Open Basic TD from quick access", async ({ page }) => {
+
+        await page.locator("#examples-btn").click()
+
+        const basicExample = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0)
+        await expect(basicExample).toHaveClass("example")
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveClass("editor active")
+
     })
 
     test("Open Basic TD from apply button", async ({ page }) => {
+
+        await page.locator("#examples-btn").click()
+
+        const basicExample = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0)
+        await basicExample.click()
+        await expect(basicExample).toHaveClass("example open")
+
+        const applyBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").filter({ hasText: "Apply"})
+        await applyBtn.click()
+        await expect(basicExample).toHaveClass("example")
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveClass("editor active")
     })
 
     test("Open Basic TD and close with cancel button", async ({ page }) => {
-    })
+        await page.locator("#examples-btn").click()
 
-    test("Open Basic TM from and check for icon change in tab", async ({ page }) => {
+        const basicTDExample = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0)
+        await basicTDExample.click()
+        await expect(basicTDExample).toHaveClass("example open")
+
+        const cancelBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").filter({ hasText: "Cancel"})
+        await cancelBtn.click()
+        await expect(basicTDExample).toHaveClass("example")
     })
 
     test("Toggle between TD and TM examples", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await expect(thingTypeToggle).toBeChecked({checked: false})
+
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({checked: true})
     })
 
-    test("Go to versioning TD category and open example from quick access", async ({ page }) => {
+    test("Open Basic TM and check for icon change in tab", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({checked: true})
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TM' }).nth(1).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const tabIcon = page.locator("#tab").nth(1).locator(".tab-icon")
+        await expect(tabIcon).toHaveText("TM")
     })
 
-    test("Go to Tm Optional TM category and open example from quick access", async ({ page }) => {
+    test("Go to versioning in TD category and open example from quick access", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const categoryDropDown = page.locator("#thing-category")
+        await categoryDropDown.selectOption('9-versioning')
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Versioning' }).nth(0).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveClass("active")
+    })
+
+    test("Go to Tm Optional in TM category and open example from quick access", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({checked: true})
+
+        const categoryDropDown = page.locator("#thing-category")
+        await categoryDropDown.selectOption('4-tm-optional')
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Optional Interaction Affordances' }).nth(0).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TMLamp Thing")
+        await expect(exampleTab).toHaveClass("active")
     })
 
     test("Search for uriVariable in the TDs and open Combined URI variables in href example", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const searchInput = page.locator(".search-input")
+        searchInput.fill('uriVariables')
+
+        const searchBtn = page.locator(".search-btn")
+        await searchBtn.click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Combined URI variables in href' }).nth(0).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyWeatherThing")
+        await expect(exampleTab).toHaveClass("active")
     })
 
     test("Search for overwrite in the TMs and open Overwrite Existing Definitions example", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({checked: true})
+
+        const searchInput = page.locator(".search-input")
+        searchInput.fill('overwrite')
+
+        const searchBtn = page.locator(".search-btn")
+        await searchBtn.click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Overwrite Existing Definitions' }).nth(1).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TMSmart Lamp Control")
+        await expect(exampleTab).toHaveClass("active")
     })
 })
 
