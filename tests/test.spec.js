@@ -259,8 +259,40 @@ test.describe("JSON and YAML conversion", () => {
 })
 
 
+test.describe("Examples menu functionality", () => {
+    test("Open and close examples menu", async ({ page }) => {
+    })
+
+    test("Open Basic TD from quick access", async ({ page }) => {
+    })
+
+    test("Open Basic TD from apply button", async ({ page }) => {
+    })
+
+    test("Open Basic TD and close with cancel button", async ({ page }) => {
+    })
+
+    test("Open Basic TM from and check for icon change in tab", async ({ page }) => {
+    })
+
+    test("Toggle between TD and TM examples", async ({ page }) => {
+    })
+
+    test("Go to versioning TD category and open example from quick access", async ({ page }) => {
+    })
+
+    test("Go to Tm Optional TM category and open example from quick access", async ({ page }) => {
+    })
+
+    test("Search for uriVariable in the TDs and open Combined URI variables in href example", async ({ page }) => {
+    })
+
+    test("Search for overwrite in the TMs and open Overwrite Existing Definitions example", async ({ page }) => {
+    })
+})
+
+
 /*
-2. json - yaml conversion
 3. utilizing examples and checking for tm and td changes
 4. save menu
 5. settings menu
