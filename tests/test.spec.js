@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test')
 
+//Open the playground app before any test is runned
 test.beforeEach(async ({ page }) => {
     await page.goto('/')
 });
@@ -73,7 +74,7 @@ test.describe("Check all links", () => {
         const eclipsePromise = page.waitForEvent('popup')
         await page.locator("#eclipse-link").click()
         const eclipsePage = await eclipsePromise
-        await expect(eclipsePage).toHaveTitle("The Community for Open Innovation and Collaboration | The Eclipse Foundation")
+        await expect(eclipsePage).toHaveTitle("The Community for Open Collaboration and Innovation | The Eclipse Foundation")
         await expect(eclipsePage).toHaveURL("https://www.eclipse.org")
     })
 
@@ -193,8 +194,6 @@ test.describe("Editors and Tabs creation and deletion", () => {
 
         await expect(editorTabs).toHaveCount(1)
         await expect(editors).toHaveCount(1)
-
-        // await page.screenshot({ path: './test-screenshots/editors-tabs-creation-examples.png'})
     })
 })
 
@@ -268,7 +267,7 @@ test.describe("Examples menu functionality", () => {
         await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({ visible: true })
         await page.locator(".examples-menu-container__close > i").click()
 
-        await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({visible: false})
+        await expect(page.getByRole('heading', { name: 'Simple Default' })).toBeVisible({ visible: false })
     })
 
     test("Open Basic TD from quick access", async ({ page }) => {
@@ -300,7 +299,7 @@ test.describe("Examples menu functionality", () => {
         await basicExample.click()
         await expect(basicExample).toHaveClass("example open")
 
-        const applyBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").filter({ hasText: "Apply"})
+        const applyBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").filter({ hasText: "Apply" })
         await applyBtn.click()
         await expect(basicExample).toHaveClass("example")
 
@@ -321,7 +320,7 @@ test.describe("Examples menu functionality", () => {
         await basicTDExample.click()
         await expect(basicTDExample).toHaveClass("example open")
 
-        const cancelBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").filter({ hasText: "Cancel"})
+        const cancelBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").filter({ hasText: "Cancel" })
         await cancelBtn.click()
         await expect(basicTDExample).toHaveClass("example")
     })
@@ -330,10 +329,10 @@ test.describe("Examples menu functionality", () => {
         await page.locator("#examples-btn").click()
 
         const thingTypeToggle = page.locator('#thing-type-btn')
-        await expect(thingTypeToggle).toBeChecked({checked: false})
+        await expect(thingTypeToggle).toBeChecked({ checked: false })
 
         await thingTypeToggle.click()
-        await expect(thingTypeToggle).toBeChecked({checked: true})
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
     })
 
     test("Open Basic TM and check for icon change in tab", async ({ page }) => {
@@ -341,7 +340,7 @@ test.describe("Examples menu functionality", () => {
 
         const thingTypeToggle = page.locator('#thing-type-btn')
         await thingTypeToggle.click()
-        await expect(thingTypeToggle).toBeChecked({checked: true})
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
 
         const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TM' }).nth(1).getByRole("button").nth(0)
         await quickAccessBtn.click()
@@ -370,7 +369,7 @@ test.describe("Examples menu functionality", () => {
 
         const thingTypeToggle = page.locator('#thing-type-btn')
         await thingTypeToggle.click()
-        await expect(thingTypeToggle).toBeChecked({checked: true})
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
 
         const categoryDropDown = page.locator("#thing-category")
         await categoryDropDown.selectOption('4-tm-optional')
@@ -407,7 +406,7 @@ test.describe("Examples menu functionality", () => {
 
         const thingTypeToggle = page.locator('#thing-type-btn')
         await thingTypeToggle.click()
-        await expect(thingTypeToggle).toBeChecked({checked: true})
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
 
         const searchInput = page.locator(".search-input")
         searchInput.fill('overwrite')
@@ -425,14 +424,266 @@ test.describe("Examples menu functionality", () => {
     })
 })
 
+test.describe("Save menu functionality", () => {
+    test("Open and close save menu", async ({ page }) => {
+        const saveMenu = page.locator(".save-menu")
+        await expect(saveMenu).toHaveClass("save-menu closed")
+
+        await page.locator("#save-btn").click()
+        await expect(saveMenu).toHaveClass("save-menu")
+
+        const closeMenu = page.locator(".save-menu-close > i")
+        await closeMenu.click()
+        await expect(saveMenu).toHaveClass("save-menu closed")
+    })
+
+    test("Open save menu with template thing and check for TD in menu title", async ({ page }) => {
+        const saveMenu = page.locator(".save-menu")
+
+        await page.locator("#save-btn").click()
+        await expect(saveMenu).toHaveClass("save-menu")
+
+        const titleThingType = page.locator(".save-menu-title > p > #thing-type-text")
+        await expect(titleThingType).toHaveText("TD")
+    })
+
+    test("Open TM examples check for TM in the save menu title", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TM' }).nth(1).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const saveMenu = page.locator(".save-menu")
+
+        await page.locator("#save-btn").click()
+        await expect(saveMenu).toHaveClass("save-menu")
+
+        const titleThingType = page.locator(".save-menu-title > p > #thing-type-text")
+        await expect(titleThingType).toHaveText("TM")
+    })
+
+    test("Share and open in new tab functionality with an example", async ({ page }) => {
+
+        await page.locator("#examples-btn").click()
+
+        const basicExample = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0)
+        await expect(basicExample).toHaveClass("example")
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).nth(0).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveClass("active")
+
+        const saveMenu = page.locator(".save-menu")
+
+        await page.locator("#save-btn").click()
+        await expect(saveMenu).toHaveClass("save-menu")
+
+        const openNewTab = page.locator("#open-url-tab")
+        await expect(openNewTab).toBeDisabled()
+
+        const shareUrlInput = page.locator("#share-url-input")
+        await expect(shareUrlInput).toHaveText("")
+
+        const shareUrlBtn = page.locator("#share-url-btn")
+        await shareUrlBtn.click()
+
+        const newPlaygroundPromise = page.waitForEvent('popup')
+        await openNewTab.click()
+        const newPlaygroundPage = await newPlaygroundPromise
+
+        await expect(newPlaygroundPage).toHaveTitle("TD Playground")
+
+        const newPlaygroundTab = newPlaygroundPage.locator("#tab").nth(0)
+        await expect(newPlaygroundTab).toHaveAttribute('data-tab-id', "1")
+        await expect(newPlaygroundTab).toHaveText("TDMyLampThing")
+        await expect(newPlaygroundTab).toHaveClass("active")
+
+    })
+
+    test("Open in ediTDor functionality", async ({ page }) => {
+        const saveMenu = page.locator(".save-menu")
+
+        await page.locator("#save-btn").click()
+        await expect(saveMenu).toHaveClass("save-menu")
+
+        const shareUrlInput = page.locator("#share-url-input")
+        await expect(shareUrlInput).toHaveText("")
+
+        const openEditdorBtn = page.locator("#open-editdor-btn")
+
+        const editdorPromise = page.waitForEvent('popup')
+        await openEditdorBtn.click()
+        const editdorPage = await editdorPromise
+
+        await expect(editdorPage).toHaveTitle("ediTDor")
+
+        const linkedTd = editdorPage.locator("#linkedTd > option")
+        await expect(linkedTd).toHaveText("Thing Template")
+    })
+
+    test("Download functionality", async ({ page }) => {
+        const saveMenu = page.locator(".save-menu")
+
+        const exampleTab = page.locator("#tab").nth(0)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "1")
+        await expect(exampleTab).toHaveText("TDThing Template")
+        await expect(exampleTab).toHaveClass("active")
+
+        await page.locator("#save-btn").click()
+        await expect(saveMenu).toHaveClass("save-menu")
+
+        const downloadTdBtn = page.locator(".save-td__download")
+
+        // Start waiting for download before clicking.
+        const downloadPromise = page.waitForEvent('download')
+        await downloadTdBtn.click()
+        const download = await downloadPromise
+        const expectedFilename = 'Thing-Template.json'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+
+    //* The "Save as" functionality cannot be tested because it requires to open and interact with the file system wich Playwright cannot do
+})
+
+test.describe("Settings menu functionality", () => {
+    test("Opening and closing the settings menu", async ({ page }) => {
+        const settingsMenu = page.locator(".settings-menu")
+        await expect(settingsMenu).toHaveClass("settings-menu closed")
+
+        await page.locator("#settings-btn").click()
+        await expect(settingsMenu).toHaveClass("settings-menu")
+
+        const closeMenu = page.locator(".settings__close > i")
+        await closeMenu.click()
+        await expect(settingsMenu).toHaveClass("settings-menu closed")
+    })
+
+    test("Checking settings toggle buttons", async ({ page }) => {
+        const settingsMenu = page.locator(".settings-menu")
+        await expect(settingsMenu).toHaveClass("settings-menu closed")
+
+        await page.locator("#settings-btn").click()
+        await expect(settingsMenu).toHaveClass("settings-menu")
+
+        const autoValidate = page.locator("#auto-validate")
+        const validateJsonld = page.locator("#validate-jsonld")
+        const tmConformance = page.locator("#tm-conformance")
+
+        await expect(autoValidate).toBeChecked({ checked: false })
+        await expect(validateJsonld).toBeChecked({ checked: true })
+        await expect(tmConformance).toBeChecked({ checked: true })
+    })
+
+    test("Changing page theme", async ({ page }) => {
+        const playgroundSite = page.locator("html")
+        await expect(playgroundSite).toHaveClass("light-mode")
+
+        const settingsMenu = page.locator(".settings-menu")
+        await expect(settingsMenu).toHaveClass("settings-menu closed")
+
+        await page.locator("#settings-btn").click()
+        await expect(settingsMenu).toHaveClass("settings-menu")
+
+        const themePicker = page.locator("#theme-picker")
+        await themePicker.selectOption('monochrome-mode')
+        await expect(playgroundSite).toHaveClass("monochrome-mode")
+
+        await themePicker.selectOption('dark-mode')
+        await expect(playgroundSite).toHaveClass("dark-mode")
+
+        await page.reload({ waitUntil: 'domcontentloaded' })
+        await expect(playgroundSite).toHaveClass("dark-mode")
+    })
+
+    test("Changing font size", async ({ page }) => {
+        const settingsMenu = page.locator(".settings-menu")
+        await expect(settingsMenu).toHaveClass("settings-menu closed")
+
+        await page.locator("#settings-btn").click()
+        await expect(settingsMenu).toHaveClass("settings-menu")
+
+        const editorFontSize = page.locator(".editor-font-size")
+        await expect(editorFontSize).toHaveText("14")
+
+        const fontSizeSlider = page.locator('#font-size')
+        await fontSizeSlider.click()
+
+        await expect(editorFontSize).toHaveText("23")
+
+        await page.reload({ waitUntil: 'domcontentloaded' })
+
+        await expect(settingsMenu).toHaveClass("settings-menu closed")
+
+        await page.locator("#settings-btn").click()
+        await expect(settingsMenu).toHaveClass("settings-menu")
+
+        await expect(editorFontSize).toHaveText("23")
+    })
+
+    test("Utilizing default settings", async ({ page }) => {
+        const playgroundSite = page.locator("html")
+        await expect(playgroundSite).toHaveClass("light-mode")
+
+        const settingsMenu = page.locator(".settings-menu")
+        await expect(settingsMenu).toHaveClass("settings-menu closed")
+
+        await page.locator("#settings-btn").click()
+        await expect(settingsMenu).toHaveClass("settings-menu")
+
+        const themePicker = page.locator("#theme-picker")
+        await themePicker.selectOption('dark-mode')
+        await expect(playgroundSite).toHaveClass("dark-mode")
+
+        const editorFontSize = page.locator(".editor-font-size")
+        await expect(editorFontSize).toHaveText("14")
+
+        const fontSizeSlider = page.locator('#font-size')
+        await fontSizeSlider.click()
+
+        await expect(editorFontSize).toHaveText("23")
+
+        await page.reload({ waitUntil: 'domcontentloaded' })
+
+        await expect(settingsMenu).toHaveClass("settings-menu closed")
+
+        await page.locator("#settings-btn").click()
+        await expect(settingsMenu).toHaveClass("settings-menu")
+
+        await expect(playgroundSite).toHaveClass("dark-mode")
+        await expect(editorFontSize).toHaveText("23")
+
+        const resetSettings = page.locator('.reset-settings')
+        await resetSettings.click()
+
+        await expect(playgroundSite).toHaveClass("light-mode")
+        await expect(editorFontSize).toHaveText("14")
+
+        await page.reload({ waitUntil: 'domcontentloaded' })
+
+        await expect(settingsMenu).toHaveClass("settings-menu closed")
+
+        await page.locator("#settings-btn").click()
+        await expect(settingsMenu).toHaveClass("settings-menu")
+
+        await expect(playgroundSite).toHaveClass("light-mode")
+        await expect(editorFontSize).toHaveText("14")
+    })
+})
+
 
 /*
-3. utilizing examples and checking for tm and td changes
-4. save menu
-5. settings menu
 6. validation
 7. openapi
 8. async api
-9. defaults
-10. visualize
+9. ass conversion
+10. defaults
+11. visualize
 */
