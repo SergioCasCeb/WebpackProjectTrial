@@ -736,7 +736,7 @@ test.describe("Validation view functionality", () => {
 
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
         await expect(validationTab).toBeChecked({checked: false})
@@ -748,6 +748,7 @@ test.describe("Validation view functionality", () => {
         await expect(validationTab).toBeChecked({checked: true})
         await expect(validationView).toHaveClass("console-view validation-view")
 
+        //validation section
         const jsonValidationSection = page.locator(".json-validation-section")
         const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
         const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
@@ -756,20 +757,179 @@ test.describe("Validation view functionality", () => {
         await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
         await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
 
-
         const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
-        const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
-        const jsonlsValidationSection = page.locator(".jsonls-validation-section")
-        const additionalChecksSection = page.locator(".additional-checks-section")
+        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > i").nth(0)
+        const jsonSchemaValidationSectionTxt = page.locator(".json-schema-validation-section > .section-content > li")
 
+        await jsonSchemaValidationSection.click()
+        await expect(jsonSchemaValidationSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonSchemaValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+        const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
+        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > i").nth(0)
+        const jsonSchemaDefaultsSectionTxt = page.locator(".json-schema-defaults-section > .section-content > li")
+
+        await jsonSchemaDefaultsSection.click()
+        await expect(jsonSchemaDefaultsSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+        const jsonlsValidationSection = page.locator(".jsonls-validation-section")
+        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > i").nth(0)
+        const jsonlsValidationSectionTxt = page.locator(".jsonls-validation-section > .section-content > li")
+
+        await jsonlsValidationSection.click()
+        await expect(jsonlsValidationSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonlsValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+        const additionalChecksSection = page.locator(".additional-checks-section")
+        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > i").nth(0)
+        const additionalChecksSectionTxt = page.locator(".additional-checks-section > .section-content > li")
+
+        await additionalChecksSection.click()
+        await expect(additionalChecksSectionTxt).toHaveText("Validated Successfully")
+        await expect(additionalChecksSectionIcon).toHaveClass("fa-solid fa-circle-check")
     })
 
     test("Validating the 'Basic TD'", async ({ page }) => {
+        const validationTab = page.locator('#validation-tab')
+        const validationView = page.locator('#validation-view')
 
+        await expect(validationTab).toBeChecked()
+        await expect(validationView).toHaveClass("console-view validation-view")
+
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        await expect(validationTab).toBeChecked({checked: false})
+        await expect(validationView).toHaveClass("console-view validation-view hidden")
+
+        const validationBtn = page.locator("#validate-btn")
+        await validationBtn.click()
+
+        await expect(validationTab).toBeChecked({checked: true})
+        await expect(validationView).toHaveClass("console-view validation-view")
+
+
+        //Validation section
+        const jsonValidationSection = page.locator(".json-validation-section")
+        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
+
+        await jsonValidationSection.click()
+        await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+        const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
+        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > i").nth(0)
+        const jsonSchemaValidationSectionTxt = page.locator(".json-schema-validation-section > .section-content > li")
+
+        await jsonSchemaValidationSection.click()
+        await expect(jsonSchemaValidationSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonSchemaValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+        const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
+        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > i").nth(0)
+        const jsonSchemaDefaultsSectionTxt = page.locator(".json-schema-defaults-section > .section-content > li").nth(0)
+
+        await jsonSchemaDefaultsSection.click()
+        await expect(jsonSchemaDefaultsSectionTxt).toHaveText("Optional validation failed:")
+        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("fa-solid fa-circle-exclamation")
+
+        const jsonlsValidationSection = page.locator(".jsonls-validation-section")
+        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > i").nth(0)
+        const jsonlsValidationSectionTxt = page.locator(".jsonls-validation-section > .section-content > li")
+
+        await jsonlsValidationSection.click()
+        await expect(jsonlsValidationSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonlsValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+        const additionalChecksSection = page.locator(".additional-checks-section")
+        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > i").nth(0)
+        const additionalChecksSectionTxt = page.locator(".additional-checks-section > .section-content > li")
+
+        await additionalChecksSection.click()
+        await expect(additionalChecksSectionTxt).toHaveText("Validated Successfully")
+        await expect(additionalChecksSectionIcon).toHaveClass("fa-solid fa-circle-check")
     })
 
     test("Validating the 'Basic TM'", async ({ page }) => {
 
+        const validationTab = page.locator('#validation-tab')
+        const validationView = page.locator('#validation-view')
+
+        await expect(validationTab).toBeChecked()
+        await expect(validationView).toHaveClass("console-view validation-view")
+
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TM' }).nth(1).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TMLamp ThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        await expect(validationTab).toBeChecked({checked: false})
+        await expect(validationView).toHaveClass("console-view validation-view hidden")
+
+        const validationBtn = page.locator("#validate-btn")
+        await validationBtn.click()
+
+        await expect(validationTab).toBeChecked({checked: true})
+        await expect(validationView).toHaveClass("console-view validation-view")
+
+        //Validation section
+        const jsonValidationSection = page.locator(".json-validation-section")
+        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
+
+        await jsonValidationSection.click()
+        await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+        const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
+        const jsonSchemaValidationSectionIcon = page.locator(".json-schema-validation-section > .section-header > i").nth(0)
+        const jsonSchemaValidationSectionTxt = page.locator(".json-schema-validation-section > .section-content > li")
+
+        await jsonSchemaValidationSection.click()
+        await expect(jsonSchemaValidationSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonSchemaValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+        const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
+        const jsonSchemaDefaultsSectionIcon = page.locator(".json-schema-defaults-section > .section-header > i").nth(0)
+        const jsonSchemaDefaultsSectionTxt = page.locator(".json-schema-defaults-section > .section-content > li").nth(0)
+
+        await jsonSchemaDefaultsSection.click()
+        await expect(jsonSchemaDefaultsSectionTxt).toHaveText("A previous validation has failed or it is only available for Thing Descriptions")
+        await expect(jsonSchemaDefaultsSectionIcon).toHaveClass("fa-solid fa-circle")
+
+        const jsonlsValidationSection = page.locator(".jsonls-validation-section")
+        const jsonlsValidationSectionIcon = page.locator(".jsonls-validation-section > .section-header > i").nth(0)
+        const jsonlsValidationSectionTxt = page.locator(".jsonls-validation-section > .section-content > li")
+
+        await jsonlsValidationSection.click()
+        await expect(jsonlsValidationSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonlsValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+        const additionalChecksSection = page.locator(".additional-checks-section")
+        const additionalChecksSectionIcon = page.locator(".additional-checks-section > .section-header > i").nth(0)
+        const additionalChecksSectionTxt = page.locator(".additional-checks-section > .section-content > li")
+
+        await additionalChecksSection.click()
+        await expect(additionalChecksSectionTxt).toHaveText("Validated Successfully")
+        await expect(additionalChecksSectionIcon).toHaveClass("fa-solid fa-circle-check")
     })
 
 })
