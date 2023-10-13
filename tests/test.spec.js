@@ -1,4 +1,5 @@
-const { test, expect } = require('@playwright/test')
+const { test, expect } = require('@playwright/test');
+const exp = require('constants');
 
 //Open the playground app before any test is runned
 test.beforeEach(async ({ page }) => {
@@ -712,12 +713,12 @@ test.describe("Validation view functionality", () => {
         const trashBtn = page.locator(".trash")
         await trashBtn.click()
 
-        await expect(validationTab).toBeChecked({checked: false})
+        await expect(validationTab).toBeChecked({ checked: false })
         await expect(validationView).toHaveClass("console-view validation-view hidden")
 
         await validationTab.click()
 
-        await expect(validationTab).toBeChecked({checked: true})
+        await expect(validationTab).toBeChecked({ checked: true })
         await expect(validationView).toHaveClass("console-view validation-view")
 
         const stateIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
@@ -741,13 +742,13 @@ test.describe("Validation view functionality", () => {
         await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
-        await expect(validationTab).toBeChecked({checked: false})
+        await expect(validationTab).toBeChecked({ checked: false })
         await expect(validationView).toHaveClass("console-view validation-view hidden")
 
         const validationBtn = page.locator("#validate-btn")
         await validationBtn.click()
 
-        await expect(validationTab).toBeChecked({checked: true})
+        await expect(validationTab).toBeChecked({ checked: true })
         await expect(validationView).toHaveClass("console-view validation-view")
 
         //validation section
@@ -809,13 +810,13 @@ test.describe("Validation view functionality", () => {
         await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
-        await expect(validationTab).toBeChecked({checked: false})
+        await expect(validationTab).toBeChecked({ checked: false })
         await expect(validationView).toHaveClass("console-view validation-view hidden")
 
         const validationBtn = page.locator("#validate-btn")
         await validationBtn.click()
 
-        await expect(validationTab).toBeChecked({checked: true})
+        await expect(validationTab).toBeChecked({ checked: true })
         await expect(validationView).toHaveClass("console-view validation-view")
 
 
@@ -883,13 +884,13 @@ test.describe("Validation view functionality", () => {
         await expect(exampleTab).toHaveText("TMLamp ThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
-        await expect(validationTab).toBeChecked({checked: false})
+        await expect(validationTab).toBeChecked({ checked: false })
         await expect(validationView).toHaveClass("console-view validation-view hidden")
 
         const validationBtn = page.locator("#validate-btn")
         await validationBtn.click()
 
-        await expect(validationTab).toBeChecked({checked: true})
+        await expect(validationTab).toBeChecked({ checked: true })
         await expect(validationView).toHaveClass("console-view validation-view")
 
         //Validation section
@@ -936,9 +937,329 @@ test.describe("Validation view functionality", () => {
 
 })
 
+test.describe("OpenAPI view functionality", () => {
+    test("Trying to open the OpenAPI view with a TD with no protocols and closing it", async ({ page }) => {
+
+        const initialTab = page.locator("#tab").nth(0)
+        await expect(initialTab).toHaveAttribute('data-tab-id', "1")
+        await expect(initialTab).toHaveText("TDThing TemplateCloseCancel")
+        await expect(initialTab).toHaveClass("active")
+
+        const openAPIView = page.locator('#open-api-view')
+        const consoleError = page.locator('#console-error')
+        const openAPITab = page.locator("#open-api-tab")
+
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(openAPITab).toBeChecked({ checked: false })
+
+        await openAPITab.click()
+
+        await expect(openAPITab).toBeChecked({ checked: true })
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(page.locator(".console-error__txt")).toHaveText("Please insert a TD which uses HTTP!")
+
+        const trashBtn = page.locator(".trash")
+        await trashBtn.click()
+
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(openAPITab).toBeChecked({ checked: false })
+
+    })
+
+    test("Trying to open the OpenAPI view with a TM", async ({ page }) => {
+
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TM' }).nth(1).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TMLamp ThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const openAPIView = page.locator('#open-api-view')
+        const consoleError = page.locator('#console-error')
+        const openAPITab = page.locator("#open-api-tab")
+
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(openAPITab).toBeChecked({ checked: false })
+
+        await openAPITab.click()
+
+        await expect(openAPITab).toBeChecked({ checked: true })
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(page.locator(".console-error__txt")).toHaveText("This function is only allowed for Thing Descriptions!")
+
+    })
+
+    test("Open the OpenAPI view with the 'Basic TD' example", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const openAPIView = page.locator('#open-api-view')
+        const consoleError = page.locator('#console-error')
+        const openAPITab = page.locator("#open-api-tab")
+
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(openAPITab).toBeChecked({ checked: false })
+
+        await openAPITab.click()
+
+        await expect(openAPITab).toBeChecked({ checked: true })
+        await expect(openAPIView).toHaveClass("console-view open-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const openAPIEditor = page.locator('#open-api-container')
+        const openAPIContainer = openAPIEditor.getByRole('code').locator('div').filter({ hasText: '"openapi": "3.0.3",' }).nth(4)
+
+        await expect(openAPIEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(openAPIContainer).toHaveText('\"openapi\": \"3.0.3\",')
+
+        const openAPIJsonBtn = page.locator('#open-api-json')
+
+        await expect(openAPIJsonBtn).toBeDisabled()
+
+    })
+
+    test("Open the OpenAPI view with the 'Basic TD' example as YAML", async ({ page }) => {
+
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+
+        const jsonYamlPopup = page.locator('.json-yaml-warning')
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+
+        const jsonBtn = page.locator('#file-type-json')
+        const yamlBtn = page.locator('#file-type-yaml')
+
+        await expect(jsonBtn).toBeChecked({ checked: true })
+        await expect(yamlBtn).toBeChecked({ checked: false })
+
+        await yamlBtn.click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning")
+
+        await page.locator('#yaml-confirm-btn').click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(jsonBtn).toBeChecked({ checked: false })
+        await expect(yamlBtn).toBeChecked({ checked: true })
+
+        const openAPIView = page.locator('#open-api-view')
+        const consoleError = page.locator('#console-error')
+        const openAPITab = page.locator("#open-api-tab")
+
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(openAPITab).toBeChecked({ checked: false })
+
+        await openAPITab.click()
+
+        await expect(openAPITab).toBeChecked({ checked: true })
+        await expect(openAPIView).toHaveClass("console-view open-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const openAPIEditor = page.locator('#open-api-container')
+        const openAPIContainer = openAPIEditor.getByRole('code').locator('div').filter({ hasText: 'openapi: "3.0.3"' }).nth(4)
+
+        await expect(openAPIEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(openAPIContainer).toHaveText('openapi: "3.0.3"')
+
+        const openAPIYamlBtn = page.locator('#open-api-yaml')
+        await expect(openAPIYamlBtn).toBeDisabled()
+
+    })
+
+    test("Open the OpenAPI view and change form JSON to YAML and from YAML to JSON", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const openAPIView = page.locator('#open-api-view')
+        const consoleError = page.locator('#console-error')
+        const openAPITab = page.locator("#open-api-tab")
+
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(openAPITab).toBeChecked({ checked: false })
+
+        await openAPITab.click()
+
+        await expect(openAPITab).toBeChecked({ checked: true })
+        await expect(openAPIView).toHaveClass("console-view open-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const openAPIEditor = page.locator('#open-api-container')
+
+        await expect(openAPIEditor).toHaveAttribute('data-mode-id', "json")
+
+        const openAPIJsonBtn = page.locator('#open-api-json')
+        const openAPIYamlBtn = page.locator('#open-api-yaml')
+
+        await expect(openAPIJsonBtn).toBeDisabled()
+
+        await openAPIYamlBtn.click()
+
+        await expect(openAPIEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(openAPIYamlBtn).toBeDisabled()
+
+        await openAPIJsonBtn.click()
+
+        await expect(openAPIEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(openAPIJsonBtn).toBeDisabled()
+    })
+
+    test("Open the OpenAPI view and downloading it as JSON", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const openAPIView = page.locator('#open-api-view')
+        const consoleError = page.locator('#console-error')
+        const openAPITab = page.locator("#open-api-tab")
+
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(openAPITab).toBeChecked({ checked: false })
+
+        await openAPITab.click()
+
+        await expect(openAPITab).toBeChecked({ checked: true })
+        await expect(openAPIView).toHaveClass("console-view open-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const openAPIEditor = page.locator('#open-api-container')
+        const openAPIContainer = openAPIEditor.getByRole('code').locator('div').filter({ hasText: '"openapi": "3.0.3",' }).nth(4)
+
+        await expect(openAPIEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(openAPIContainer).toHaveText('\"openapi\": \"3.0.3\",')
+
+        const openAPIJsonBtn = page.locator('#open-api-json')
+        await expect(openAPIJsonBtn).toBeDisabled()
+
+        // Start waiting for download before clicking.
+        const openAPIDownload = page.locator('#open-api-download')
+        const downloadPromise = page.waitForEvent('download')
+        await openAPIDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'MyLampThing-OpenAPI.json'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+
+    test("Open the OpenAPI view and downloading it as YAML", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const openAPIView = page.locator('#open-api-view')
+        const consoleError = page.locator('#console-error')
+        const openAPITab = page.locator("#open-api-tab")
+
+        await expect(openAPIView).toHaveClass("console-view open-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(openAPITab).toBeChecked({ checked: false })
+
+        await openAPITab.click()
+
+        await expect(openAPITab).toBeChecked({ checked: true })
+        await expect(openAPIView).toHaveClass("console-view open-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const openAPIEditor = page.locator('#open-api-container')
+
+        await expect(openAPIEditor).toHaveAttribute('data-mode-id', "json")
+
+        const openAPIJsonBtn = page.locator('#open-api-json')
+        const openAPIYamlBtn = page.locator('#open-api-yaml')
+
+        await expect(openAPIJsonBtn).toBeDisabled()
+
+        await openAPIYamlBtn.click()
+
+        await expect(openAPIEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(openAPIYamlBtn).toBeDisabled()
+
+        const openAPIContainer = openAPIEditor.getByRole('code').locator('div').filter({ hasText: 'openapi: 3.0.3' }).nth(4)
+        await expect(openAPIContainer).toHaveText('openapi: 3.0.3')
+
+        // Start waiting for download before clicking.
+        const openAPIDownload = page.locator('#open-api-download')
+        const downloadPromise = page.waitForEvent('download')
+        await openAPIDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'MyLampThing-OpenAPI.yaml'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+})
+
 
 /*
-7. openapi
 8. async api
 9. ass conversion
 10. defaults
