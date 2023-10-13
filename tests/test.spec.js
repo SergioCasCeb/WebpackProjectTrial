@@ -1258,9 +1258,333 @@ test.describe("OpenAPI view functionality", () => {
     })
 })
 
+test.describe("AsyncAPI view functionality", () => {
+    test("Trying to open the AsyncAPI view with a TD with no protocols and closing it", async ({ page }) => {
+
+        const initialTab = page.locator("#tab").nth(0)
+        await expect(initialTab).toHaveAttribute('data-tab-id', "1")
+        await expect(initialTab).toHaveText("TDThing TemplateCloseCancel")
+        await expect(initialTab).toHaveClass("active")
+
+        const AsyncAPIView = page.locator('#async-api-view')
+        const consoleError = page.locator('#console-error')
+        const AsyncAPITab = page.locator("#async-api-tab")
+
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AsyncAPITab).toBeChecked({ checked: false })
+
+        await AsyncAPITab.click()
+
+        await expect(AsyncAPITab).toBeChecked({ checked: true })
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(page.locator(".console-error__txt")).toHaveText("Please insert a TD which uses MQTT!")
+
+        const trashBtn = page.locator(".trash")
+        await trashBtn.click()
+
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AsyncAPITab).toBeChecked({ checked: false })
+
+    })
+
+    test("Trying to open the AsyncAPI view with a TM", async ({ page }) => {
+
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TM' }).nth(1).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TMLamp ThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const AsyncAPIView = page.locator('#async-api-view')
+        const consoleError = page.locator('#console-error')
+        const AsyncAPITab = page.locator("#async-api-tab")
+
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AsyncAPITab).toBeChecked({ checked: false })
+
+        await AsyncAPITab.click()
+
+        await expect(AsyncAPITab).toBeChecked({ checked: true })
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(page.locator(".console-error__txt")).toHaveText("This function is only allowed for Thing Descriptions!")
+
+    })
+
+    /**
+     * TODO: Do to a lack of examples that include the mqtt protocol this cannot be tested, nonetheless once
+     * TODO: this is added the code below should sufice with minimal adjustments
+    test("Open the AsyncAPI view with the '---' example", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TD---CloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const AsyncAPIView = page.locator('#async-api-view')
+        const consoleError = page.locator('#console-error')
+        const AsyncAPITab = page.locator("#async-api-tab")
+
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AsyncAPITab).toBeChecked({ checked: false })
+
+        await AsyncAPITab.click()
+
+        await expect(AsyncAPITab).toBeChecked({ checked: true })
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const AsyncAPIEditor = page.locator('#async-api-container')
+        const AsyncAPIContainer = AsyncAPIEditor.getByRole('code').locator('div').filter({ hasText: '"asyncapi": "2.0.0",' }).nth(4)
+
+        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(AsyncAPIContainer).toHaveText('"asyncapi": "2.0.0",')
+
+        const AsyncAPIJsonBtn = page.locator('#async-api-json')
+
+        await expect(AsyncAPIJsonBtn).toBeDisabled()
+
+    })
+
+    test("Open the AsyncAPI view with the '---' example as YAML", async ({ page }) => {
+
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TD---CloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+
+        const jsonYamlPopup = page.locator('.json-yaml-warning')
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+
+        const jsonBtn = page.locator('#file-type-json')
+        const yamlBtn = page.locator('#file-type-yaml')
+
+        await expect(jsonBtn).toBeChecked({ checked: true })
+        await expect(yamlBtn).toBeChecked({ checked: false })
+
+        await yamlBtn.click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning")
+
+        await page.locator('#yaml-confirm-btn').click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(jsonBtn).toBeChecked({ checked: false })
+        await expect(yamlBtn).toBeChecked({ checked: true })
+
+        const AsyncAPIView = page.locator('#async-api-view')
+        const consoleError = page.locator('#console-error')
+        const AsyncAPITab = page.locator("#async-api-tab")
+
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AsyncAPITab).toBeChecked({ checked: false })
+
+        await AsyncAPITab.click()
+
+        await expect(AsyncAPITab).toBeChecked({ checked: true })
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const AsyncAPIEditor = page.locator('#async-api-container')
+        const AsyncAPIContainer = AsyncAPIEditor.getByRole('code').locator('div').filter({ hasText: 'asyncapi: 2.0.0' }).nth(4)
+
+        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(AsyncAPIContainer).toHaveText('asyncapi: 2.0.0')
+
+        const AsyncAPIYamlBtn = page.locator('#async-api-yaml')
+        await expect(AsyncAPIYamlBtn).toBeDisabled()
+
+    })
+
+    test("Open the AsyncAPI view and change form JSON to YAML and from YAML to JSON", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TD---CloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const AsyncAPIView = page.locator('#async-api-view')
+        const consoleError = page.locator('#console-error')
+        const AsyncAPITab = page.locator("#async-api-tab")
+
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AsyncAPITab).toBeChecked({ checked: false })
+
+        await AsyncAPITab.click()
+
+        await expect(AsyncAPITab).toBeChecked({ checked: true })
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const AsyncAPIEditor = page.locator('#async-api-container')
+
+        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
+
+        const AsyncAPIJsonBtn = page.locator('#async-api-json')
+        const AsyncAPIYamlBtn = page.locator('#async-api-yaml')
+
+        await expect(AsyncAPIJsonBtn).toBeDisabled()
+
+        await AsyncAPIYamlBtn.click()
+
+        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(AsyncAPIYamlBtn).toBeDisabled()
+
+        await AsyncAPIJsonBtn.click()
+
+        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(AsyncAPIJsonBtn).toBeDisabled()
+    })
+
+    test("Open the AsyncAPI view and downloading it as JSON", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TD---CloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const AsyncAPIView = page.locator('#async-api-view')
+        const consoleError = page.locator('#console-error')
+        const AsyncAPITab = page.locator("#async-api-tab")
+
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AsyncAPITab).toBeChecked({ checked: false })
+
+        await AsyncAPITab.click()
+
+        await expect(AsyncAPITab).toBeChecked({ checked: true })
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const AsyncAPIEditor = page.locator('#async-api-container')
+        const AsyncAPIContainer = AsyncAPIEditor.getByRole('code').locator('div').filter({ hasText: '"asyncapi": "2.0.0",' }).nth(4)
+
+        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(AsyncAPIContainer).toHaveText('\"asyncapi\": \"2.0.0\",')
+
+        const AsyncAPIJsonBtn = page.locator('#async-api-json')
+        await expect(AsyncAPIJsonBtn).toBeDisabled()
+
+        // Start waiting for download before clicking.
+        const AsyncAPIDownload = page.locator('#async-api-download')
+        const downloadPromise = page.waitForEvent('download')
+        await AsyncAPIDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'MyLampThing-AsyncAPI.json'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+
+    test("Open the AsyncAPI view and downloading it as YAML", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: '---' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TD---CloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const AsyncAPIView = page.locator('#async-api-view')
+        const consoleError = page.locator('#console-error')
+        const AsyncAPITab = page.locator("#async-api-tab")
+
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AsyncAPITab).toBeChecked({ checked: false })
+
+        await AsyncAPITab.click()
+
+        await expect(AsyncAPITab).toBeChecked({ checked: true })
+        await expect(AsyncAPIView).toHaveClass("console-view async-api-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const AsyncAPIEditor = page.locator('#async-api-container')
+
+        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "json")
+
+        const AsyncAPIJsonBtn = page.locator('#async-api-json')
+        const AsyncAPIYamlBtn = page.locator('#async-api-yaml')
+
+        await expect(AsyncAPIJsonBtn).toBeDisabled()
+
+        await AsyncAPIYamlBtn.click()
+
+        await expect(AsyncAPIEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(AsyncAPIYamlBtn).toBeDisabled()
+
+        const AsyncAPIContainer = AsyncAPIEditor.getByRole('code').locator('div').filter({ hasText: 'asyncapi: 2.0.0' }).nth(4)
+        await expect(AsyncAPIContainer).toHaveText('asyncapi: 2.0.0')
+
+        // Start waiting for download before clicking.
+        const AsyncAPIDownload = page.locator('#async-api-download')
+        const downloadPromise = page.waitForEvent('download')
+        await AsyncAPIDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'MyLampThing-AsyncAPI.yaml'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+    */
+})
+
 
 /*
-8. async api
 9. ass conversion
 10. defaults
 11. visualize
