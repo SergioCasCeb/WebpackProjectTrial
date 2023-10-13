@@ -37,9 +37,17 @@ const openEditdorBtn = document.querySelector('#open-editdor-btn')
 const downloadBtn = document.querySelector("#download-btn")
 const saveAsBtn = document.querySelector("#save-as-btn")
 const saveAsWarning = document.querySelector(".save-warning")
+const saveMenuContainer = document.querySelector(".save-menu__container")
 let fileHandle;
 openUrlTab.disabled = true
 shareUrlContainer.value = ""
+
+//Handle click outside the save menu
+document.addEventListener('click', (e) => {
+  if(!saveMenuBtn.contains(e.target) && !saveMenuContainer.contains(e.target) && !saveMenu.classList.contains("closed")){
+    saveMenu.classList.add("closed")
+  }
+})
 
 //Open the save menu and change the text depending on the Thing type (TD or TM)
 saveMenuBtn.addEventListener("click", () => {
@@ -146,6 +154,7 @@ downloadBtn.addEventListener("click", () => {
     }
   })
   saveMenu.classList.add("closed")
+  shareUrlContainer.value = ""
 })
 
 /* Save as btn functionality */

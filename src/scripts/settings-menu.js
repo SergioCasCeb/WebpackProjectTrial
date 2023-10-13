@@ -34,7 +34,6 @@ const themePicker = document.querySelector("#theme-picker")
 const fontSizeTxt = document.querySelector(".editor-font-size")
 export const fontSizeSlider = document.querySelector("#font-size")
 const autoValidateBtn = document.querySelector('#auto-validate')
-const resetLoggingBtn = document.querySelector('#reset-logging')
 const validateJSONLDBtn = document.querySelector('#validate-jsonld')
 const tmConformanceBtn = document.querySelector('#tm-conformance')
 
@@ -61,6 +60,13 @@ settingsBtn.addEventListener("click", () => {
     settingsMenu.classList.toggle("closed")
 })
 
+//Handle click outside the settings menu
+document.addEventListener('click', (e) => {
+    if(!settingsBtn.contains(e.target) && !settingsMenu.contains(e.target) && !settingsMenu.classList.contains("closed")){
+      settingsMenu.classList.add("closed")
+    }
+  })
+
 /**
  * Event listener for reseting all the settings and preferences values
  * @param {event} e - reset event
@@ -79,7 +85,6 @@ editorForm.addEventListener("reset", (e) => {
   
     //resetting all toggle btns
     autoValidateBtn.checked = false
-    resetLoggingBtn.checked = true
     validateJSONLDBtn.checked = true
     tmConformanceBtn.checked = true
 })

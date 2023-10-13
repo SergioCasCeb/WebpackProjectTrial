@@ -678,6 +678,102 @@ test.describe("Settings menu functionality", () => {
     })
 })
 
+test.describe("Validation view functionality", () => {
+
+    test("Starting the validation with the main valiation button", async ({ page }) => {
+
+        const validationTab = page.locator('#validation-tab')
+        const validationView = page.locator('#validation-view')
+
+        await expect(validationTab).toBeChecked()
+        await expect(validationView).toHaveClass("console-view validation-view")
+
+        const stateIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        await expect(stateIcon).toHaveClass("fa-solid fa-circle")
+
+        const validationBtn = page.locator("#validate-btn")
+        await validationBtn.click()
+
+        //TODO: Find a better way to wait for this event to happen
+        await page.waitForTimeout(5000)
+        await expect(stateIcon).toHaveClass("fa-solid fa-circle-check")
+    })
+
+    test("Closing the default validation view and opening it again with the validation view tab", async ({ page }) => {
+
+        const validationTab = page.locator('#validation-tab')
+        const validationView = page.locator('#validation-view')
+
+        await expect(validationTab).toBeChecked()
+        await expect(validationView).toHaveClass("console-view validation-view")
+
+        const trashBtn = page.locator(".trash")
+        await trashBtn.click()
+
+        await expect(validationTab).toBeChecked({checked: false})
+        await expect(validationView).toHaveClass("console-view validation-view hidden")
+
+        await validationTab.click()
+
+        await expect(validationTab).toBeChecked({checked: true})
+        await expect(validationView).toHaveClass("console-view validation-view")
+
+        const stateIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        await expect(stateIcon).toHaveClass("fa-solid fa-circle-check")
+    })
+
+    test("Validating the 'All Defaults TD'", async ({ page }) => {
+        const validationTab = page.locator('#validation-tab')
+        const validationView = page.locator('#validation-view')
+
+        await expect(validationTab).toBeChecked()
+        await expect(validationView).toHaveClass("console-view validation-view")
+
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'All Default Values' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveClass("active")
+
+        await expect(validationTab).toBeChecked({checked: false})
+        await expect(validationView).toHaveClass("console-view validation-view hidden")
+
+        const validationBtn = page.locator("#validate-btn")
+        await validationBtn.click()
+
+        await expect(validationTab).toBeChecked({checked: true})
+        await expect(validationView).toHaveClass("console-view validation-view")
+
+        const jsonValidationSection = page.locator(".json-validation-section")
+        const jsonValidationSectionIcon = page.locator(".json-validation-section > .section-header > i").nth(0)
+        const jsonValidationSectionTxt = page.locator(".json-validation-section > .section-content > li")
+
+        await jsonValidationSection.click()
+        await expect(jsonValidationSectionTxt).toHaveText("Validated Successfully")
+        await expect(jsonValidationSectionIcon).toHaveClass("fa-solid fa-circle-check")
+
+
+        const jsonSchemaValidationSection = page.locator(".json-schema-validation-section")
+        const jsonSchemaDefaultsSection = page.locator(".json-schema-defaults-section")
+        const jsonlsValidationSection = page.locator(".jsonls-validation-section")
+        const additionalChecksSection = page.locator(".additional-checks-section")
+
+    })
+
+    test("Validating the 'Basic TD'", async ({ page }) => {
+
+    })
+
+    test("Validating the 'Basic TM'", async ({ page }) => {
+
+    })
+
+})
+
 
 /*
 6. validation
