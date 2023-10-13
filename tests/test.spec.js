@@ -1,5 +1,4 @@
 const { test, expect } = require('@playwright/test');
-const exp = require('constants');
 
 //Open the playground app before any test is runned
 test.beforeEach(async ({ page }) => {
