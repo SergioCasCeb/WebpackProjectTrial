@@ -1584,6 +1584,153 @@ test.describe("AsyncAPI view functionality", () => {
 })
 
 
+test.describe("AAS AID view functionality", () => {
+    test("Trying to open the AAS view with a TD with no protocols and closing it", async ({ page }) => {
+
+        const initialTab = page.locator("#tab").nth(0)
+        await expect(initialTab).toHaveAttribute('data-tab-id', "1")
+        await expect(initialTab).toHaveText("TDThing TemplateCloseCancel")
+        await expect(initialTab).toHaveClass("active")
+
+        const AASView = page.locator('#aas-view')
+        const consoleError = page.locator('#console-error')
+        const AASTab = page.locator("#aas-tab")
+
+        await expect(AASView).toHaveClass("console-view aas-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AASTab).toBeChecked({ checked: false })
+
+        await AASTab.click()
+
+        await expect(AASTab).toBeChecked({ checked: true })
+        await expect(AASView).toHaveClass("console-view aas-view hidden")
+        await expect(page.locator(".console-error__txt")).toHaveText("Please insert a TD which uses HTTP, MQTT, CoAP or Modbus!")
+
+        const trashBtn = page.locator(".trash")
+        await trashBtn.click()
+
+        await expect(AASView).toHaveClass("console-view aas-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AASTab).toBeChecked({ checked: false })
+
+    })
+
+    test("Trying to open the AAS view with a TM", async ({ page }) => {
+
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TM' }).nth(1).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TMLamp ThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const AASView = page.locator('#aas-view')
+        const consoleError = page.locator('#console-error')
+        const AASTab = page.locator("#aas-tab")
+
+        await expect(AASView).toHaveClass("console-view aas-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AASTab).toBeChecked({ checked: false })
+
+        await AASTab.click()
+
+        await expect(AASTab).toBeChecked({ checked: true })
+        await expect(AASView).toHaveClass("console-view aas-view hidden")
+        await expect(page.locator(".console-error__txt")).toHaveText("This function is only allowed for Thing Descriptions!")
+
+    })
+
+    test("Open the AAS AID view with the 'Basic TD' example", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const AASView = page.locator('#aas-view')
+        const consoleError = page.locator('#console-error')
+        const AASTab = page.locator("#aas-tab")
+
+        await expect(AASView).toHaveClass("console-view aas-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AASTab).toBeChecked({ checked: false })
+
+        await AASTab.click()
+
+        await expect(AASTab).toBeChecked({ checked: true })
+        await expect(AASView).toHaveClass("console-view aas-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const ASSEditor = page.locator('#aas-container')
+        const ASSContainer = ASSEditor.getByRole('code').locator('div').filter({ hasText: '"idShort": "SampleAAS",' }).nth(4)
+
+        await expect(ASSEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(ASSContainer).toHaveText('"idShort": "SampleAAS",')
+
+    })
+
+    test("Open the AAS AID view with the 'Basic TD' example and downloading it", async ({ page }) => {
+        await page.locator("#examples-btn").click()
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TD' }).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const exampleEditor = page.locator("#editor2")
+        await expect(exampleEditor).toHaveAttribute('data-ide-id', "2")
+        await expect(exampleEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(exampleEditor).toHaveClass("editor active")
+
+        const AASView = page.locator('#aas-view')
+        const consoleError = page.locator('#console-error')
+        const AASTab = page.locator("#aas-tab")
+
+        await expect(AASView).toHaveClass("console-view aas-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(AASTab).toBeChecked({ checked: false })
+
+        await AASTab.click()
+
+        await expect(AASTab).toBeChecked({ checked: true })
+        await expect(AASView).toHaveClass("console-view aas-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const ASSEditor = page.locator('#aas-container')
+        const ASSContainer = ASSEditor.getByRole('code').locator('div').filter({ hasText: '"idShort": "SampleAAS",' }).nth(4)
+
+        await expect(ASSEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(ASSContainer).toHaveText('"idShort": "SampleAAS",')
+
+        // Start waiting for download before clicking.
+        const AASDownload = page.locator('#aas-download')
+        const downloadPromise = page.waitForEvent('download')
+        await AASDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'MyLampThing-AAS.json'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+})
+
 /*
 9. ass conversion
 10. defaults

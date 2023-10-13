@@ -208,7 +208,7 @@ function enableAPIConversionWithProtocol(editorInstance) {
                 generateAAS(editorInstance["_domElement"].dataset.modeId, editorInstance)
                 AASView.classList.remove("hidden")
             } else {
-                showConsoleError("Please insert a TD which uses HTTP, MQTT, CoAP or Modbus")
+                showConsoleError("Please insert a TD which uses HTTP, MQTT, CoAP or Modbus!")
             }
         }
     }
