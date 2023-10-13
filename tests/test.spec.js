@@ -1847,7 +1847,7 @@ test.describe("Defaults view functionality", () => {
         const defaultsEditor = page.locator('#defaults-container')
         const defaultsContainer = defaultsEditor.getByRole('code').locator('div').filter({ hasText: 'description: >-' }).nth(4)
         await expect(defaultsEditor).toHaveAttribute('data-mode-id', "yaml")
-        await expect(defaultsContainer).toHaveText('description: >-' )
+        await expect(defaultsContainer).toHaveText('description: >-')
 
         const defaultsYamlBtn = page.locator('#defaults-yaml')
         await expect(defaultsYamlBtn).toBeDisabled()
@@ -2012,6 +2012,249 @@ test.describe("Defaults view functionality", () => {
     })
 })
 
-/*
-11. visualize
-*/
+test.describe("Visualization view functionality", () => {
+
+    test("Open the visualization view with the thing template and closing it", async ({ page }) => {
+
+        const visualizeView = page.locator('#visualize-view')
+        const visualizeTab = page.locator("#visualize-tab")
+
+        await expect(visualizeView).toHaveClass("console-view visualize-view hidden")
+        await expect(visualizeTab).toBeChecked({ checked: false })
+
+        await visualizeTab.click()
+
+        await expect(visualizeTab).toBeChecked({ checked: true })
+        await expect(visualizeView).toHaveClass("console-view visualize-view")
+
+        const graphViewBtn = page.locator('#graph-view')
+        const treeViewBtn = page.locator('#tree-view')
+
+        await expect(graphViewBtn).toBeChecked({ checked: true })
+        await expect(treeViewBtn).toBeChecked({ checked: false })
+
+        const graphVisTitle = page.locator('#visualized').getByText('Thing Template', { exact: true })
+        await expect(graphVisTitle).toHaveText("Thing Template")
+
+        const trashBtn = page.locator(".trash")
+        await trashBtn.click()
+
+        await expect(visualizeView).toHaveClass("console-view visualize-view hidden")
+        await expect(visualizeTab).toBeChecked({ checked: false })
+    })
+
+    test("Open the visualization view with the thing template and expand and collapse the graph view", async ({ page }) => {
+
+        const visualizeView = page.locator('#visualize-view')
+        const visualizeTab = page.locator("#visualize-tab")
+
+        await expect(visualizeView).toHaveClass("console-view visualize-view hidden")
+        await expect(visualizeTab).toBeChecked({ checked: false })
+
+        await visualizeTab.click()
+
+        await expect(visualizeTab).toBeChecked({ checked: true })
+        await expect(visualizeView).toHaveClass("console-view visualize-view")
+
+        const graphViewBtn = page.locator('#graph-view')
+        const treeViewBtn = page.locator('#tree-view')
+        const collapseAllBtn = page.locator('#collapse-all')
+        const expandAllBtn = page.locator('#expand-all')
+
+        await expect(graphViewBtn).toBeChecked({ checked: true })
+        await expect(treeViewBtn).toBeChecked({ checked: false })
+
+        const svgPaths = page.locator("svg > g > path")
+        await expect(svgPaths).toHaveCount(9)
+
+        await expandAllBtn.click()
+        await expect(expandAllBtn).toBeDisabled()
+
+        await expect(svgPaths).toHaveCount(12)
+
+        await collapseAllBtn.click()
+        await expect(collapseAllBtn).toBeDisabled()
+
+        await expect(svgPaths).toHaveCount(0)
+    })
+
+    test("Open the visualization view with the thing template download the graph view as SVG", async ({ page }) => {
+
+        const visualizeView = page.locator('#visualize-view')
+        const visualizeTab = page.locator("#visualize-tab")
+
+        await expect(visualizeView).toHaveClass("console-view visualize-view hidden")
+        await expect(visualizeTab).toBeChecked({ checked: false })
+
+        await visualizeTab.click()
+
+        await expect(visualizeTab).toBeChecked({ checked: true })
+        await expect(visualizeView).toHaveClass("console-view visualize-view")
+
+        const graphViewBtn = page.locator('#graph-view')
+        const treeViewBtn = page.locator('#tree-view')
+
+        await expect(graphViewBtn).toBeChecked({ checked: true })
+        await expect(treeViewBtn).toBeChecked({ checked: false })
+
+        // Start waiting for download before clicking.
+        const svgDownload = page.locator('#download-svg')
+        const downloadPromise = page.waitForEvent('download')
+        await svgDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'Graph-visualization.svg'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+
+    test("Open the visualization view with the thing template and download the graph view as PNG", async ({ page }) => {
+
+        const visualizeView = page.locator('#visualize-view')
+        const visualizeTab = page.locator("#visualize-tab")
+
+        await expect(visualizeView).toHaveClass("console-view visualize-view hidden")
+        await expect(visualizeTab).toBeChecked({ checked: false })
+
+        await visualizeTab.click()
+
+        await expect(visualizeTab).toBeChecked({ checked: true })
+        await expect(visualizeView).toHaveClass("console-view visualize-view")
+
+        const graphViewBtn = page.locator('#graph-view')
+        const treeViewBtn = page.locator('#tree-view')
+
+        await expect(graphViewBtn).toBeChecked({ checked: true })
+        await expect(treeViewBtn).toBeChecked({ checked: false })
+
+        // Start waiting for download before clicking.
+        const pngDownload = page.locator('#download-png')
+        const downloadPromise = page.waitForEvent('download')
+        await pngDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'Graph-visualization.png'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+
+    test("Open the tree visualization view with the thing template and modified the input values", async ({ page }) => {
+
+        const visualizeView = page.locator('#visualize-view')
+        const visualizeTab = page.locator("#visualize-tab")
+
+        await expect(visualizeView).toHaveClass("console-view visualize-view hidden")
+        await expect(visualizeTab).toBeChecked({ checked: false })
+
+        await visualizeTab.click()
+
+        await expect(visualizeTab).toBeChecked({ checked: true })
+        await expect(visualizeView).toHaveClass("console-view visualize-view")
+
+        const graphViewBtn = page.locator('#graph-view')
+        const treeViewBtn = page.locator('#tree-view')
+
+        await expect(graphViewBtn).toBeChecked({ checked: true })
+        await expect(treeViewBtn).toBeChecked({ checked: false })
+
+        await treeViewBtn.click()
+        await expect(graphViewBtn).toBeChecked({ checked: false })
+        await expect(treeViewBtn).toBeChecked({ checked: true })
+
+        const labelBtn = page.getByLabel('labels')
+        const radiusSlider = page.getByLabel('radius')
+        const extentSlider = page.getByLabel('extent')
+        const rotateSlider = page.getByLabel('rotate')
+        const dragSlider = page.getByLabel('drag precision')
+        const tidyBtn = page.getByLabel('tidy')
+        const clusterBtn = page.getByLabel('cluster')
+        const linksDropDown = page.getByLabel('links')
+
+        await expect(labelBtn).toBeChecked({checked: true})
+        await expect(radiusSlider).toHaveValue("350")
+        await expect(extentSlider).toHaveValue("360")
+        await expect(rotateSlider).toHaveValue("0")
+        await expect(dragSlider).toHaveValue("100")
+        await expect(tidyBtn).toBeChecked({checked: true})
+        await expect(clusterBtn).toBeChecked({checked: false})
+        await expect(linksDropDown).toHaveValue("line")
+
+        await labelBtn.click()
+        await radiusSlider.click()
+        await extentSlider.click()
+        await rotateSlider.click()
+        await dragSlider.click()
+        await clusterBtn.click()
+        await linksDropDown.selectOption("diagonal")
+
+        await expect(labelBtn).toBeChecked({checked: false})
+        await expect(radiusSlider).toHaveValue("410")
+        await expect(extentSlider).toHaveValue("180")
+        await expect(rotateSlider).toHaveValue("180")
+        await expect(dragSlider).toHaveValue("50")
+        await expect(tidyBtn).toBeChecked({checked: false})
+        await expect(clusterBtn).toBeChecked({checked: true})
+        await expect(linksDropDown).toHaveValue("diagonal")
+
+    })
+
+    test("Open the tree visualization view with the thing template and download as SVG", async ({ page }) => {
+
+        const visualizeView = page.locator('#visualize-view')
+        const visualizeTab = page.locator("#visualize-tab")
+
+        await expect(visualizeView).toHaveClass("console-view visualize-view hidden")
+        await expect(visualizeTab).toBeChecked({ checked: false })
+
+        await visualizeTab.click()
+
+        await expect(visualizeTab).toBeChecked({ checked: true })
+        await expect(visualizeView).toHaveClass("console-view visualize-view")
+
+        const graphViewBtn = page.locator('#graph-view')
+        const treeViewBtn = page.locator('#tree-view')
+
+        await expect(graphViewBtn).toBeChecked({ checked: true })
+        await expect(treeViewBtn).toBeChecked({ checked: false })
+
+        await treeViewBtn.click()
+        await expect(graphViewBtn).toBeChecked({ checked: false })
+        await expect(treeViewBtn).toBeChecked({ checked: true })
+
+        // Start waiting for download before clicking.
+        const svgDownload = page.locator('#download-svg')
+        const downloadPromise = page.waitForEvent('download')
+        await svgDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'Tree-visualization.svg'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+
+    test("Open the tree visualization view with the thing template and download as PNG", async ({ page }) => {
+
+        const visualizeView = page.locator('#visualize-view')
+        const visualizeTab = page.locator("#visualize-tab")
+
+        await expect(visualizeView).toHaveClass("console-view visualize-view hidden")
+        await expect(visualizeTab).toBeChecked({ checked: false })
+
+        await visualizeTab.click()
+
+        await expect(visualizeTab).toBeChecked({ checked: true })
+        await expect(visualizeView).toHaveClass("console-view visualize-view")
+
+        const graphViewBtn = page.locator('#graph-view')
+        const treeViewBtn = page.locator('#tree-view')
+
+        await expect(graphViewBtn).toBeChecked({ checked: true })
+        await expect(treeViewBtn).toBeChecked({ checked: false })
+
+        await treeViewBtn.click()
+        await expect(graphViewBtn).toBeChecked({ checked: false })
+        await expect(treeViewBtn).toBeChecked({ checked: true })
+
+        // Start waiting for download before clicking.
+        const pngDownload = page.locator('#download-png')
+        const downloadPromise = page.waitForEvent('download')
+        await pngDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'Tree-visualization.png'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+})
