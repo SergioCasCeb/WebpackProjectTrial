@@ -12,7 +12,7 @@ test.describe("Load initial state", () => {
 
     test('Has editor tab', async ({ page }) => {
         const editorTab = page.locator('#tab')
-        await expect(editorTab).toHaveText("TDThing Template")
+        await expect(editorTab).toHaveText("TDThing TemplateCloseCancel")
     })
 
     test('Has TD template', async ({ page }) => {
@@ -41,7 +41,7 @@ test.describe("Check all links", () => {
         const thingwebPromise = page.waitForEvent('popup')
         await page.locator(".logo").click()
         const thingwebPage = await thingwebPromise
-        await expect(thingwebPage).toHaveTitle("thingweb - thingweb")
+        await expect(thingwebPage).toHaveTitle("Eclipse Thingweb")
         await expect(thingwebPage).toHaveURL("https://www.thingweb.io")
     })
 
@@ -65,7 +65,7 @@ test.describe("Check all links", () => {
         const thingwebPromise = page.waitForEvent('popup')
         await page.locator("#thingweb-link").click()
         const thingwebPage = await thingwebPromise
-        await expect(thingwebPage).toHaveTitle("thingweb - thingweb")
+        await expect(thingwebPage).toHaveTitle("Eclipse Thingweb")
         await expect(thingwebPage).toHaveURL("https://www.thingweb.io")
     })
 
@@ -124,7 +124,7 @@ test.describe("Editors and Tabs creation and deletion", () => {
 
         const initialTab = page.locator("#tab").nth(0)
         await expect(initialTab).toHaveAttribute('data-tab-id', "1")
-        await expect(initialTab).toHaveText("TDThing Template")
+        await expect(initialTab).toHaveText("TDThing TemplateCloseCancel")
         await expect(initialTab).toHaveClass("active")
 
         const initialEditor = page.locator("#editor1")
@@ -140,7 +140,7 @@ test.describe("Editors and Tabs creation and deletion", () => {
 
         const secondTab = page.locator("#tab").nth(1)
         await expect(secondTab).toHaveAttribute('data-tab-id', "2")
-        await expect(secondTab).toHaveText("TDThing Template")
+        await expect(secondTab).toHaveText("TDThing TemplateCloseCancel")
         await expect(secondTab).toHaveClass("active")
 
         const secondEditor = page.locator("#editor2")
@@ -148,6 +148,7 @@ test.describe("Editors and Tabs creation and deletion", () => {
         await expect(secondEditor).toHaveClass("editor active")
 
         await page.locator("#tab").nth(1).locator(".close-tab").click()
+        await page.locator('#tab').nth(1).locator(".confirm-btns > .confirm-tab-close").click()
 
         await expect(editorTabs).toHaveCount(1)
         await expect(editors).toHaveCount(1)
@@ -164,7 +165,7 @@ test.describe("Editors and Tabs creation and deletion", () => {
 
         const initialTab = page.locator("#tab").nth(0)
         await expect(initialTab).toHaveAttribute('data-tab-id', "1")
-        await expect(initialTab).toHaveText("TDThing Template")
+        await expect(initialTab).toHaveText("TDThing TemplateCloseCancel")
         await expect(initialTab).toHaveClass("active")
 
         const initialEditor = page.locator("#editor1")
@@ -183,7 +184,7 @@ test.describe("Editors and Tabs creation and deletion", () => {
 
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
         const exampleEditor = page.locator("#editor2")
@@ -191,6 +192,7 @@ test.describe("Editors and Tabs creation and deletion", () => {
         await expect(exampleEditor).toHaveClass("editor active")
 
         await page.locator("#tab").nth(0).locator(".close-tab").click()
+        await page.locator('#tab').nth(0).locator(".confirm-btns > .confirm-tab-close").click()
 
         await expect(editorTabs).toHaveCount(1)
         await expect(editors).toHaveCount(1)
@@ -282,7 +284,7 @@ test.describe("Examples menu functionality", () => {
 
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
         const exampleEditor = page.locator("#editor2")
@@ -305,7 +307,7 @@ test.describe("Examples menu functionality", () => {
 
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
         const exampleEditor = page.locator("#editor2")
@@ -360,7 +362,7 @@ test.describe("Examples menu functionality", () => {
 
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
     })
 
@@ -379,7 +381,7 @@ test.describe("Examples menu functionality", () => {
 
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TMLamp Thing")
+        await expect(exampleTab).toHaveText("TMLamp ThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
     })
 
@@ -397,7 +399,7 @@ test.describe("Examples menu functionality", () => {
 
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TDMyWeatherThing")
+        await expect(exampleTab).toHaveText("TDMyWeatherThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
     })
 
@@ -419,7 +421,7 @@ test.describe("Examples menu functionality", () => {
 
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TMSmart Lamp Control")
+        await expect(exampleTab).toHaveText("TMSmart Lamp ControlCloseCancel")
         await expect(exampleTab).toHaveClass("active")
     })
 })
@@ -478,7 +480,7 @@ test.describe("Save menu functionality", () => {
 
         const exampleTab = page.locator("#tab").nth(1)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
-        await expect(exampleTab).toHaveText("TDMyLampThing")
+        await expect(exampleTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
         const saveMenu = page.locator(".save-menu")
@@ -503,7 +505,7 @@ test.describe("Save menu functionality", () => {
 
         const newPlaygroundTab = newPlaygroundPage.locator("#tab").nth(0)
         await expect(newPlaygroundTab).toHaveAttribute('data-tab-id', "1")
-        await expect(newPlaygroundTab).toHaveText("TDMyLampThing")
+        await expect(newPlaygroundTab).toHaveText("TDMyLampThingCloseCancel")
         await expect(newPlaygroundTab).toHaveClass("active")
 
     })
@@ -534,7 +536,7 @@ test.describe("Save menu functionality", () => {
 
         const exampleTab = page.locator("#tab").nth(0)
         await expect(exampleTab).toHaveAttribute('data-tab-id', "1")
-        await expect(exampleTab).toHaveText("TDThing Template")
+        await expect(exampleTab).toHaveText("TDThing TemplateCloseCancel")
         await expect(exampleTab).toHaveClass("active")
 
         await page.locator("#save-btn").click()
@@ -936,7 +938,6 @@ test.describe("Validation view functionality", () => {
 
 
 /*
-6. validation
 7. openapi
 8. async api
 9. ass conversion
