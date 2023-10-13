@@ -1731,8 +1731,287 @@ test.describe("AAS AID view functionality", () => {
     })
 })
 
+test.describe("Defaults view functionality", () => {
+    test("Opening the Defaults view with the Thing Template and closing it", async ({ page }) => {
+
+        const initialTab = page.locator("#tab").nth(0)
+        await expect(initialTab).toHaveAttribute('data-tab-id', "1")
+        await expect(initialTab).toHaveText("TDThing TemplateCloseCancel")
+        await expect(initialTab).toHaveClass("active")
+
+        const DefaultsView = page.locator('#defaults-view')
+        const consoleError = page.locator('#console-error')
+        const DefaultsTab = page.locator("#defaults-tab")
+
+        await expect(DefaultsView).toHaveClass("console-view defaults-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(DefaultsTab).toBeChecked({ checked: false })
+
+        await DefaultsTab.click()
+
+        await expect(DefaultsTab).toBeChecked({ checked: true })
+        await expect(DefaultsView).toHaveClass("console-view defaults-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const defaultsEditor = page.locator('#defaults-container')
+        const defaultsContainer = defaultsEditor.getByRole('code').locator('div').filter({ hasText: '"description": "This is your customizable template. Edit it to fit your Thing Description or Thing Model needs!",' }).nth(4)
+
+        await expect(defaultsEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(defaultsContainer).toHaveText('"description": "This is your customizable template. Edit it to fit your Thing Description or Thing Model needs!",')
+
+        const defaultsJsonBtn = page.locator('#defaults-json')
+        const defaultsAddBtn = page.locator('#defaults-add')
+
+        await expect(defaultsJsonBtn).toBeDisabled()
+        await expect(defaultsAddBtn).toBeDisabled()
+
+        const trashBtn = page.locator(".trash")
+        await trashBtn.click()
+
+        await expect(DefaultsView).toHaveClass("console-view defaults-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(DefaultsTab).toBeChecked({ checked: false })
+    })
+
+    test("Trying to open the Defaults view with a TM", async ({ page }) => {
+
+        await page.locator("#examples-btn").click()
+
+        const thingTypeToggle = page.locator('#thing-type-btn')
+        await thingTypeToggle.click()
+        await expect(thingTypeToggle).toBeChecked({ checked: true })
+
+        const quickAccessBtn = page.locator(".example").filter({ hasText: 'Basic TM' }).nth(1).getByRole("button").nth(0)
+        await quickAccessBtn.click()
+
+        const exampleTab = page.locator("#tab").nth(1)
+        await expect(exampleTab).toHaveAttribute('data-tab-id', "2")
+        await expect(exampleTab).toHaveText("TMLamp ThingCloseCancel")
+        await expect(exampleTab).toHaveClass("active")
+
+        const DefaultsView = page.locator('#defaults-view')
+        const consoleError = page.locator('#console-error')
+        const DefaultsTab = page.locator("#defaults-tab")
+
+        await expect(DefaultsView).toHaveClass("console-view defaults-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(DefaultsTab).toBeChecked({ checked: false })
+
+        await DefaultsTab.click()
+
+        await expect(DefaultsTab).toBeChecked({ checked: true })
+        await expect(DefaultsView).toHaveClass("console-view defaults-view hidden")
+        await expect(page.locator(".console-error__txt")).toHaveText("This function is only allowed for Thing Descriptions!")
+
+    })
+
+    test("Open the Defaults view as YAML", async ({ page }) => {
+
+        const templateEditor = page.locator("#editor1")
+        await expect(templateEditor).toHaveAttribute('data-ide-id', "1")
+        await expect(templateEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(templateEditor).toHaveClass("editor active")
+
+        const jsonYamlPopup = page.locator('.json-yaml-warning')
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+
+        const jsonBtn = page.locator('#file-type-json')
+        const yamlBtn = page.locator('#file-type-yaml')
+
+        await expect(jsonBtn).toBeChecked({ checked: true })
+        await expect(yamlBtn).toBeChecked({ checked: false })
+
+        await yamlBtn.click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning")
+
+        await page.locator('#yaml-confirm-btn').click()
+        await expect(jsonYamlPopup).toHaveClass("json-yaml-warning closed")
+        await expect(templateEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(jsonBtn).toBeChecked({ checked: false })
+        await expect(yamlBtn).toBeChecked({ checked: true })
+
+        const defaultsView = page.locator('#defaults-view')
+        const consoleError = page.locator('#console-error')
+        const defaultsTab = page.locator("#defaults-tab")
+
+        await expect(defaultsView).toHaveClass("console-view defaults-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(defaultsTab).toBeChecked({ checked: false })
+
+        await defaultsTab.click()
+
+        await expect(defaultsTab).toBeChecked({ checked: true })
+        await expect(defaultsView).toHaveClass("console-view defaults-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const defaultsEditor = page.locator('#defaults-container')
+        const defaultsContainer = defaultsEditor.getByRole('code').locator('div').filter({ hasText: 'description: >-' }).nth(4)
+        await expect(defaultsEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(defaultsContainer).toHaveText('description: >-' )
+
+        const defaultsYamlBtn = page.locator('#defaults-yaml')
+        await expect(defaultsYamlBtn).toBeDisabled()
+    })
+
+    test("Open the Defaults view and change form JSON to YAML and from YAML to JSON", async ({ page }) => {
+        const templateEditor = page.locator("#editor1")
+        await expect(templateEditor).toHaveAttribute('data-ide-id', "1")
+        await expect(templateEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(templateEditor).toHaveClass("editor active")
+
+        const defaultsView = page.locator('#defaults-view')
+        const consoleError = page.locator('#console-error')
+        const defaultsTab = page.locator("#defaults-tab")
+
+        await expect(defaultsView).toHaveClass("console-view defaults-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(defaultsTab).toBeChecked({ checked: false })
+
+        await defaultsTab.click()
+
+        await expect(defaultsTab).toBeChecked({ checked: true })
+        await expect(defaultsView).toHaveClass("console-view defaults-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const defaultsEditor = page.locator('#defaults-container')
+
+        await expect(defaultsEditor).toHaveAttribute('data-mode-id', "json")
+
+        const defaultsJsonBtn = page.locator('#defaults-json')
+        const defaultsYamlBtn = page.locator('#defaults-yaml')
+
+        await expect(defaultsJsonBtn).toBeDisabled()
+
+        await defaultsYamlBtn.click()
+
+        await expect(defaultsEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(defaultsYamlBtn).toBeDisabled()
+
+        await defaultsJsonBtn.click()
+
+        await expect(defaultsEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(defaultsJsonBtn).toBeDisabled()
+    })
+
+    test("Open the Defaults view and removing and adding default values", async ({ page }) => {
+
+        const templateEditor = page.locator("#editor1")
+        await expect(templateEditor).toHaveAttribute('data-ide-id', "1")
+        await expect(templateEditor).toHaveClass("editor active")
+
+        const defaultsView = page.locator('#defaults-view')
+        const consoleError = page.locator('#console-error')
+        const defaultsTab = page.locator("#defaults-tab")
+
+        await expect(defaultsView).toHaveClass("console-view defaults-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(defaultsTab).toBeChecked({ checked: false })
+
+        await defaultsTab.click()
+
+        await expect(defaultsTab).toBeChecked({ checked: true })
+        await expect(defaultsView).toHaveClass("console-view defaults-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const defaultsAddBtn = page.locator('#defaults-add')
+        const defaultsRemoveBtn = page.locator('#defaults-remove')
+
+        await expect(defaultsAddBtn).toBeDisabled()
+
+        await defaultsRemoveBtn.click()
+        await expect(defaultsRemoveBtn).toBeDisabled()
+
+        await defaultsAddBtn.click()
+        await expect(defaultsAddBtn).toBeDisabled()
+    })
+
+    test("Open the Defaults view and downloading it as JSON with defaults", async ({ page }) => {
+
+        const templateEditor = page.locator("#editor1")
+        await expect(templateEditor).toHaveAttribute('data-ide-id', "1")
+        await expect(templateEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(templateEditor).toHaveClass("editor active")
+
+        const DefaultsView = page.locator('#defaults-view')
+        const consoleError = page.locator('#console-error')
+        const DefaultsTab = page.locator("#defaults-tab")
+
+        await expect(DefaultsView).toHaveClass("console-view defaults-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(DefaultsTab).toBeChecked({ checked: false })
+
+        await DefaultsTab.click()
+
+        await expect(DefaultsTab).toBeChecked({ checked: true })
+        await expect(DefaultsView).toHaveClass("console-view defaults-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const defaultsEditor = page.locator('#defaults-container')
+        await expect(defaultsEditor).toHaveAttribute('data-mode-id', "json")
+
+        const DefaultsJsonBtn = page.locator('#defaults-json')
+        await expect(DefaultsJsonBtn).toBeDisabled()
+
+        // Start waiting for download before clicking.
+        const DefaultsDownload = page.locator('#defaults-download')
+        const downloadPromise = page.waitForEvent('download')
+        await DefaultsDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'Thing-Template-with-Defaults.json'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+
+    test("Open the OpenAPI view and downloading it as YAML", async ({ page }) => {
+        const templateEditor = page.locator("#editor1")
+        await expect(templateEditor).toHaveAttribute('data-ide-id', "1")
+        await expect(templateEditor).toHaveAttribute('data-mode-id', "json")
+        await expect(templateEditor).toHaveClass("editor active")
+
+        const DefaultsView = page.locator('#defaults-view')
+        const consoleError = page.locator('#console-error')
+        const DefaultsTab = page.locator("#defaults-tab")
+
+        await expect(DefaultsView).toHaveClass("console-view defaults-view hidden")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+        await expect(DefaultsTab).toBeChecked({ checked: false })
+
+        await DefaultsTab.click()
+
+        await expect(DefaultsTab).toBeChecked({ checked: true })
+        await expect(DefaultsView).toHaveClass("console-view defaults-view")
+        await expect(consoleError).toHaveClass("console-view console-error hidden")
+
+        const defaultsEditor = page.locator('#defaults-container')
+        await expect(defaultsEditor).toHaveAttribute('data-mode-id', "json")
+
+        const defaultsJsonBtn = page.locator('#defaults-json')
+        const defaultsYamlBtn = page.locator('#defaults-yaml')
+
+        await expect(defaultsJsonBtn).toBeDisabled()
+
+        await defaultsYamlBtn.click()
+
+        await expect(defaultsEditor).toHaveAttribute('data-mode-id', "yaml")
+        await expect(defaultsYamlBtn).toBeDisabled()
+
+        const defaultsAddBtn = page.locator('#defaults-add')
+        const defaultsRemoveBtn = page.locator('#defaults-remove')
+
+        await expect(defaultsAddBtn).toBeDisabled()
+
+        await defaultsRemoveBtn.click()
+        await expect(defaultsRemoveBtn).toBeDisabled()
+
+        // Start waiting for download before clicking.
+        const defaultsDownload = page.locator('#defaults-download')
+        const downloadPromise = page.waitForEvent('download')
+        await defaultsDownload.click()
+        const download = await downloadPromise
+        const expectedFilename = 'Thing-Template-without-Defaults.yaml'
+        expect(download.suggestedFilename()).toBe(expectedFilename)
+    })
+})
+
 /*
-9. ass conversion
-10. defaults
 11. visualize
 */
